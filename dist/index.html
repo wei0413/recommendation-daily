@@ -93,12 +93,28 @@
       </div>
     </header>
 
+    <section class="project-callout" aria-label="参与项目">
+      <div>
+        <strong>一起完善推荐论文雷达</strong>
+        <span>觉得项目有帮助，欢迎到 GitHub 点个 Star；发现问题或有改进建议，可以直接提 Issue。</span>
+      </div>
+      <div class="project-links">
+        <a class="project-star" href="https://github.com/wei0413/recommendation-daily" target="_blank" rel="noopener">☆ GitHub Star</a>
+        <a href="https://github.com/wei0413/recommendation-daily/issues/new" target="_blank" rel="noopener">提交 Issue ↗</a>
+      </div>
+    </section>
+
     <section class="signal-strip" aria-label="当前论文概况">
       <div><span id="paperCount">—</span><small>篇论文</small></div>
       <div><span id="topicCount">—</span><small>个方向</small></div>
       <div><span id="latestDate">—</span><small>最近更新</small></div>
       <p id="resultCopy">按推荐度排列</p>
     </section>
+
+    <details class="score-explainer">
+      <summary>“推荐分”是什么意思？</summary>
+      <p>它是本站用于安排阅读顺序的启发式分数：综合论文标题与摘要的推荐系统相关性、综述/基准/工业实践等内容信号，以及发表时间的新近程度。分数越高，表示越值得优先浏览；它不是引用量，也不代表论文的最终学术质量。</p>
+    </details>
 
     <section id="papers" class="papers" aria-live="polite" aria-busy="true"></section>
     <button id="loadMore" class="load-more" type="button" hidden>显示更多论文</button>

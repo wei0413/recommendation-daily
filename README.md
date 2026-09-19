@@ -12,7 +12,7 @@ python -m http.server 8000 -d dist
 
 ## 自动更新
 
-`scripts/update_papers.py` 使用 arXiv 公共 API 拉取近期论文，根据标题、摘要、时效和论文类型计算阅读排序分，并自动标注研究方向。`scripts/enrich_affiliations.py` 从公开论文页补充机构信息；`scripts/enrich_papers.py` 使用 Anthropic 兼容接口生成文章主题、研究问题、主要贡献和中文阅读笔记。分类覆盖生成式推荐、LLM 与 Agent、序列与会话、多模态、联邦与隐私、图与知识增强、跨域与冷启动、对话交互、公平可信、强化学习、评测复现和工业系统等方向。
+`scripts/update_papers.py` 使用 arXiv 公共 API 拉取近期论文，根据标题、摘要、时效和论文类型计算阅读排序分，并自动标注研究方向。`scripts/enrich_affiliations.py` 从公开论文页补充机构信息；`scripts/enrich_papers.py` 使用 Anthropic 兼容接口，为 2026-09-11 及之后的论文生成文章主题、研究问题、主要贡献和中文阅读笔记。分类覆盖生成式推荐、LLM 与 Agent、序列与会话、多模态、联邦与隐私、图与知识增强、跨域与冷启动、对话交互、公平可信、强化学习、评测复现和工业系统等方向。
 
 GitHub Actions 会在北京时间工作日早晨运行，更新数据后部署到 GitHub Pages；也可以在 Actions 页面手动触发。没有配置大模型密钥时，论文抓取、分类和发布仍会运行，只跳过中文笔记生成。
 
@@ -32,4 +32,4 @@ GitHub Actions 会在北京时间工作日早晨运行，更新数据后部署�
 
 ## 数据说明
 
-论文元数据与公开 affiliation 来自 [arXiv](https://arxiv.org/)。推荐分仅用于降低每日阅读筛选成本，不代表论文质量或最终学术判断。关注方向、关键词和收藏只保存在当前浏览器中。
+论文元数据与公开 affiliation 来自 [arXiv](https://arxiv.org/)。“推荐分”综合标题和摘要中的推荐系统相关性、综述/基准/工业实践等内容信号及论文新近程度，仅用于安排阅读顺序，不是引用量，也不代表论文质量或最终学术判断。研究方向旁的数字会随当前日期、搜索和关注条件实时变化。关注方向、关键词和收藏只保存在当前浏览器中。

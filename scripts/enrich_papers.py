@@ -21,6 +21,8 @@ MODEL = os.environ.get("ANTHROPIC_MODEL", "").strip() or "glm-4.5-air"
 TOKEN = os.environ.get("ANTHROPIC_AUTH_TOKEN", "").strip()
 LIMIT = max(1, int(os.environ.get("ENRICH_LIMIT", "24")))
 BATCH_SIZE = max(1, min(6, int(os.environ.get("ENRICH_BATCH_SIZE", "4"))))
+MIN_PUBLISHED = os.environ.get("ENRICH_START_DATE", "2026-09-11").strip() or "2026-09-11"
+NOTE_KEYS = ("focus_label", "article_theme", "research_question", "main_contribution", "reading_note", "note_model")
 
 
 def extract_json(text: str) -> list[dict]:
@@ -80,14 +82,28 @@ def request_notes(papers: list[dict]) -> list[dict]:
 
 
 def main() -> None:
-    if not TOKEN:
-        print("ANTHROPIC_AUTH_TOKEN is not configured; skipping AI notes.")
-        return
     payload = json.loads(OUTPUT.read_text(encoding="utf-8"))
     papers = payload.get("papers", [])
-    pending = [paper for paper in papers if not paper.get("article_theme")][:LIMIT]
+    removed = 0
+    for paper in papers:
+        if paper.get("published", "") < MIN_PUBLISHED:
+            for key in NOTE_KEYS:
+                if key in paper:
+                    paper.pop(key, None)
+                    removed += 1
+
+    if not TOKEN:
+        if removed:
+            OUTPUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        print("ANTHROPIC_AUTH_TOKEN is not configured; skipping AI notes.")
+        return
+
+    pending = [
+        paper for paper in papers
+        if paper.get("published", "") >= MIN_PUBLISHED and not paper.get("article_theme")
+    ][:LIMIT]
     if not pending:
-        print("All current papers already have editorial notes.")
+        print(f"All papers published since {MIN_PUBLISHED} already have editorial notes.")
         return
 
     by_id = {paper["id"]: paper for paper in papers}

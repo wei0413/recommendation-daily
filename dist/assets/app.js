@@ -30,6 +30,8 @@ const topicColors = {
   "其他": "#64748b",
 };
 
+const NOTE_START_DATE = "2026-09-11";
+
 const state = {
   papers: [],
   topic: "全部",
@@ -180,7 +182,8 @@ function handleDateClick(date) {
 }
 
 function renderTopicFilters() {
-  const counts = state.papers.reduce((map, paper) => {
+  const filterablePapers = state.papers.filter(matchesBaseFilters);
+  const counts = filterablePapers.reduce((map, paper) => {
     const topic = paper.topic || "其他";
     map.set(topic, (map.get(topic) || 0) + 1);
     return map;
@@ -188,7 +191,7 @@ function renderTopicFilters() {
   const topics = ["全部", ...TOPIC_ORDER];
   $("#topicFilters").innerHTML = topics.map(topic => {
     const followed = state.followedTopics.has(topic);
-    const count = topic === "全部" ? state.papers.length : (counts.get(topic) || 0);
+    const count = topic === "全部" ? filterablePapers.length : (counts.get(topic) || 0);
     return `<div class="topic-row">
       <button class="topic-chip ${state.topic === topic ? "active" : ""}" type="button" data-topic="${escapeHtml(topic)}" title="${escapeHtml(topic)}">${escapeHtml(topic)} <small>${count}</small></button>
       ${topic === "全部" ? "<span></span>" : `<button class="topic-follow ${followed ? "followed" : ""}" type="button" data-follow-topic="${escapeHtml(topic)}" aria-label="${followed ? "取消关注" : "关注"}${escapeHtml(topic)}" aria-pressed="${followed}">${followed ? "★" : "☆"}</button>`}
@@ -335,13 +338,17 @@ function matchesInterest(paper) {
   return state.customInterests.some(interest => haystack.includes(interest.toLowerCase()));
 }
 
-function visiblePapers() {
-  return state.papers.filter(paper => {
-    const inTopic = state.topic === "全部" || (paper.topic || "其他") === state.topic;
+function matchesBaseFilters(paper) {
     const inDate = (!state.startDate || paper.published >= state.startDate) && (!state.endDate || paper.published <= state.endDate);
     const inSaved = !state.savedOnly || state.saved.has(paper.id);
     const haystack = [paper.title, ...(paper.authors || []), ...(paper.institutions || []), paper.abstract, paper.reason, paper.article_theme, paper.research_question, paper.main_contribution, paper.reading_note, paper.id].join(" ").toLowerCase();
-    return inTopic && inDate && inSaved && matchesInterest(paper) && (!state.search || haystack.includes(state.search));
+    return inDate && inSaved && matchesInterest(paper) && (!state.search || haystack.includes(state.search));
+}
+
+function visiblePapers() {
+  return state.papers.filter(paper => {
+    const inTopic = state.topic === "全部" || (paper.topic || "其他") === state.topic;
+    return inTopic && matchesBaseFilters(paper);
   }).sort((a, b) => {
     if (state.sort === "newest") return b.published.localeCompare(a.published) || b.score - a.score;
     if (state.sort === "saved") return Number(state.saved.has(b.id)) - Number(state.saved.has(a.id)) || b.score - a.score;
@@ -351,6 +358,7 @@ function visiblePapers() {
 
 function render() {
   const allPapers = visiblePapers();
+  renderTopicFilters();
   const papers = allPapers.slice(0, state.pageSize);
   const latest = state.papers.map(paper => paper.published).filter(Boolean).sort().at(-1);
   $("#paperCount").textContent = allPapers.length;
@@ -381,19 +389,31 @@ function renderCard(paper) {
   const followed = state.followedTopics.has(topic);
   const authors = (paper.authors || []).join(", ");
   const institutions = (paper.institutions || []).filter(Boolean);
-  const articleTheme = paper.article_theme || `${topic}：${paper.title}`;
-  const focusLabel = paper.focus_label || topic;
-  const researchQuestion = paper.research_question || `这项工作试图解决推荐系统中“${paper.title}”所对应的核心研究问题。`;
-  const mainContribution = paper.main_contribution || paper.reason || "提出与推荐系统直接相关的方法、分析或实证结果。";
+  const hasEditorialNote = paper.published >= NOTE_START_DATE && Boolean(paper.article_theme && paper.research_question && paper.main_contribution);
+  const focusLabel = hasEditorialNote ? (paper.focus_label || topic) : topic;
   const organizationSector = paper.organization_sector || paper.institution_type || "机构未公开";
   const primaryInstitution = paper.primary_institution_zh || paper.primary_institution || institutions[0] || "机构未公开";
-  const readingNote = escapeHtml(paper.reading_note || paper.reason || "当前为基础元数据，等待自动生成中文阅读笔记。").replace(/\n/g, "<br>");
+  const readingNote = hasEditorialNote && paper.reading_note
+    ? escapeHtml(paper.reading_note).replace(/\n/g, "<br>")
+    : "";
+  const noteSource = paper.note_model === "editorial-seed"
+    ? "编辑精选"
+    : paper.note_model
+      ? `AI 解读 · ${paper.note_model}`
+      : "";
   const institutionHtml = institutions.length
     ? institutions.slice(0, 3).map(name => `<span class="institution-badge">${escapeHtml(name)}</span>`).join("") + (institutions.length > 3 ? `<span class="institution-empty">+${institutions.length - 3}</span>` : "")
     : '<span class="institution-empty">机构信息未公开</span>';
+  const scoreHelp = `推荐分 ${paper.score}：用于阅读排序，综合推荐相关性、内容信号与新近程度；不等同于学术质量。`;
+  const editorialHtml = hasEditorialNote ? `<dl class="editorial-summary">
+      <div><dt>文章主题</dt><dd>${escapeHtml(paper.article_theme)}</dd></div>
+      <div><dt>研究问题</dt><dd>${escapeHtml(paper.research_question)}</dd></div>
+      <div><dt>主要贡献</dt><dd>${escapeHtml(paper.main_contribution)}</dd></div>
+    </dl>` : "";
+  const noteHtml = readingNote ? `<h4>阅读笔记</h4><p>${readingNote}</p>` : "";
   return `<article class="paper-card" style="--topic-color:${color};--score:${Number(paper.score) || 0}" data-id="${escapeHtml(paper.id)}">
     <div class="paper-card-head">
-      <div class="score" aria-label="推荐分 ${paper.score}"><b>${paper.score}</b><small>signal</small></div>
+      <div class="score" aria-label="${escapeHtml(scoreHelp)}" title="${escapeHtml(scoreHelp)}"><b>${paper.score}</b><small>推荐分</small></div>
       <div><h3 class="paper-title">${escapeHtml(paper.title)}</h3><p class="authors" title="${escapeHtml(authors)}">${escapeHtml(authors)}</p></div>
       <button class="save-button ${saved ? "saved" : ""}" type="button" data-action="save" aria-label="${saved ? "取消收藏" : "收藏"}" aria-pressed="${saved}">${saved ? "★" : "☆"}</button>
     </div>
@@ -404,16 +424,12 @@ function renderCard(paper) {
       <a href="${escapeHtml(paper.url)}" target="_blank" rel="noopener">arXiv:${escapeHtml(paper.id)}</a>
       ${paper.categories?.length ? `<span class="meta-sep">·</span><span>${escapeHtml(paper.categories.join(" / "))}</span>` : ""}
     </div>
-    <div class="paper-labels"><span>${escapeHtml(focusLabel)}</span><span>${escapeHtml(organizationSector)}</span><span>${escapeHtml(primaryInstitution)}</span></div>
-    <dl class="editorial-summary">
-      <div><dt>文章主题</dt><dd>${escapeHtml(articleTheme)}</dd></div>
-      <div><dt>研究问题</dt><dd>${escapeHtml(researchQuestion)}</dd></div>
-      <div><dt>主要贡献</dt><dd>${escapeHtml(mainContribution)}</dd></div>
-    </dl>
-    <div class="card-actions"><button class="detail-button" type="button" data-action="abstract" aria-expanded="false">展开笔记 ▼</button><a class="link-button" href="${escapeHtml(paper.pdf_url || paper.url.replace("/abs/", "/pdf/"))}" target="_blank" rel="noopener">PDF ↗</a></div>
+    <div class="paper-labels"><span>${escapeHtml(focusLabel)}</span><span>${escapeHtml(organizationSector)}</span><span>${escapeHtml(primaryInstitution)}</span>${noteSource && hasEditorialNote ? `<span class="note-source">${escapeHtml(noteSource)}</span>` : ""}</div>
+    ${editorialHtml}
+    <div class="card-actions"><button class="detail-button" type="button" data-action="abstract" aria-expanded="false">${hasEditorialNote ? "展开笔记" : "查看摘要"} ▼</button><a class="link-button" href="${escapeHtml(paper.pdf_url || paper.url.replace("/abs/", "/pdf/"))}" target="_blank" rel="noopener">PDF ↗</a></div>
     <div class="abstract-panel">
       <h4>摘要</h4><p>${escapeHtml(paper.abstract || "暂无摘要。")}</p>
-      <h4>阅读笔记</h4><p>${readingNote}</p>
+      ${noteHtml}
       <h4>作者机构</h4><div class="institution-row"><span class="institution-type">${escapeHtml(organizationSector)}</span>${institutionHtml}</div>
     </div>
   </article>`;
@@ -434,7 +450,10 @@ function handleCardClick(event) {
     const panel = card.querySelector(".abstract-panel");
     const open = panel.classList.toggle("open");
     event.target.setAttribute("aria-expanded", String(open));
-    event.target.textContent = open ? "收起笔记 ▲" : "展开笔记 ▼";
+    const hasEditorialNote = paper?.published >= NOTE_START_DATE && Boolean(paper?.article_theme && paper?.research_question && paper?.main_contribution);
+    event.target.textContent = open
+      ? (hasEditorialNote ? "收起笔记 ▲" : "收起摘要 ▲")
+      : (hasEditorialNote ? "展开笔记 ▼" : "查看摘要 ▼");
   }
 }
 

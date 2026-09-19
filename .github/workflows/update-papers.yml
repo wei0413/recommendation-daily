@@ -37,6 +37,7 @@ jobs:
           ANTHROPIC_BASE_URL: ${{ vars.ANTHROPIC_BASE_URL }}
           ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL }}
           ENRICH_LIMIT: "24"
+          ENRICH_START_DATE: "2026-09-11"
         run: python scripts/enrich_papers.py
       - name: Save refreshed data
         run: |
