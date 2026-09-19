@@ -8,6 +8,7 @@ small GitHub Actions job without dependency installation.
 from __future__ import annotations
 
 import json
+import os
 import re
 import urllib.parse
 import urllib.request
@@ -18,6 +19,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "dist" / "data" / "recommendations.json"
+EDITORIAL_OVERRIDES = ROOT / "scripts" / "editorial_overrides.json"
 API = "https://export.arxiv.org/api/query"
 NAMESPACE = {
     "atom": "http://www.w3.org/2005/Atom",
@@ -52,11 +54,23 @@ TOPICS = [
 ]
 
 INDUSTRY_TERMS = (
-    "corporation", " corp", "company", "google", "microsoft", "amazon", "meta ",
+    "corporation", " corp", "company", " inc", " ltd", " llc", "platforms", "google", "microsoft", "amazon", "meta ",
     "alibaba", "tencent", "bytedance", "netflix", "spotify", "kuaishou", "meituan",
 )
 ACADEMIC_TERMS = (
     "university", "institute", "school", "college", "academy", "laboratory", "laboratoire",
+)
+CHINA_TERMS = (
+    "china", "chinese", "hong kong", "macau", "tsinghua", "peking", "fudan",
+    "zhejiang", "renmin", "shanghai", "nanjing", "wuhan", "harbin", "cuhk",
+    "ustc", "sjtu", "hkust", "huawei", "alibaba", "tencent", "bytedance",
+    "kuaishou", "meituan", "baidu", "xiaomi",
+)
+ENRICHMENT_KEYS = (
+    "focus_label", "article_theme", "research_question", "main_contribution", "reading_note", "note_model",
+)
+AFFILIATION_KEYS = (
+    "institutions", "institution_type", "organization_sector", "primary_institution", "affiliation_checked",
 )
 
 
@@ -85,6 +99,20 @@ def classify_institution_type(institutions: list[str]) -> str:
     if has_academia:
         return "学术界"
     return "研究机构"
+
+
+def organization_sector(institutions: list[str], institution_type: str) -> str:
+    if not institutions:
+        return "机构未公开"
+    text = " ".join(institutions).lower()
+    is_china = any(term in text for term in CHINA_TERMS)
+    if institution_type == "产学合作":
+        return "产学合作"
+    if institution_type == "工业界":
+        return "国内工业界" if is_china else "海外工业界"
+    if institution_type == "学术界":
+        return "国内学术界" if is_china else "海外学术界"
+    return "国内研究机构" if is_china else "海外研究机构"
 
 
 def score_paper(title: str, abstract: str, published: str) -> int:
@@ -129,16 +157,21 @@ def reason_for(topic: str, title: str) -> str:
 
 
 def fetch_entries() -> list[dict]:
+    max_results = int(os.environ.get("ARXIV_MAX_RESULTS", "300"))
     params = urllib.parse.urlencode({
         "search_query": QUERY,
         "start": 0,
-        "max_results": 150,
+        "max_results": max_results,
         "sortBy": "submittedDate",
         "sortOrder": "descending",
     })
-    request = urllib.request.Request(f"{API}?{params}", headers={"User-Agent": USER_AGENT})
-    with urllib.request.urlopen(request, timeout=45) as response:
-        root = ET.fromstring(response.read())
+    local_feed = os.environ.get("ARXIV_XML_PATH", "").strip()
+    if local_feed:
+        root = ET.fromstring(Path(local_feed).read_bytes())
+    else:
+        request = urllib.request.Request(f"{API}?{params}", headers={"User-Agent": USER_AGENT})
+        with urllib.request.urlopen(request, timeout=60) as response:
+            root = ET.fromstring(response.read())
 
     papers = []
     for entry in root.findall("atom:entry", NAMESPACE):
@@ -162,6 +195,7 @@ def fetch_entries() -> list[dict]:
         categories = [node.attrib.get("term", "") for node in entry.findall("atom:category", NAMESPACE)]
         links = {node.attrib.get("title", node.attrib.get("rel", "")): node.attrib.get("href", "") for node in entry.findall("atom:link", NAMESPACE)}
         topic = classify(title, abstract)
+        institution_type = classify_institution_type(institutions)
         papers.append({
             "id": paper_id,
             "title": title,
@@ -170,7 +204,9 @@ def fetch_entries() -> list[dict]:
             "categories": categories,
             "topic": topic,
             "institutions": institutions,
-            "institution_type": classify_institution_type(institutions),
+            "institution_type": institution_type,
+            "organization_sector": organization_sector(institutions, institution_type),
+            "primary_institution": institutions[0] if institutions else "机构未公开",
             "score": score_paper(title, abstract, published),
             "reason": reason_for(topic, title),
             "abstract": abstract,
@@ -187,9 +223,32 @@ def main() -> None:
 
     merged = {paper["id"]: paper for paper in old_papers}
     for paper in fetch_entries():
+        previous = merged.get(paper["id"], {})
+        for key in ENRICHMENT_KEYS:
+            if previous.get(key):
+                paper[key] = previous[key]
+        if previous.get("institutions") and not paper.get("institutions"):
+            for key in AFFILIATION_KEYS:
+                if key in previous:
+                    paper[key] = previous[key]
+        elif previous.get("affiliation_checked"):
+            paper["affiliation_checked"] = True
         merged[paper["id"]] = paper
 
-    papers = sorted(merged.values(), key=lambda p: (p.get("published", ""), p.get("score", 0)), reverse=True)[:400]
+    for paper in merged.values():
+        institutions = paper.get("institutions") or []
+        if institutions:
+            institution_type = classify_institution_type(institutions)
+            paper["institution_type"] = institution_type
+            paper["organization_sector"] = organization_sector(institutions, institution_type)
+            paper["primary_institution"] = institutions[0]
+    papers = sorted(merged.values(), key=lambda p: (p.get("published", ""), p.get("score", 0)), reverse=True)[:1200]
+    if EDITORIAL_OVERRIDES.exists():
+        overrides = json.loads(EDITORIAL_OVERRIDES.read_text(encoding="utf-8"))
+        by_id = {paper["id"]: paper for paper in papers}
+        for paper_id, values in overrides.items():
+            if paper_id in by_id:
+                by_id[paper_id].update(values)
     payload = {
         "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
         "source": "arXiv",

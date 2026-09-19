@@ -1,0 +1,105 @@
+{
+  "2609.19831": {
+    "focus_label": "可解释推荐",
+    "article_theme": "自然语言用户画像能否真正让推荐透明可控",
+    "research_question": "用评论生成可编辑的自然语言用户画像，是否既能保持推荐效果，又能让用户理解并纠正系统判断？",
+    "main_contribution": "复现用户画像推荐方法，并通过上下文消融、多随机种子和内部表征分析检验其稳定性与可解释性，发现画像扰动会改变评分但未必改变排序。",
+    "reading_note": "• 自然语言画像提供了直接的人机干预接口。\n• 透明界面并不自动等于排序逻辑真正可控。\n• 排序目标比单纯评分回归更值得关注。",
+    "primary_institution_zh": "苏黎世大学",
+    "note_model": "editorial-seed"
+  },
+  "2609.18249": {
+    "focus_label": "情境对话推荐",
+    "article_theme": "让对话推荐同时理解用户偏好与现场环境",
+    "research_question": "面对共同可见的真实场景，推荐助手如何结合对话历史、画面内容和物品属性，持续理解用户偏好并给出情境一致的回答？",
+    "main_contribution": "提出 Re2A 的“先推理、再对齐”框架，以自动评分准则生成显式偏好状态，再联合优化偏好满足度和情境一致性。",
+    "reading_note": "• 把场景感知引入对话推荐。\n• 显式偏好状态是推理与生成之间的桥梁。\n• 适合关注多模态、对话与偏好获取的读者。",
+    "primary_institution_zh": "香港中文大学",
+    "note_model": "editorial-seed"
+  },
+  "2609.18148": {
+    "focus_label": "生成式推荐",
+    "article_theme": "不推翻旧系统也能升级为生成式推荐",
+    "research_question": "成熟工业推荐系统如何吸收大模型的序列级生成与优化能力，同时避免整体重建带来的工程和组织风险？",
+    "main_contribution": "提出 LIGE-GR，将逐物品打分平滑升级为列表级生成与评估，并保持对现有模型、价值函数和服务基础设施的兼容。",
+    "reading_note": "• 核心价值是渐进式迁移而非推倒重来。\n• 从 pointwise 排序转向 listwise 生成。\n• 已在短视频推荐场景验证线上收益与资源开销。",
+    "primary_institution_zh": "Meta",
+    "note_model": "editorial-seed"
+  },
+  "2609.18695": {
+    "focus_label": "推荐遗忘",
+    "article_theme": "用减法更新低成本完成序列推荐遗忘",
+    "research_question": "面对删除请求，序列推荐系统如何在保留时序行为结构的同时，避免完整重训的巨大成本？",
+    "main_contribution": "提出 SURF：定位待遗忘物品的局部邻域、训练轻量辅助模型，并在推理阶段从原模型分数中减去其影响，实现近似机器遗忘。",
+    "reading_note": "• 将遗忘限制在嵌入空间的局部邻域。\n• 适合隐私合规与持续更新场景。\n• 需要重点检查遗忘充分性和长期稳定性。",
+    "primary_institution_zh": "罗马第一大学",
+    "note_model": "editorial-seed"
+  },
+  "2609.18341": {
+    "focus_label": "可信AI推荐",
+    "article_theme": "AI推荐医生和理财机构时究竟可信不可信",
+    "research_question": "AI 助手给出的本地服务机构推荐有多少是真实存在的，搜索能力又会如何改变推荐真实性、风险和地域公平性？",
+    "main_contribution": "基于美国官方注册数据审计多个服务领域，发现无搜索时模型大量虚构服务商；接入搜索后真实性明显提升，但推荐仍受到网络可见度影响。",
+    "reading_note": "• 检索配置对可信度的影响可能大于底层模型。\n• 推荐真实性应与官方名录进行外部校验。\n• 适合可信推荐与平台治理方向。",
+    "primary_institution_zh": "纽约大学阿布扎比分校",
+    "note_model": "editorial-seed"
+  },
+  "2609.17989": {
+    "focus_label": "推荐偏差",
+    "article_theme": "平台角色会让购物智能体偏向赞助商品吗",
+    "research_question": "当推荐智能体既服务消费者又由广告平台部署时，角色设定是否会改变其对赞助商品的判断？",
+    "main_contribution": "通过受控选择实验发现，平台委托角色会削弱智能体对赞助内容的惩罚和怀疑，单纯披露“赞助”并不足以消除代理冲突。",
+    "reading_note": "• 系统提示中的角色分配会产生可测量偏差。\n• 人类时代的广告披露规则未必适用于智能体。\n• 需要面向代理责任设计新的治理机制。",
+    "note_model": "editorial-seed"
+  },
+  "2609.16625": {
+    "focus_label": "Agent系统优化",
+    "article_theme": "让智能体诊断并改进生产推荐系统",
+    "research_question": "如何从海量线上行为中自动发现推荐失败模式，并把诊断结果转化为可落地的代码和训练流程改进？",
+    "main_contribution": "提出 AURA 多智能体系统，从生产日志中做规模化定性诊断，再结合代码、数据与训练上下文提出并实现改进方案。",
+    "reading_note": "• 补足聚合指标无法解释具体失败模式的缺口。\n• 连接日志分析、代码理解和自动修改。\n• 工业应用需重点关注安全护栏与回滚机制。",
+    "note_model": "editorial-seed"
+  },
+  "2609.17639": {
+    "focus_label": "推荐理由建模",
+    "article_theme": "把用户喜欢或讨厌的理由变成工业推荐信号",
+    "research_question": "稀疏且质量不稳定的自然语言偏好理由，如何扩展为覆盖大规模用户与内容的可用排序特征？",
+    "main_contribution": "提出 SARA 工业框架，构建理由数据引擎、训练专用多模态大模型扩展理由覆盖，并将正负理由接入生产排序。",
+    "reading_note": "• 从“用户做了什么”进一步建模“为什么”。\n• 同时处理理由稀疏、质量和规模化生成问题。\n• 适合关注大模型特征工程和工业排序。",
+    "note_model": "editorial-seed"
+  },
+  "2609.16560": {
+    "focus_label": "风险感知推荐",
+    "article_theme": "根据用户风险动态切换生成式推荐提示",
+    "research_question": "面对兴趣突变、重复行为或潜在操纵，生成式推荐如何根据用户级弱风险信号调整推理策略？",
+    "main_contribution": "提出 ReliGRec，以行为和图协同信息估计弱风险，并在推理阶段路由到普通或谨慎提示，使风险估计直接参与生成控制。",
+    "reading_note": "• 风险信号用于推理路由而不只是训练加权。\n• 谨慎提示强调稳定且有协同支持的证据。\n• 需要权衡推荐质量与额外推理成本。",
+    "note_model": "editorial-seed"
+  },
+  "2609.17855": {
+    "focus_label": "医疗概念推荐",
+    "article_theme": "从被遮蔽的临床上下文推荐医学术语",
+    "research_question": "在概念稀有甚至训练中未出现时，如何依据局部临床文本准确推荐 SNOMED CT 标准概念？",
+    "main_contribution": "构建掩码概念推荐基准并比较稀疏、稠密与检索增强方法，结果显示简单 TF-IDF 原型优于更复杂的检索增强组合。",
+    "reading_note": "• 低资源场景中词法上下文仍非常强。\n• 概念频率和术语覆盖决定性能上限。\n• 是评估复杂方法是否真正增益的好基线。",
+    "primary_institution_zh": "北卡罗来纳大学格林斯伯勒分校",
+    "note_model": "editorial-seed"
+  },
+  "2609.16850": {
+    "focus_label": "图召回优化",
+    "article_theme": "为十亿级推荐图加速Swing相似度检索",
+    "research_question": "如何在超大用户—物品图上高效计算 Swing 相似度，同时避免二次复杂度和截断启发式带来的质量损失？",
+    "main_contribution": "提出 ASC 与 K-ASC 随机化算法，为近似值和 Top-K 查询提供误差保证，并通过过滤—精排机制扩展到十亿边图。",
+    "reading_note": "• 面向工业 i2i 召回的核心计算瓶颈。\n• 同时提供概率误差保证和大规模效率。\n• 值得关注在真实线上增量图中的维护成本。",
+    "primary_institution_zh": "香港浸会大学",
+    "note_model": "editorial-seed"
+  },
+  "2609.17391": {
+    "focus_label": "Agent技能优化",
+    "article_theme": "用智能体跨层优化推荐模型服务栈",
+    "research_question": "如何让智能体跨越 GPU 内核、计算图、模型服务器和特征处理层，持续寻找生产推理系统的性能优化机会？",
+    "main_contribution": "提出 FlashVector，将单一内核优化智能体扩展为跨异构技术栈的优化框架，并在广告推荐平台验证吞吐和延迟改进。",
+    "reading_note": "• 优化对象从单个算子扩展到完整服务栈。\n• 框架强调对不同代码库和系统层的可扩展性。\n• 生产使用必须配套基准验证与安全回滚。",
+    "note_model": "editorial-seed"
+  }
+}

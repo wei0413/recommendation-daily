@@ -46,6 +46,7 @@ const state = {
   calendarYear: null,
   calendarMonth: null,
   selectionState: "ready",
+  pageSize: 30,
 };
 
 const $ = selector => document.querySelector(selector);
@@ -60,6 +61,16 @@ const parseDate = value => {
   const [year, month, day] = value.split("-").map(Number);
   return new Date(year, month - 1, day);
 };
+const readDateHash = () => {
+  const match = location.hash.match(/(?:^#|&)dates=(\d{4}-\d{2}-\d{2})(?:~(\d{4}-\d{2}-\d{2}))?/);
+  return match ? { start: match[1], end: match[2] || match[1] } : null;
+};
+const updateDateHash = () => {
+  if (!state.startDate) return;
+  const range = state.startDate === state.endDate ? state.startDate : `${state.startDate}~${state.endDate}`;
+  history.replaceState(null, "", `${location.pathname}${location.search}#dates=${range}`);
+};
+const resetPaging = () => { state.pageSize = 30; };
 
 async function init() {
   renderSkeletons();
@@ -76,18 +87,18 @@ async function init() {
     const dates = [...state.availableDates.keys()].sort();
     const latest = dates.at(-1) || "";
     if (latest) {
-      const cutoff = parseDate(latest);
-      cutoff.setDate(cutoff.getDate() - 30);
-      const cutoffString = formatDate(cutoff.getFullYear(), cutoff.getMonth(), cutoff.getDate());
-      state.startDate = dates.find(date => date >= cutoffString) || latest;
-      state.endDate = latest;
-      const latestDate = parseDate(latest);
-      state.calendarYear = latestDate.getFullYear();
-      state.calendarMonth = latestDate.getMonth();
+      const hashRange = readDateHash();
+      state.startDate = hashRange?.start || dates[Math.max(0, dates.length - 7)] || latest;
+      state.endDate = hashRange?.end || latest;
+      if (state.startDate > state.endDate) [state.startDate, state.endDate] = [state.endDate, state.startDate];
+      const calendarDate = parseDate(state.endDate);
+      state.calendarYear = calendarDate.getFullYear();
+      state.calendarMonth = calendarDate.getMonth();
     }
 
     renderCalendar();
     renderRangeDisplay();
+    updateDateHash();
     renderTopicFilters();
     renderFollowedTopics();
     bindEvents();
@@ -161,6 +172,8 @@ function handleDateClick(date) {
     }
     state.selectionState = "ready";
   }
+  if (state.selectionState === "ready") updateDateHash();
+  resetPaging();
   renderCalendar();
   renderRangeDisplay();
   render();
@@ -229,6 +242,8 @@ function bindEvents() {
       state.calendarYear = date.getFullYear();
       state.calendarMonth = date.getMonth();
     }
+    updateDateHash();
+    resetPaging();
     renderCalendar();
     renderRangeDisplay();
     render();
@@ -242,11 +257,13 @@ function bindEvents() {
     const button = event.target.closest("[data-topic]");
     if (!button) return;
     state.topic = button.dataset.topic;
+    resetPaging();
     renderTopicFilters();
     render();
   });
   $("#clearTopic").addEventListener("click", () => {
     state.topic = "全部";
+    resetPaging();
     renderTopicFilters();
     render();
   });
@@ -259,6 +276,7 @@ function bindEvents() {
     input.value = "";
     persistInterests();
     renderFollowedTopics();
+    resetPaging();
     render();
   });
   $("#followedTopics").addEventListener("click", event => {
@@ -278,22 +296,30 @@ function bindEvents() {
   $("#interestOnly").addEventListener("click", () => {
     state.interestOnly = !state.interestOnly;
     $("#interestOnly").setAttribute("aria-pressed", String(state.interestOnly));
+    resetPaging();
     render();
   });
   $("#searchInput").addEventListener("input", event => {
     state.search = event.target.value.trim().toLowerCase();
+    resetPaging();
     render();
   });
   $("#sortSelect").addEventListener("change", event => {
     state.sort = event.target.value;
+    resetPaging();
     render();
   });
   $("#savedToggle").addEventListener("click", () => {
     state.savedOnly = !state.savedOnly;
     $("#savedToggle").setAttribute("aria-pressed", String(state.savedOnly));
+    resetPaging();
     render();
   });
   $("#papers").addEventListener("click", handleCardClick);
+  $("#loadMore").addEventListener("click", () => {
+    state.pageSize += 30;
+    render();
+  });
   document.addEventListener("keydown", event => {
     if (event.key === "/" && !/input|textarea|select/i.test(document.activeElement.tagName)) {
       event.preventDefault();
@@ -305,7 +331,7 @@ function bindEvents() {
 function matchesInterest(paper) {
   if (!state.interestOnly) return true;
   if (state.followedTopics.has(paper.topic || "其他")) return true;
-  const haystack = [paper.title, paper.abstract, paper.reason, ...(paper.authors || []), ...(paper.institutions || [])].join(" ").toLowerCase();
+  const haystack = [paper.title, paper.abstract, paper.reason, paper.article_theme, paper.research_question, paper.main_contribution, ...(paper.authors || []), ...(paper.institutions || [])].join(" ").toLowerCase();
   return state.customInterests.some(interest => haystack.includes(interest.toLowerCase()));
 }
 
@@ -314,7 +340,7 @@ function visiblePapers() {
     const inTopic = state.topic === "全部" || (paper.topic || "其他") === state.topic;
     const inDate = (!state.startDate || paper.published >= state.startDate) && (!state.endDate || paper.published <= state.endDate);
     const inSaved = !state.savedOnly || state.saved.has(paper.id);
-    const haystack = [paper.title, ...(paper.authors || []), ...(paper.institutions || []), paper.abstract, paper.reason, paper.id].join(" ").toLowerCase();
+    const haystack = [paper.title, ...(paper.authors || []), ...(paper.institutions || []), paper.abstract, paper.reason, paper.article_theme, paper.research_question, paper.main_contribution, paper.reading_note, paper.id].join(" ").toLowerCase();
     return inTopic && inDate && inSaved && matchesInterest(paper) && (!state.search || haystack.includes(state.search));
   }).sort((a, b) => {
     if (state.sort === "newest") return b.published.localeCompare(a.published) || b.score - a.score;
@@ -324,10 +350,11 @@ function visiblePapers() {
 }
 
 function render() {
-  const papers = visiblePapers();
+  const allPapers = visiblePapers();
+  const papers = allPapers.slice(0, state.pageSize);
   const latest = state.papers.map(paper => paper.published).filter(Boolean).sort().at(-1);
-  $("#paperCount").textContent = papers.length;
-  $("#topicCount").textContent = new Set(papers.map(paper => paper.topic)).size;
+  $("#paperCount").textContent = allPapers.length;
+  $("#topicCount").textContent = new Set(allPapers.map(paper => paper.topic)).size;
   $("#latestDate").textContent = formatDisplayDate(latest);
   $("#savedCount").textContent = state.saved.size;
   $("#dateSummary").textContent = latest ? `${latest} · ARXIV SIGNAL` : "ARXIV SIGNAL";
@@ -342,6 +369,9 @@ function render() {
   $("#papers").innerHTML = papers.length
     ? papers.map(renderCard).join("")
     : '<div class="empty"><strong>没有找到匹配论文</strong><span>试试换一个日期、方向或清除“只看关注”。</span></div>';
+  const loadMore = $("#loadMore");
+  loadMore.hidden = papers.length >= allPapers.length;
+  loadMore.textContent = `再显示 ${Math.min(30, allPapers.length - papers.length)} 篇`;
 }
 
 function renderCard(paper) {
@@ -351,6 +381,13 @@ function renderCard(paper) {
   const followed = state.followedTopics.has(topic);
   const authors = (paper.authors || []).join(", ");
   const institutions = (paper.institutions || []).filter(Boolean);
+  const articleTheme = paper.article_theme || `${topic}：${paper.title}`;
+  const focusLabel = paper.focus_label || topic;
+  const researchQuestion = paper.research_question || `这项工作试图解决推荐系统中“${paper.title}”所对应的核心研究问题。`;
+  const mainContribution = paper.main_contribution || paper.reason || "提出与推荐系统直接相关的方法、分析或实证结果。";
+  const organizationSector = paper.organization_sector || paper.institution_type || "机构未公开";
+  const primaryInstitution = paper.primary_institution_zh || paper.primary_institution || institutions[0] || "机构未公开";
+  const readingNote = escapeHtml(paper.reading_note || paper.reason || "当前为基础元数据，等待自动生成中文阅读笔记。").replace(/\n/g, "<br>");
   const institutionHtml = institutions.length
     ? institutions.slice(0, 3).map(name => `<span class="institution-badge">${escapeHtml(name)}</span>`).join("") + (institutions.length > 3 ? `<span class="institution-empty">+${institutions.length - 3}</span>` : "")
     : '<span class="institution-empty">机构信息未公开</span>';
@@ -367,10 +404,18 @@ function renderCard(paper) {
       <a href="${escapeHtml(paper.url)}" target="_blank" rel="noopener">arXiv:${escapeHtml(paper.id)}</a>
       ${paper.categories?.length ? `<span class="meta-sep">·</span><span>${escapeHtml(paper.categories.join(" / "))}</span>` : ""}
     </div>
-    <div class="institution-row"><span class="institution-label">机构</span>${paper.institution_type ? `<span class="institution-type">${escapeHtml(paper.institution_type)}</span>` : ""}${institutionHtml}</div>
-    <p class="reason"><b>推荐理由：</b>${escapeHtml(paper.reason || "与推荐系统研究直接相关，值得快速浏览。")}</p>
-    <div class="card-actions"><button class="detail-button" type="button" data-action="abstract" aria-expanded="false">展开摘要</button><a class="link-button" href="${escapeHtml(paper.pdf_url || paper.url.replace("/abs/", "/pdf/"))}" target="_blank" rel="noopener">PDF ↗</a></div>
-    <div class="abstract-panel"><p>${escapeHtml(paper.abstract || "暂无摘要。")}</p></div>
+    <div class="paper-labels"><span>${escapeHtml(focusLabel)}</span><span>${escapeHtml(organizationSector)}</span><span>${escapeHtml(primaryInstitution)}</span></div>
+    <dl class="editorial-summary">
+      <div><dt>文章主题</dt><dd>${escapeHtml(articleTheme)}</dd></div>
+      <div><dt>研究问题</dt><dd>${escapeHtml(researchQuestion)}</dd></div>
+      <div><dt>主要贡献</dt><dd>${escapeHtml(mainContribution)}</dd></div>
+    </dl>
+    <div class="card-actions"><button class="detail-button" type="button" data-action="abstract" aria-expanded="false">展开笔记 ▼</button><a class="link-button" href="${escapeHtml(paper.pdf_url || paper.url.replace("/abs/", "/pdf/"))}" target="_blank" rel="noopener">PDF ↗</a></div>
+    <div class="abstract-panel">
+      <h4>摘要</h4><p>${escapeHtml(paper.abstract || "暂无摘要。")}</p>
+      <h4>阅读笔记</h4><p>${readingNote}</p>
+      <h4>作者机构</h4><div class="institution-row"><span class="institution-type">${escapeHtml(organizationSector)}</span>${institutionHtml}</div>
+    </div>
   </article>`;
 }
 
@@ -389,7 +434,7 @@ function handleCardClick(event) {
     const panel = card.querySelector(".abstract-panel");
     const open = panel.classList.toggle("open");
     event.target.setAttribute("aria-expanded", String(open));
-    event.target.textContent = open ? "收起摘要" : "展开摘要";
+    event.target.textContent = open ? "收起笔记 ▲" : "展开笔记 ▼";
   }
 }
 

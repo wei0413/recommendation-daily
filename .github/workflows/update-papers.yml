@@ -27,6 +27,17 @@ jobs:
           python-version: "3.12"
       - name: Fetch recent arXiv papers
         run: python scripts/update_papers.py
+      - name: Read public author affiliations
+        env:
+          AFFILIATION_LIMIT: "24"
+        run: python scripts/enrich_affiliations.py
+      - name: Generate Chinese reading notes
+        env:
+          ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
+          ANTHROPIC_BASE_URL: ${{ vars.ANTHROPIC_BASE_URL }}
+          ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL }}
+          ENRICH_LIMIT: "24"
+        run: python scripts/enrich_papers.py
       - name: Save refreshed data
         run: |
           git config user.name "github-actions[bot]"
@@ -35,10 +46,9 @@ jobs:
           git diff --cached --quiet || git commit -m "data: refresh daily papers"
           git push
       - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v4
         with:
           path: dist
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
