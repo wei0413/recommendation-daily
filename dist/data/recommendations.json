@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-19T09:21:24Z",
+  "generated_at": "2026-09-19T09:37:16Z",
   "source": "arXiv",
   "papers": [
     {
@@ -2443,15 +2443,19 @@
         "cs.AI"
       ],
       "topic": "LLM 与 Agent",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Infobip, Split, Croatia",
+        "Infobip, Zagreb, Croatia"
+      ],
+      "institution_type": "研究机构",
+      "organization_sector": "海外研究机构",
+      "primary_institution": "Infobip, Split, Croatia",
       "score": 71,
       "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
       "abstract": "Large language models (LLMs) are increasingly used as rerankers in conversational recommender systems, yet measured gains depend strongly on the retrieval and inference protocol. On the ReDial conversational movie recommendation benchmark, we compare proprietary, open-weight, and fine-tuned LLM rerankers with collaborative-filtering and sequential baselines in a shared retrieve-then-rerank pipeline. We vary candidate-pool size, first-stage retriever, and decoding temperature. With a shared semantic top-250 candidate pool and strict candidate-aware scoring, the best proprietary reranker reaches NDCG@10 of 0.1497, compared with 0.0939 for the strongest non-LLM baseline. The same reranker reaches 0.2925 in zero-shot generation, showing that unconstrained scoring can yield a much larger apparent advantage than matched-pool evaluation. No evaluated open-weight LLM outperforms the tuned shallow autoencoder baseline under this protocol. For the strongest proprietary and open-weight rerankers, switching from semantic to collaborative-filtering candidates raises NDCG@10 by more than 50%, showing that measured reranker performance is highly sensitive to candidate generation. For the best proprietary reranker, raising temperature from 0 to 1.0 increases top-10 Jaccard distance from 0.0900 to 0.1240 while mean NDCG@10 changes negligibly, whereas weaker LLMs show larger degradation. These ReDial results support treating candidate generation, candidate-pool size, scoring policy, and decoding configuration as required reporting fields rather than implementation details.",
       "url": "https://arxiv.org/abs/2609.00086",
-      "pdf_url": "https://arxiv.org/pdf/2609.00086v1"
+      "pdf_url": "https://arxiv.org/pdf/2609.00086v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.30333",
@@ -2480,7 +2484,8 @@
       "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
       "abstract": "Next-basket repurchase recommendation is commonly formulated as a ranking task: given a customer's purchase history, the system ranks previously purchased items that may be needed again. In production settings, however, ranking accuracy is only one component of recommendation quality. Customers may also benefit from concise evidence about why an item is recommended now. Large language models (LLMs) offer a potential way to surface such evidence through feature-based, human-readable rationales grounded in interpretable behavioral signals. We construct repurchase features spanning cadence, frequency, recency, user behavior, and item popularity, and evaluate LLMs on two public grocery datasets and one proprietary retail dataset. We investigate (1) whether off-the-shelf LLMs can use these features as next-basket scorers relative to heuristic and supervised rankers, and (2) whether LLM-cited features carry outcome-grounded ranking signal. For the latter, we compare LLM-cited features with model-specific attribution methods under a cross-model feature-masking protocol that measures ranking degradation after masking selected features. Our results show that LLM scores are not competitive with supervised rankers, suggesting that off-the-shelf LLMs should not be used as standalone repurchase recommenders. However, changes in prompt and evidence representation can improve outcome-grounded feature-masking results in some settings even when ranking performance does not improve; the effect is dataset-dependent and does not consistently match attribution baselines. These findings suggest a practical role for LLMs as validated explanation components rather than primary rankers, with rationale quality evaluated separately from ranking accuracy.",
       "url": "https://arxiv.org/abs/2608.30333",
-      "pdf_url": "https://arxiv.org/pdf/2608.30333v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.30333v1",
+      "affiliation_checked": true
     },
     {
       "id": "2609.01652",
@@ -2503,7 +2508,8 @@
       "reason": "与推荐系统研究直接相关，适合快速浏览其问题设定和实验结论。",
       "abstract": "Recommender systems in two-sided matching platforms are commonly optimized for immediate engagement signals such as click-through rate, reply rate, or the total number of successful matches. However, in real-world marketplaces, maximizing matches alone may be misaligned with business goals such as user churn rate and platform revenue, especially when users with fewer matches are at substantially higher risk of churn. In this paper, we study a real job matching platform and show that users with very few recent matches are indeed much more likely to leave the platform, while additional matches for already successful users provide limited marginal value for retention. Motivated by this empirical finding, we formulate a retention-aware recommendation problem and implement a simple post-processing method that adjusts the baseline match-focused ranking to prevent user churn. Specifically, the implemented method gives a score boost to churn-risk users with the goal of increasing their likelihood of obtaining matches and improving retention. We evaluate this practical approach in an online experiment on a real job-matching platform. The treatment group showed directionally lower user churn than the control group, although the estimated effect was not statistically significant at conventional levels, while company-side churn showed no evidence of deterioration. To our knowledge, this is among the first online experimental studies to investigate retention-focused recommendation in a real reciprocal job-matching platform.",
       "url": "https://arxiv.org/abs/2609.01652",
-      "pdf_url": "https://arxiv.org/pdf/2609.01652v1"
+      "pdf_url": "https://arxiv.org/pdf/2609.01652v1",
+      "affiliation_checked": true
     },
     {
       "id": "2609.00248",
@@ -2521,15 +2527,19 @@
         "cs.AI"
       ],
       "topic": "公平、可信与安全",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Georgia State University",
+        "University of Tennessee, Knoxville"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "海外学术界",
+      "primary_institution": "Georgia State University",
       "score": 68,
       "reason": "讨论偏差、鲁棒性或可信问题，适合补齐推荐系统治理视角。",
       "abstract": "Large Language Models (LLMs) are increasingly used as conversational search engines for academic literature, yet whether they judge papers on content or on authority signals has not been tested causally. We investigate authority bias: systematic preference for papers based on author prestige, venue, and citations rather than content. Holding title and abstract constant, we vary authority metadata across three counterfactual conditions (original, flipped, boosted) over eight LLMs (five open-weight and three frontier closed-weight) in an in-context, single-turn, top-1 recommendation setting. Our experiments show that authority bias is substantial and directional, varies markedly across models, and is only partially addressable through prompt-level debiasing. We further document a say-do gap: debiasing instructions suppress authority mentions far faster than authority-driven flips, so surface auditing systematically underestimates behavioral bias.",
       "url": "https://arxiv.org/abs/2609.00248",
-      "pdf_url": "https://arxiv.org/pdf/2609.00248v1"
+      "pdf_url": "https://arxiv.org/pdf/2609.00248v1",
+      "affiliation_checked": true
     },
     {
       "id": "2609.01655",
@@ -2546,15 +2556,18 @@
         "cs.AI"
       ],
       "topic": "序列与会话推荐",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Tianjin University, Jinnan Qu, Tianjin Shi, China"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "国内学术界",
+      "primary_institution": "Tianjin University, Jinnan Qu, Tianjin Shi, China",
       "score": 68,
       "reason": "聚焦用户行为序列与下一步偏好建模，和序列推荐主线直接相关。",
       "abstract": "Unified recommendation models aim to jointly model non-sequential multi-field features and sequential user behaviors, but existing interaction-centric designs mainly focus on mixing heterogeneous tokens within each layer. We argue that scalable unified recommendation also requires controlling how intent information is carried, filtered, and preserved across stacked blocks. Inspired by flow-based representation dynamics, we introduce feature transport, a view that treats deep unified recommendation as a discrete context-conditioned representation evolution process. We propose CRAFT, a Contextual Residual Adaptive Feature Transport block, which summarizes non-sequential features into a reliability-aware contextual field and uses it to generate residual displacement and memory-preserving signals for intent and sequence representations. In this way, non-sequential context acts as an active controller of representation evolution rather than a passive object of interaction. In the TAAC2026 advertising recommendation competition, CRAFT achieves a test AUC of 0.838090, surpassing the previous leaderboard-best score of 0.83798. Scaling experiments further show that CRAFT benefits from both depth and width expansion: stacking CRAFT to six blocks improves test AUC to 0.838148, while increasing the hidden dimension reaches 0.838106. These results demonstrate the effectiveness, scalability, and generalization potential of the feature transport paradigm. Source code: https://github.com/AshleyLuo001/CRAFT",
       "url": "https://arxiv.org/abs/2609.01655",
-      "pdf_url": "https://arxiv.org/pdf/2609.01655v1"
+      "pdf_url": "https://arxiv.org/pdf/2609.01655v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.30251",
@@ -2582,15 +2595,21 @@
         "cs.IR"
       ],
       "topic": "评测、数据与复现",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Snap Inc., Bellevue, WA, USA",
+        "Snap Inc., Seattle, WA, USA",
+        "Snap Inc., Palo Alto, CA, USA",
+        "Snap Inc., Santa Monica, CA, USA"
+      ],
+      "institution_type": "工业界",
+      "organization_sector": "海外工业界",
+      "primary_institution": "Snap Inc., Bellevue, WA, USA",
       "score": 63,
       "reason": "提供评测、数据或综述视角，便于校准实验设计并定位研究空白。",
       "abstract": "Embedding-based retrieval is at the core of industrial recommender systems, but a single user embedding is often too limited to capture a user's diverse interests. Multi-interest retrieval addresses this by using multiple user embeddings, yet existing methods still suffer from two issues: interest collapse, where different embeddings learn the same interest, and static dispatch, where serving uses a fixed retrieval budget even when some embeddings are unnecessary. We propose SetMIR, which treats multi-interest retrieval as a set prediction problem. SetMIR encodes a user's behavior history with a transformer and uses K learnable queries to decode a set of user interests, each producing a retrieval embedding and a presence score. During training, Hungarian matching assigns targets to queries one-to-one, so matched queries learn distinct interests and the presence head learns which queries are active. At serving time, SetMIR uses presence scores and query-level Non-Maximum Suppression (NMS) to issue only active, non-redundant ANN queries. On Snap's Dynamic Product Ads (DPA) data, SetMIR outperforms four learned multi-interest retrievers on every metric while issuing 33% fewer ANN queries per request. Deployed as a new retrieval source in the DPA production stack, SetMIR lifts overall CVR by 3.1%, while lifting CTR by 44% and CVR by 51% over the item-to-item retrieval source with the same item embeddings, ANN index, and retrieval quota.",
       "url": "https://arxiv.org/abs/2608.30251",
-      "pdf_url": "https://arxiv.org/pdf/2608.30251v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.30251v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.30052",
@@ -2605,15 +2624,20 @@
         "cs.CY"
       ],
       "topic": "其他",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Department of Information Technologies",
+        "Estonian Entrepreneurship University of Applied Sciences, Tallinn, Estonia",
+        "Rankfor.AI OÜ, Tallinn, Estonia"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "海外学术界",
+      "primary_institution": "Department of Information Technologies",
       "score": 68,
       "reason": "与推荐系统研究直接相关，适合快速浏览其问题设定和实验结论。",
       "abstract": "When a generative search interface answers a commercial question, which market's products it names is decided before the model reasons about the products. We report a controlled probe of 234 runs against the logged-out ChatGPT web interface and the OpenAI API, collected on 29 and 30 August 2026 across four exit countries and six query languages, with six identical runs per cell. Three results. First, the top recommendation is unstable: it changed across six identical runs on four of six prompts, and that rate was identical in the browser interface and in the API with web search both enabled and disabled, so instability is a property of the system and not of the surface. Second, query language, and not location, decides whether local suppliers appear at all. Where the query language matched the country, a global brand won 1 of 24 runs; asked in English on the same connections, local brands took 0 of 6 runs in Estonia and Turkiye. Third, language and location are separable and act on different things: holding the query language fixed and moving only the exit IP moves the market whose brands are named while the answer stays in the query language. We show this on two unrelated pairs, Turkish asked from Berlin and Russian asked from Tallinn, and in both the answer names the resident country's suppliers. A minority language occupies a middle tier: Russian asked from Estonia names an Estonian supplier in 4 of 6 runs and a global one in all six, where Estonian names a local supplier in every run and English names none. A negative control in a second category, coded with the same instrument, shows no language effect at all, and disconfirms our own expectation: that category does have domestic suppliers and none was named in any language, which points the explanation at whether a category is nationally regulated rather than at whether it is nationally supplied.",
       "url": "https://arxiv.org/abs/2608.30052",
-      "pdf_url": "https://arxiv.org/pdf/2608.30052v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.30052v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.29410",
@@ -2637,15 +2661,23 @@
         "cs.IR"
       ],
       "topic": "LLM 与 Agent",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "The University of Hong Kong, Hong Kong SAR, China",
+        "Beijing Institute of TechnologyBeijing, China",
+        "Peking University, Beijing, China",
+        "Universiti Malaya, Kuala Lumpur, Malaysia",
+        "Macao Polytechnic University, Macao SAR, China",
+        "Beijing Institute of Technology, Beijing, China"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "国内学术界",
+      "primary_institution": "The University of Hong Kong, Hong Kong SAR, China",
       "score": 73,
       "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
       "abstract": "Online platforms increasingly rely on multimodal recommender systems to rank products, media, and other Web content. Existing methods usually inject visual and textual features into item representations or build homogeneous graphs from modality-level similarity, but the resulting signals can remain misaligned with the recommendation objective. We study this semantic gap from a knowledge-integration perspective: multimodal content should be interpreted together with user behavior before it is used to construct recommendation graphs or adjust rankings. We propose AgentMMRec, an agent-based multimodal recommendation framework with two coordinated roles. The Integrator Agent infers behavior- and multimodal-aware user preferences and item properties from training interactions and item content, then stores them in a reusable knowledge memory. The Utilizer Agent consumes this memory to refine modality-specific item-item graphs, construct behavior-aware homogeneous graphs, and rerank candidate lists under a frozen evaluation-time memory. This design differs from direct LLM feature augmentation and pure LLM reranking because the generated knowledge is first converted into graph structure and model representations before recommendation. Experiments on three Amazon multimodal recommendation datasets show that AgentMMRec consistently improves Recall and NDCG over recent multimodal baselines, remains effective under sparsity and item cold-start settings, and can transfer its constructed knowledge to existing backbones.",
       "url": "https://arxiv.org/abs/2608.29410",
-      "pdf_url": "https://arxiv.org/pdf/2608.29410v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.29410v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.29409",
@@ -2660,15 +2692,18 @@
         "cs.IR"
       ],
       "topic": "强化学习与长期价值",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Delft University of Technology, Delft, The Netherlands"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "海外学术界",
+      "primary_institution": "Delft University of Technology, Delft, The Netherlands",
       "score": 70,
       "reason": "面向长期收益或交互式推荐，关注策略学习与离线评估的结合。",
       "abstract": "Workout recommender systems aim to help gym users complete effective and engaging training sessions. However, recommending exercises alone is insufficient, as a practical system must also determine appropriate sets, repetitions, and training loads, while adapting to user behavior such as skipping exercises. Existing approaches typically consider only a subset of these factors, limiting their applicability in real-world settings. In this paper, we extend workout recommendation from exercise selection to full workout prescription. We propose a reinforcement learning (RL)-based framework with four environments: exercise-only and full-prescription settings, each with and without skip-based interaction. The full-prescription environments recommend exercises, sets, repetitions, and load, while the skip-enabled environments use user skipping behavior for online personalization. Experiments with synthetic users show that modeling the full prescription task leads to higher rewards and greater user engagement than exercise-only recommendation, highlighting the importance of realistic workout planning in personalized gym recommender systems.",
       "url": "https://arxiv.org/abs/2608.29409",
-      "pdf_url": "https://arxiv.org/pdf/2608.29409v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.29409v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.29336",
@@ -2690,15 +2725,19 @@
         "cs.IR"
       ],
       "topic": "评测、数据与复现",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Department of Computer Science, University of Illinois Urbana-Champaign",
+        "Care&Co., Busan, South Korea"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "海外学术界",
+      "primary_institution": "Department of Computer Science, University of Illinois Urbana-Champaign",
       "score": 67,
       "reason": "提供评测、数据或综述视角，便于校准实验设计并定位研究空白。",
       "abstract": "FISICA is a body-assessment and recommendation service running in production. One standing session with two photographs returns foot-loading measures, posture coordinates, a driven 3D avatar, a visual report, and ranked shoe and exercise candidates. Measurement comes from a purpose-built scale carrying 634 force-sensitive elements on a 1 cm grid and four load cells, and a rule-based evaluator controls every recommendation while a language model only explains the stored result. The method contribution is the avatar. Instead of mapping a measured angle onto a rig through a tuned gain, we measure the avatar with the same function used on the subject and solve until the two agree, on a sampling-invariant spinal metric that separated a normal from a kyphotic record by 7.2 degrees against 0.9 degrees for a single-joint formulation. In production, general APIs respond at a 0.023 s median, plantar-pressure analysis at 0.45 s, and recommendation at 2.16 s to 2.26 s with the rule-based portion under one second in every trial. The served keypoint graph reaches 0.960 PCK@0.2 on public data, and the catalog holds 699 shoes with 10,500 typed facts. An approved study supplies the radiographic reference for the validation still ahead.",
       "url": "https://arxiv.org/abs/2608.29336",
-      "pdf_url": "https://arxiv.org/pdf/2608.29336v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.29336v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.29179",
@@ -2715,15 +2754,21 @@
         "cs.AI"
       ],
       "topic": "生成式推荐",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Department of Computer Science, Weihai & Qingdao Research Institute",
+        "Harbin Institute of Technology",
+        "Weihai, China",
+        "24s030110@stu.hit.edu.cn, {tzy_hit, chudh, sunhl}@hit.edu.cn"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "国内学术界",
+      "primary_institution": "Department of Computer Science, Weihai & Qingdao Research Institute",
       "score": 67,
       "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
       "abstract": "Generative recommendation encodes items as hierarchical semantic identifiers (SIDs) and retrieves the next item through autoregressive decoding. Standard next-token prediction, however, does not explicitly cover the multimodal transitions present in interaction sequences, leaving the ground-truth SID vulnerable to irreversible pruning at early beam-search branches. Across three public benchmarks, we find that 91.9\\%--96.6\\% of retrieval failures occur within the first two decoding steps. We therefore propose Temporal Autoregressive Alignment (TAAL). During training, TAAL constructs a joint $(c_1,c_2)$ soft target from historical transitions and aligns the early-prefix distribution with a forward KL objective. During inference, it calibrates candidate scores with pointwise mutual information (PMI) to reduce the influence of globally frequent prefixes. On Amazon Beauty, Instruments, and Yelp, TAAL improves NDCG@10 over the standard baseline by 39.5\\%, 6.7\\%, and 28.6\\%, respectively, while increasing full-SID survival by 3.9\\%--16.6\\%. Beam-width analysis further shows that the relative survival gain grows as the beam narrows, reaching 39.4\\% at $B=5$.",
       "url": "https://arxiv.org/abs/2608.29179",
-      "pdf_url": "https://arxiv.org/pdf/2608.29179v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.29179v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.29019",
@@ -2739,15 +2784,19 @@
         "cs.IR"
       ],
       "topic": "评测、数据与复现",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Dept. of Information Science Drexel University, Philadelphia, PA, USA",
+        "Sapienza University of Rome, Rome, Italy"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "海外学术界",
+      "primary_institution": "Dept. of Information Science Drexel University, Philadelphia, PA, USA",
       "score": 65,
       "reason": "提供评测、数据或综述视角，便于校准实验设计并定位研究空白。",
       "abstract": "Exogenous events can temporarily change the relevance of items in recommender systems, but these shifts are often not visible in historical interaction data until after users have already responded. In book recommendation, movie adaptations provide a clear example of such events: the release of a movie based on a book can temporarily increase attention to the source text and change its relevance for some readers. We examine this phenomenon using a large Goodreads dataset matched to movie release dates. We find a clear spike in readership around the release month, and then we evaluate existing recommendation models to understand how they rank movie-adapted books around the movie release date.",
       "url": "https://arxiv.org/abs/2608.29019",
-      "pdf_url": "https://arxiv.org/pdf/2608.29019v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.29019v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.28393",
@@ -2768,15 +2817,19 @@
         "cs.LG"
       ],
       "topic": "评测、数据与复现",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Walmart Global Tech, Bellevue, WA, USA",
+        "Walmart Global Tech, Sunnyvale, CA, USA"
+      ],
+      "institution_type": "研究机构",
+      "organization_sector": "海外研究机构",
+      "primary_institution": "Walmart Global Tech, Bellevue, WA, USA",
       "score": 70,
       "reason": "提供评测、数据或综述视角，便于校准实验设计并定位研究空白。",
       "abstract": "Repurchase recommenders in e-commerce are commonly framed as a binary question asking \"will this customer buy this item within W days\", a formulation that requires a separately trained model for every horizon of interest. We replace this stack with survival models that predict time-to-repurchase directly, and evaluate them on millions of customers from a major grocery e-commerce platform across more than thirty ablation configurations. Our study makes three contributions. First, an empirical hazard analysis reveals a slightly decreasing marginal hazard (k ~ 0.9), differing from the common intuition that grocery items become more likely to be repurchased the longer since the last purchase (increasing hazard, k > 1). Log-Normal achieves the best marginal fit (R^2 = 0.998) and the best ranking, despite Weibull providing the best conditional residual fit, revealing an apparent discrepancy we analyze in detail. Second, a single Accelerated Failure Time (AFT) model replaces three per-horizon binary classifiers, matching or exceeding each at its own horizon while using roughly 3x fewer total trees. Feature importance reshuffles under the survival objective: channel-cadence and recency signals rise while aggregate frequency counts fall. Third, a 4-parameter parametric calibration maps raw survival CDFs to per-horizon probabilities with zero cross-horizon monotonicity violations. Calibration quality varies by an order of magnitude across the AFT family: Exponential AFT (Weibull k=1) achieves expected calibration error (ECE) ~1e-4, roughly 10x lower than Log-Normal, while ranking metrics agree within 0.3% relative. We adopt Exponential AFT for probability-consuming surfaces and Log-Normal for pure ranking, exposing a principled calibration-ranking trade-off within a single AFT family.",
       "url": "https://arxiv.org/abs/2608.28393",
-      "pdf_url": "https://arxiv.org/pdf/2608.28393v2"
+      "pdf_url": "https://arxiv.org/pdf/2608.28393v2",
+      "affiliation_checked": true
     },
     {
       "id": "2608.27950",
@@ -2793,15 +2846,18 @@
         "cs.IR"
       ],
       "topic": "多模态推荐",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Shanghai Jiao Tong University, Shanghai, China"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "国内学术界",
+      "primary_institution": "Shanghai Jiao Tong University, Shanghai, China",
       "score": 70,
       "reason": "融合文本、图像或其他模态信息，有助于理解内容语义与用户兴趣。",
       "abstract": "Multimodal recommendation (MMRec) aims to enhance recommendation performance by leveraging rich item content from multiple modalities. However, directly incorporating all modality information does not necessarily lead to better preference modeling, since user interests are often more related to a subset of modality signals, while other signals may be weakly aligned with user preferences or even introduce noise. Although recent MMRec methods improve modality utilization through invariant learning, attention mechanisms, graph refinement, or contrastive learning, their alignment processes are often implicit or heuristic and lack a clear objective for selecting modality signals that better match user interests. In this paper, we propose AMUR, an information-guided selective modality-interest alignment framework for multimodal recommendation. Inspired by an information-theoretic view, AMUR aims to enhance modality information that is more related to user interests while reducing the influence of less aligned signals. Specifically, AMUR first refines modality graph structures towards user behavior, and then selectively aligns shared interest-related semantics across modalities. This enables AMUR to improve modality-interest alignment while preserving useful modality-specific complementary information. Extensive experiments on three real-world datasets demonstrate the effectiveness of AMUR over competitive baselines. The code is available at https://github.com/Wenze1/AMUR.",
       "url": "https://arxiv.org/abs/2608.27950",
-      "pdf_url": "https://arxiv.org/pdf/2608.27950v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.27950v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.27840",
@@ -2819,15 +2875,20 @@
         "cs.IR"
       ],
       "topic": "LLM 与 Agent",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "University of New South Wales, Sydney, Australia",
+        "The Hong Kong University of Science and Technology (Guangzhou), Guangzhou, China",
+        "University of Amsterdam, The Netherlands"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "国内学术界",
+      "primary_institution": "University of New South Wales, Sydney, Australia",
       "score": 70,
       "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
       "abstract": "Cross-city point-of-interest (POI) recommendation is crucial for navigating unfamiliar urban environments, yet its progress has historically been constrained by data limitations. Using the recently proposed large-scale benchmark Trip World, we empirically re-examine whether conclusions drawn on small prior benchmarks still hold under worldwide coverage, low home-destination region overlap, and large, semantically rich POI inventories. Our evaluation surfaces three bottlenecks of representative state-of-the-art methods: (1) hometown-aware models appear to rely more on destination-region priors than on user-specific preference transfer; (2) their accuracy-efficiency trade-off degrades at this scale, where the simplest model is among the strongest; and (3) existing mechanisms for integrating semantic metadata yield little benefit. We further include a diagnostic pilot on agentic methods adapted from next-POI recommendation, finding that naive adaptation trails a simple popularity prior even though the relevant semantic signal is present in the data. These results highlight the need for task-specific designs that support cross-city preference transfer, semantic grounding, and scalable reasoning over unseen destination inventories.",
       "url": "https://arxiv.org/abs/2608.27840",
-      "pdf_url": "https://arxiv.org/pdf/2608.27840v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.27840v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.28905",
@@ -2840,15 +2901,18 @@
         "cs.LG"
       ],
       "topic": "公平、可信与安全",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Criteo AI Lab, Grenoble, France"
+      ],
+      "institution_type": "研究机构",
+      "organization_sector": "海外研究机构",
+      "primary_institution": "Criteo AI Lab, Grenoble, France",
       "score": 67,
       "reason": "讨论偏差、鲁棒性或可信问题，适合补齐推荐系统治理视角。",
       "abstract": "Generative recommenders increasingly emit semantic IDs (SIDs): each item is a short sequence of hierarchical discrete codes from a residual quantizer, decoded autoregressively. Before spending scarce A/B-test, a team may decide offline which decoder or reranking variants are worth testing - a job for off-policy evaluation (OPE). We ask a simple question: can the model's own SID tree serve as the action abstraction for that OPE? Our answer has three parts. (i) Under the near-argmax logging real recommenders use, per-item OPE is hopeless - as item-level effective sample size is usually small on production logs - but marginalizing items to code-prefix clusters restores estimable support and cuts error. (ii) This gain is thanks to coarsening, not to the hierarchy specifically; but the SID tree is what makes coarsening feasible in a generative system - each cluster's mass is exactly and cheaply returned by the decoder, whereas flat clustering requires enumerating item/leaf masses that a code-only decoder does not directly expose. (iii) Resolution depth is the operative knob - coarser under scarce support - and a conditional bias bound links the coarsening bias to the quantizer's worst-case reconstruction residual and the target-logging divergence.",
       "url": "https://arxiv.org/abs/2608.28905",
-      "pdf_url": "https://arxiv.org/pdf/2608.28905v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.28905v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.28820",
@@ -2885,7 +2949,8 @@
       "reason": "讨论偏差、鲁棒性或可信问题，适合补齐推荐系统治理视角。",
       "abstract": "Computational pathology (CompPath) is transforming medicine by leveraging artificial intelligence (AI) algorithms to support diagnosis, prognosis, and treatment prediction from gigapixel whole-slide images. Clinical adoption is progressing, but is constrained by concerns about safety, accountability, and regulatory oversight in high-stakes clinical environments. Explainable AI (XAI) systems hold promise for building trust and enabling verification, yet the literature remains fragmented due to inconsistent terminology, overlapping methodological families, ad hoc validation, and current reviews. This review aims to formalize XAI methods in CompPath through the: i) introduction of a pathology-centric vocabulary comprising seven core terms; ii) development of a taxonomy across methodological families and three orthogonal axes (stage, type, scope); and iii) establishment of a task-driven framework that maps five clinical questions to recommended methods, method evaluation, and deployment context. Five key gaps between current XAI capabilities and clinical deployment are identified, and actionable steps are proposed to advance XAI for CompPath.",
       "url": "https://arxiv.org/abs/2608.28820",
-      "pdf_url": "https://arxiv.org/pdf/2608.28820v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.28820v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.28552",
@@ -2901,15 +2966,18 @@
         "cs.LG"
       ],
       "topic": "公平、可信与安全",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Cedars-Sinai Health Sciences University, Los Angeles, 90048, CA, USA"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "海外学术界",
+      "primary_institution": "Cedars-Sinai Health Sciences University, Los Angeles, 90048, CA, USA",
       "score": 67,
       "reason": "讨论偏差、鲁棒性或可信问题，适合补齐推荐系统治理视角。",
       "abstract": "As a precursor to high-dimensional biomedical data modeling, reliable feature selection can reduce computational expense, improve modeling performance, and yield simpler, more interpretable models. However, most filter-based feature selection methods struggle to detect feature interactions, while wrapper or embedded feature selection methods are computationally expensive. Relief-based algorithms (RBAs) are filter methods that are sensitive to feature interactions while mitigating these other limitations. This study (1) refactors, optimizes, and expands the scikit-rebate Python package with existing and newly proposed RBA variants and (2) conducts rigorous RBA benchmark comparisons across diverse genomic simulations. We expand scikit-rebate to include SWRF*, mu-Relief, and 5 novel RBA variants implementing alternative strategies for neighbor selection and feature scoring. All RBAs were evaluated to compare predictive feature ranking and runtime across simulated genomic datasets varying in sample size, number of features, heritability, and underlying association type (e.g. main effects and interactions). All RBAs, except mu-Relief, were proficient in detecting 2-way interactions in noisy data. RBAs utilizing 'far' scoring were best at detecting 2-way interactions - with MultiSWRFDB* top-performing - but were far less sensitive to main effects. SWRF, MultiSWRF, MultiSURF, and MultiSWRFDB yielded top performance across main effect and 2-way interaction datasets with MultiSWRFDB performing best when also considering 3-way interactions. Refactoring of scikit-rebate resulted in 10 to 35-fold reductions in RBA runtimes. The newly introduced RBAs were among the strongest performing, and by robustly retaining both main effects and 2-way epistatic interactions, these algorithms preserve predictive signals for downstream modeling.",
       "url": "https://arxiv.org/abs/2608.28552",
-      "pdf_url": "https://arxiv.org/pdf/2608.28552v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.28552v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.27991",
@@ -2930,15 +2998,19 @@
         "cs.IR"
       ],
       "topic": "工业系统与效率",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Kuaishou Technology, Beijing, China",
+        "Tsinghua University, Beijing, China"
+      ],
+      "institution_type": "产学合作",
+      "organization_sector": "产学合作",
+      "primary_institution": "Kuaishou Technology, Beijing, China",
       "score": 67,
       "reason": "强调规模、效率或线上部署，对工程落地和系统设计更有参考价值。",
       "abstract": "Learning effective feature interactions is central to industrial recommendation and advertising ranking systems. Recent token-mixing architectures simplify self-attention with lightweight mixing operators, improving hardware efficiency and enabling large-scale deployment. However, recommendation tokens are fundamentally heterogeneous: user profiles, item attributes, behavioral sequences, context features, statistical signals, and business-side features live in different semantic spaces and interact in sparse, sample-specific patterns. Directly mixing all tokens in the raw heterogeneous token space may therefore be parameter-inefficient, as the model must implicitly discover which feature groups should interact and how such interactions should be routed. In the paper, we propose HubMixer, a parameter-efficient latent hub mixing architecture for feature interaction in recommendation. Instead of directly mixing raw feature tokens, HubMixer introduces a small set of learnable latent hubs to organize feature interactions through an `induction--interaction--readout` paradigm. First, hub induction summarizes heterogeneous tokens into compact latent hubs, where latent hubs query input tokens through cross-attention. Second, hub interaction performs high-order interaction in the cleaner latent hub space. Third, token-conditioned readout lets each original token selectively read from the interacted hubs, injecting global interaction semantics while preserving token-level field identity. Extensive offline experiments on industrial recommendation tasks show that HubMixer outperforms the SOTA models. Online A/B testing in the Kuaishou short-video recruitment business further shows a statistically significant 5.48% improvement in resume submission conversion rate, and HubMixer has been fully deployed in production.",
       "url": "https://arxiv.org/abs/2608.27991",
-      "pdf_url": "https://arxiv.org/pdf/2608.27991v2"
+      "pdf_url": "https://arxiv.org/pdf/2608.27991v2",
+      "affiliation_checked": true
     },
     {
       "id": "2608.27826",
@@ -2957,15 +3029,23 @@
         "cs.LG"
       ],
       "topic": "联邦与隐私推荐",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Pohang University of Science and Technology, Pohang, Republic of Korea email: jaehyunglim@postech.ac.kr",
+        "University of Illinois Urbana-Champaign, Champaign, IL, USA",
+        "Pohang University of Science and Technology, Pohang, Republic of Korea email: kimuj0103@postech.ac.kr",
+        "Pohang University of Science and Technology, Pohang, Republic of Korea email: junyoungkim@postech.ac.kr",
+        "Pohang University of Science and Technology, Pohang, Republic of Korea email: dhkim0317@postech.ac.kr",
+        "Pohang University of Science and Technology, Pohang, Republic of Korea email: hwanjoyu@postech.ac.kr"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "海外学术界",
+      "primary_institution": "Pohang University of Science and Technology, Pohang, Republic of Korea email: jaehyunglim@postech.ac.kr",
       "score": 67,
       "reason": "聚焦分布式协同、隐私保护与安全聚合，适合跟踪合规场景下的推荐方法。",
       "abstract": "Federated recommendation (FedRec) enables personalized modeling without centralizing users' interaction histories, but most existing methods assume a fixed item pool and thus overlook the practical cold-item setting where new items continuously arrive. Under the dual-sided constraint, where the server cannot access clients' interactions while clients cannot access the server's proprietary item attribute features, prior federated cold-start recommendation approaches suffer from three structural limitations: a lack of personalization, compositionality failure caused by forcing heterogeneous semantics into a single embedding space, and training- and communication-inefficiency arising from explicit alignment between separate collaborative and attribute representations. To address these challenges, we propose Personalized and Multi-view Representation for Federated Cold-Start Recommendation (PMFRec). PMFRec learns a personalized representation generator to produce user-specific item representations from attribute features, and introduces a global multi-view encoder with item-adaptive gating and an orthogonality objective to capture complementary semantic views while reducing cross-view redundancy. In addition, PMFRec fuses collaborative and attribute knowledge into a single exchanged item representation, eliminating the need for an explicit client-side regularizer and reducing communication overhead. Extensive experiments on real-world datasets show that PMFRec consistently outperforms strong baselines in cold-item recommendation and further improves user-level fairness, warm-scenario adaptability, and robustness under Local Differential Privacy (LDP).",
       "url": "https://arxiv.org/abs/2608.27826",
-      "pdf_url": "https://arxiv.org/pdf/2608.27826v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.27826v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.26895",
@@ -2991,7 +3071,8 @@
       "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
       "abstract": "Agentic recommender systems ground each decision of a large language model (LLM) in a persistent memory of the user, and in existing agents that memory is text: a narrative written and maintained by further LLM calls. Text limits this memory in two ways. It is updated one rewrite at a time, so exploiting the full interaction history is prohibitively expensive; and collaborative evidence, graded similarity over an entire catalog, does not survive translation into sentences. We propose CoVeMem (Collaborative Vector Memory), which vectorizes the collaborative core of the agent's memory. Frozen LightGCN user and item states form the memory bank; at each decision, the candidate set itself retrieves the most relevant historical states, which enter the LLM's context as soft tokens alongside a light textual profile. Contrastive alignment to item-semantic anchors, followed by listwise co-training with masked candidates, teaches the model to read these states and to rank through them; a pointwise yes/no readout scores each candidate. Across four instruction-grounded recommendation benchmarks, CoVeMem matches or exceeds the strongest collaborative text-memory agent on 19 of 20 metric cells while requiring zero additional LLM calls for memory maintenance beyond the shared static profile, against per-interaction calls for text memory. The memory now takes gradients: the full interaction history, out of reach for text, becomes available as training data for what the agent remembers and for how it reads what it remembers.",
       "url": "https://arxiv.org/abs/2608.26895",
-      "pdf_url": "https://arxiv.org/pdf/2608.26895v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.26895v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.26579",
@@ -3018,7 +3099,8 @@
       "reason": "融合文本、图像或其他模态信息，有助于理解内容语义与用户兴趣。",
       "abstract": "Micro-video recommendation aims to infer user preferences from historical interactions and multimodal video content, thereby identifying the next video of interest. However, prevailing methods compress frame sequences into a single holistic representation, entangling the stable visual semantics and the evolving dynamics that jointly shape user preferences. Meanwhile, diffusion- and flow matching-based recommenders condition their generation process solely on coarse behavioral context, leaving its internal temporal structure outside preference formation. We therefore propose PrismRec, a Preference Flow Matching framework with Spectral Factorization for Micro-video Recommendation. Analogous to a prism that disperses white light into its constituent spectrum, PrismRec devises Spectral Semantic Factorization (SSF) to derive complementary static semantic and dynamic factors from frame-level representations via a prior-guided learnable frequency mask in the temporal frequency domain. Then, it proposes Context-Calibrated Preference Matching (CPM) to weigh them with each user's specific sensitivity and inject the calibrated context as a structured condition to steer the matching trajectory toward the target representation, making video content as an intrinsic driver of preference formation rather than auxiliary side information. Experiments on four datasets from two platforms show that PrismRec surpasses the SOTA baseline by up to 22.65%, with the lowest inference cost and peak memory among the compared methods.",
       "url": "https://arxiv.org/abs/2608.26579",
-      "pdf_url": "https://arxiv.org/pdf/2608.26579v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.26579v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.27006",
@@ -3035,15 +3117,20 @@
         "cs.IR"
       ],
       "topic": "LLM 与 Agent",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Infobip, Split, Croatia",
+        "Infobip, Zagreb, Croatia",
+        "Infobip, Osijek, Croatia"
+      ],
+      "institution_type": "研究机构",
+      "organization_sector": "海外研究机构",
+      "primary_institution": "Infobip, Split, Croatia",
       "score": 70,
       "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
       "abstract": "Conversational recommender systems based on large language models (LLMs) are usually evaluated on static, pre-indexed item collections, yet e-commerce catalogues change continuously as products are added or removed, repriced, and restocked. We present a merchant-agnostic, multi-turn conversational shopping assistant that operates over such live catalogues. Its central component is a self-refreshing retriever that ingests a merchant product feed, enriches the records, and synchronizes them into a vector index. On each run, per-item hashes identify which products are new, changed, deleted, or unchanged, so only the delta is processed rather than rebuilding the whole catalogue. A controller-based dialogue layer consumes this index, using an LLM only for intent classification and preference elicitation while retrieval, reranking, and diversity selection run as dedicated functions. Our demonstration is a WhatsApp shopping assistant in which catalogue changes reach the recommendations after the next successful sync. A live chatbot, documentation, and a recorded walkthrough are available at https://github.com/infobip/infobip-agentic-crs.",
       "url": "https://arxiv.org/abs/2608.27006",
-      "pdf_url": "https://arxiv.org/pdf/2608.27006v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.27006v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.26728",
@@ -3060,15 +3147,19 @@
         "cs.IR"
       ],
       "topic": "评测、数据与复现",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "hongren001@e.ntu.edu.sg",
+        "tjwei2-c@my.cityu.edu.hk"
+      ],
+      "institution_type": "研究机构",
+      "organization_sector": "海外研究机构",
+      "primary_institution": "hongren001@e.ntu.edu.sg",
       "score": 70,
       "reason": "提供评测、数据或综述视角，便于校准实验设计并定位研究空白。",
       "abstract": "Data sparsity remains a long-standing challenge in recommender systems, and it becomes more severe for methods relying on user-generated content (UGC) such as textual reviews, which capture fine-grained preferences but require more user efforts to produce. As a result, UGC exhibits (1) missing reviews, where interactions lack any review, and (2) incomplete reviews, where available reviews cover only a subset of relevant attributes. Existing approaches often overlook these UGC-specific issues, leading to degraded accuracy. Motivated by meta-review in academic peer review, we propose MOSAIC (Meta-review On Sparse And Incomplete user-generated Content), which constructs a meta-review for each target user by aggregating attribute-sentiment evidence from neighbor users' reviews. A multi-gate mixture-of-experts (MMoE) architecture jointly optimizes rating prediction and meta-review attribute-sentiment prediction, while an attention module personalizes the aggregated meta-review signals to each target user, yielding both refined rating predictions and attribute-level explanations. Experiments on four real-world datasets demonstrate that MOSAIC consistently outperforms state-of-the-art baselines in both recommendation accuracy and explanation quality, mitigating UGC sparsity and incompleteness while delivering consistent gains for users with limited interaction history.",
       "url": "https://arxiv.org/abs/2608.26728",
-      "pdf_url": "https://arxiv.org/pdf/2608.26728v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.26728v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.27413",
