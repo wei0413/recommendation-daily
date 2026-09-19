@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="每日自动发现、筛选并整理 arXiv 推荐系统论文。">
+  <meta name="theme-color" content="#0f172a">
+  <title>推荐论文雷达 · RecSys Daily</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f172a'/%3E%3Ccircle cx='32' cy='32' r='19' fill='none' stroke='%23fb7185' stroke-width='5'/%3E%3Cpath d='M32 13v19l14 9' fill='none' stroke='%23f8fafc' stroke-width='5' stroke-linecap='round'/%3E%3Ccircle cx='32' cy='32' r='4' fill='%23a3e635'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./assets/style.css">
+  <script src="./assets/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#papers">跳到论文列表</a>
+
+  <aside class="sidebar" aria-label="论文筛选">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true"><span></span></div>
+      <div>
+        <p class="eyebrow">RECSYS / DAILY</p>
+        <h1>推荐论文雷达</h1>
+      </div>
+    </div>
+
+    <p class="intro">从 arXiv 的噪声里，找到值得今天读的推荐系统论文。</p>
+
+    <section class="control-section" aria-labelledby="date-label">
+      <div class="control-heading">
+        <h2 id="date-label">日期窗口</h2>
+        <button class="text-button" id="resetDates" type="button">最新</button>
+      </div>
+      <div class="date-fields">
+        <label>从<input id="startDate" type="date"></label>
+        <span aria-hidden="true">→</span>
+        <label>至<input id="endDate" type="date"></label>
+      </div>
+    </section>
+
+    <section class="control-section" aria-labelledby="topic-label">
+      <h2 id="topic-label">研究方向</h2>
+      <div id="topicFilters" class="topic-filters"></div>
+    </section>
+
+    <section class="control-section" aria-labelledby="sort-label">
+      <h2 id="sort-label">排序</h2>
+      <label class="select-wrap">
+        <span class="sr-only">论文排序方式</span>
+        <select id="sortSelect">
+          <option value="score">推荐度优先</option>
+          <option value="newest">最新发表</option>
+          <option value="saved">已收藏优先</option>
+        </select>
+      </label>
+    </section>
+
+    <div class="sidebar-foot">
+      <span class="live-dot" aria-hidden="true"></span>
+      <span>数据每日自动更新</span>
+      <a href="https://arxiv.org/" target="_blank" rel="noopener">arXiv</a>
+    </div>
+  </aside>
+
+  <main>
+    <header class="topbar">
+      <div>
+        <p class="today-kicker" id="dateSummary">正在读取论文…</p>
+        <h2>今天，读什么？</h2>
+      </div>
+      <div class="topbar-actions">
+        <label class="search-box">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.4-4.4m2.4-5.1a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z"/></svg>
+          <span class="sr-only">搜索论文</span>
+          <input id="searchInput" type="search" placeholder="搜索标题、作者、摘要或 arXiv ID" autocomplete="off">
+          <kbd>/</kbd>
+        </label>
+        <button class="saved-toggle" id="savedToggle" type="button" aria-pressed="false">
+          <span aria-hidden="true">☆</span> 收藏 <b id="savedCount">0</b>
+        </button>
+      </div>
+    </header>
+
+    <section class="signal-strip" aria-label="当前论文概况">
+      <div><span id="paperCount">—</span><small>篇论文</small></div>
+      <div><span id="topicCount">—</span><small>个方向</small></div>
+      <div><span id="latestDate">—</span><small>最近更新</small></div>
+      <p id="resultCopy">按推荐度排列</p>
+    </section>
+
+    <section id="papers" class="papers" aria-live="polite" aria-busy="true"></section>
+
+    <footer>
+      <p>元数据来自 arXiv。推荐分用于阅读排序，不代表学术质量的最终判断。</p>
+      <a href="https://github.com/wei0413/recommendation-daily" target="_blank" rel="noopener">查看项目源码 ↗</a>
+    </footer>
+  </main>
+
+  <template id="skeletonTemplate">
+    <article class="paper-card skeleton" aria-hidden="true">
+      <div class="skeleton-line wide"></div><div class="skeleton-line mid"></div>
+      <div class="skeleton-line"></div><div class="skeleton-line"></div>
+    </article>
+  </template>
+</body>
+</html>
+

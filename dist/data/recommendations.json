@@ -1,0 +1,58 @@
+{
+  "generated_at": "2026-09-19T00:00:00Z",
+  "source": "arXiv",
+  "papers": [
+    {
+      "id": "2607.04433",
+      "title": "Autonomous Information Seeking: A Roadmap for Agentic Recommender Systems",
+      "authors": ["Xinyu Lin", "Yashar Deldjoo", "Sunhao Dai", "Honghui Bao", "Xiaopeng Ye", "Fatemeh Nazary", "Wenjie Wang", "Tommaso Di Noia", "Jun Xu", "Tat-Seng Chua"],
+      "published": "2026-07-05",
+      "categories": ["cs.IR", "cs.AI"],
+      "topic": "LLM 推荐",
+      "score": 96,
+      "reason": "系统梳理 Agent 推荐的三类范式、自治等级与评测难点，适合作为进入 Agentic RecSys 的路线图。",
+      "abstract": "这篇综述以自治程度为主轴，组织了 Agent 辅助推荐、Agent 作为推荐器和 Agent 作为用户模拟器三种范式，并讨论记忆、工具调用、工作流、评测和可信性等关键问题。",
+      "url": "https://arxiv.org/abs/2607.04433",
+      "pdf_url": "https://arxiv.org/pdf/2607.04433"
+    },
+    {
+      "id": "2607.24822",
+      "title": "A Position Paper on Recommender Systems in the Era of Autonomous Agents",
+      "authors": ["Aixin Sun"],
+      "published": "2026-07-18",
+      "categories": ["cs.IR"],
+      "topic": "LLM 推荐",
+      "score": 92,
+      "reason": "把推荐对象从单一的人扩展为“人 + 授权 Agent”，提出新的交互关系、对齐和系统设计问题。",
+      "abstract": "论文讨论自主 Agent 普及后推荐系统的角色变化：平台不仅服务人，也会服务代表用户行动的 Agent，并据此提出人、Agent 与平台之间的新型三方关系。",
+      "url": "https://arxiv.org/abs/2607.24822",
+      "pdf_url": "https://arxiv.org/pdf/2607.24822"
+    },
+    {
+      "id": "2607.26074",
+      "title": "Reproducibility in Recommender Systems: A Survey",
+      "authors": ["Alan Said", "Alejandro Bellogin"],
+      "published": "2026-07-13",
+      "categories": ["cs.IR"],
+      "topic": "评测与基准",
+      "score": 89,
+      "reason": "复盘 RecSys 可复现性赛道六年实践，能帮助研究者检查数据集、基线和评测协议是否过度集中。",
+      "abstract": "研究分析了 2020—2025 年 RecSys 可复现性赛道的 51 篇论文，归纳数据集、算法、框架与评测协议的使用模式，并指出透明度提升与方法多样性不足并存。",
+      "url": "https://arxiv.org/abs/2607.26074",
+      "pdf_url": "https://arxiv.org/pdf/2607.26074"
+    },
+    {
+      "id": "2603.26100",
+      "title": "Rethinking Recommendation Paradigms: From Pipelines to Agentic Recommender Systems",
+      "authors": ["Jinxin Hu", "Hao Deng", "Lingyu Mu", "Hao Zhang", "Shizhun Wang", "Yu Zhang", "Xiaoyi Zeng"],
+      "published": "2026-03-27",
+      "categories": ["cs.IR", "cs.AI"],
+      "topic": "工业系统",
+      "score": 87,
+      "reason": "把召回、排序、重排等模块重新解释为可独立评估和演化的 Agent，为工业推荐架构提供清晰蓝图。",
+      "abstract": "论文认为传统多阶段推荐流水线仍然是静态的，提出将具备闭环、独立评估能力和可演化决策空间的模块提升为 Agent，并讨论单 Agent 与组合层面的自演化。",
+      "url": "https://arxiv.org/abs/2603.26100",
+      "pdf_url": "https://arxiv.org/pdf/2603.26100"
+    }
+  ]
+}
