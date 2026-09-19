@@ -75,7 +75,9 @@ CHINA_TERMS = (
     "kuaishou", "meituan", "baidu", "xiaomi",
 )
 ENRICHMENT_KEYS = (
-    "focus_label", "article_theme", "research_question", "main_contribution", "reading_note", "note_model",
+    "focus_label", "article_theme", "research_question", "main_contribution",
+    "key_ideas", "analysis_summary", "personal_view", "reading_note",
+    "note_model", "note_basis", "full_text_pages",
 )
 AFFILIATION_KEYS = (
     "institutions", "institution_type", "organization_sector", "primary_institution", "affiliation_checked",
@@ -329,7 +331,7 @@ def main() -> None:
         overrides = json.loads(EDITORIAL_OVERRIDES.read_text(encoding="utf-8"))
         by_id = {paper["id"]: paper for paper in papers}
         for paper_id, values in overrides.items():
-            if paper_id in by_id:
+            if paper_id in by_id and by_id[paper_id].get("note_basis") != "full_text_pdf":
                 by_id[paper_id].update(values)
     payload = {
         "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),

@@ -183,6 +183,17 @@ kbd { color: #94a3b8; border: 1px solid var(--line); border-bottom-width: 2px; b
 .abstract-panel h4 { margin: .9rem 0 .28rem; color: var(--ink); font-size: .76rem; letter-spacing: .04em; }
 .abstract-panel h4:first-child { margin-top: 0; }
 .abstract-panel .institution-row { margin: .45rem 0 0; }
+.full-note { margin-bottom: 1rem; padding: 1rem; border: 1px solid #dbe3ec; border-radius: 12px; color: #334155; background: linear-gradient(180deg, #ffffff, #f8fafc); }
+.full-note-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: .7rem; }
+.full-note-heading h4 { margin: 0; font-size: .9rem; }
+.full-note-heading button { padding: .3rem .58rem; border: 1px solid #cbd5e1; border-radius: 7px; color: #334155; background: white; font-size: .7rem; font-weight: 750; }
+.full-note-heading button:hover { color: #9f1239; border-color: #fecdd3; background: var(--rose-soft); }
+.note-identity { display: grid; gap: .18rem; padding: .65rem .75rem; border-radius: 8px; background: #f1f5f9; }
+.note-identity p { overflow-wrap: anywhere; }
+.full-note .note-title { color: #172033; font-size: .9rem; font-weight: 800; }
+.note-bullets { display: grid; gap: .38rem; }
+.note-bullets p { padding-left: 1.25rem; text-indent: -1.25rem; }
+.full-text-proof { margin-top: .85rem !important; padding-top: .6rem; border-top: 1px dashed #dbe3ec; color: #64748b; font-size: .7rem; }
 .load-more { display: block; min-width: 180px; margin: 1.1rem auto 0; padding: .65rem 1rem; border: 1px solid #ccd6e1; border-radius: 10px; color: #334155; background: white; box-shadow: 0 4px 12px rgba(15,23,42,.03); }
 .load-more:hover { color: #be123c; border-color: #fecdd3; background: var(--rose-soft); }
 .load-more[hidden] { display: none; }

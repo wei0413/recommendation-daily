@@ -55,6 +55,54 @@ const $ = selector => document.querySelector(selector);
 const escapeHtml = (value = "") => String(value).replace(/[&<>'"]/g, char => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;",
 }[char]));
+const normalizeBullets = value => String(value || "")
+  .split(/\n+/)
+  .map(line => line.trim().replace(/^(?:🔸|•|-)+\s*/, ""))
+  .filter(Boolean)
+  .map(line => `🔸${line}`);
+const bulletHtml = value => normalizeBullets(value)
+  .map(line => `<p>${escapeHtml(line)}</p>`)
+  .join("");
+const hasFullTextNote = paper => paper.published >= NOTE_START_DATE
+  && paper.note_basis === "full_text_pdf"
+  && Boolean(paper.article_theme && paper.research_question && paper.main_contribution
+    && paper.key_ideas && paper.analysis_summary && paper.personal_view);
+const paperNoteText = paper => [
+  "📝 论文笔记",
+  "",
+  `📖标题：${paper.title}`,
+  `🌐来源：arXiv, ${paper.id}`,
+  "",
+  `笔记标题：${paper.article_theme}`,
+  "",
+  "🛎️文章简介",
+  `🔸研究问题：${paper.research_question}`,
+  `🔸主要贡献：${paper.main_contribution}`,
+  "",
+  "📝重点思路",
+  ...normalizeBullets(paper.key_ideas),
+  "",
+  "🔎分析总结",
+  ...normalizeBullets(paper.analysis_summary),
+  "",
+  "💡个人观点",
+  paper.personal_view,
+].join("\n");
+async function copyPaperNote(paper) {
+  const text = paperNoteText(paper);
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.style.position = "fixed";
+    textarea.style.opacity = "0";
+    document.body.append(textarea);
+    textarea.select();
+    document.execCommand("copy");
+    textarea.remove();
+  }
+}
 const formatDisplayDate = value => value
   ? new Intl.DateTimeFormat("zh-CN", { month: "short", day: "numeric" }).format(new Date(value + "T00:00:00"))
   : "—";
@@ -334,14 +382,14 @@ function bindEvents() {
 function matchesInterest(paper) {
   if (!state.interestOnly) return true;
   if (state.followedTopics.has(paper.topic || "其他")) return true;
-  const haystack = [paper.title, paper.abstract, paper.reason, paper.article_theme, paper.research_question, paper.main_contribution, ...(paper.authors || []), ...(paper.institutions || [])].join(" ").toLowerCase();
+  const haystack = [paper.title, paper.abstract, paper.reason, paper.article_theme, paper.research_question, paper.main_contribution, paper.key_ideas, paper.analysis_summary, paper.personal_view, ...(paper.authors || []), ...(paper.institutions || [])].join(" ").toLowerCase();
   return state.customInterests.some(interest => haystack.includes(interest.toLowerCase()));
 }
 
 function matchesBaseFilters(paper) {
     const inDate = (!state.startDate || paper.published >= state.startDate) && (!state.endDate || paper.published <= state.endDate);
     const inSaved = !state.savedOnly || state.saved.has(paper.id);
-    const haystack = [paper.title, ...(paper.authors || []), ...(paper.institutions || []), paper.abstract, paper.reason, paper.article_theme, paper.research_question, paper.main_contribution, paper.reading_note, paper.id].join(" ").toLowerCase();
+    const haystack = [paper.title, ...(paper.authors || []), ...(paper.institutions || []), paper.abstract, paper.reason, paper.article_theme, paper.research_question, paper.main_contribution, paper.key_ideas, paper.analysis_summary, paper.personal_view, paper.reading_note, paper.id].join(" ").toLowerCase();
     return inDate && inSaved && matchesInterest(paper) && (!state.search || haystack.includes(state.search));
 }
 
@@ -389,17 +437,12 @@ function renderCard(paper) {
   const followed = state.followedTopics.has(topic);
   const authors = (paper.authors || []).join(", ");
   const institutions = (paper.institutions || []).filter(Boolean);
-  const hasEditorialNote = paper.published >= NOTE_START_DATE && Boolean(paper.article_theme && paper.research_question && paper.main_contribution);
+  const hasEditorialNote = hasFullTextNote(paper);
   const focusLabel = hasEditorialNote ? (paper.focus_label || topic) : topic;
   const organizationSector = paper.organization_sector || paper.institution_type || "机构未公开";
   const primaryInstitution = paper.primary_institution_zh || paper.primary_institution || institutions[0] || "机构未公开";
-  const readingNote = hasEditorialNote && paper.reading_note
-    ? escapeHtml(paper.reading_note).replace(/\n/g, "<br>")
-    : "";
-  const noteSource = paper.note_model === "editorial-seed"
-    ? "编辑精选"
-    : paper.note_model
-      ? `AI 解读 · ${paper.note_model}`
+  const noteSource = hasEditorialNote && paper.note_model
+      ? `全文解读 · ${paper.note_model}`
       : "";
   const institutionHtml = institutions.length
     ? institutions.slice(0, 3).map(name => `<span class="institution-badge">${escapeHtml(name)}</span>`).join("") + (institutions.length > 3 ? `<span class="institution-empty">+${institutions.length - 3}</span>` : "")
@@ -410,7 +453,18 @@ function renderCard(paper) {
       <div><dt>研究问题</dt><dd>${escapeHtml(paper.research_question)}</dd></div>
       <div><dt>主要贡献</dt><dd>${escapeHtml(paper.main_contribution)}</dd></div>
     </dl>` : "";
-  const noteHtml = readingNote ? `<h4>阅读笔记</h4><p>${readingNote}</p>` : "";
+  const noteHtml = hasEditorialNote ? `<section class="full-note">
+      <div class="full-note-heading"><h4>📝 论文笔记</h4><button type="button" data-action="copy-note">复制</button></div>
+      <div class="note-identity"><p><b>📖 标题：</b>${escapeHtml(paper.title)}</p><p><b>🌐 来源：</b>arXiv, ${escapeHtml(paper.id)}</p></div>
+      <h4>笔记标题</h4><p class="note-title">${escapeHtml(paper.article_theme)}</p>
+      <h4>🛎️ 文章简介</h4>
+      <p><b>🔸研究问题：</b>${escapeHtml(paper.research_question)}</p>
+      <p><b>🔸主要贡献：</b>${escapeHtml(paper.main_contribution)}</p>
+      <h4>📝 重点思路</h4><div class="note-bullets">${bulletHtml(paper.key_ideas)}</div>
+      <h4>🔎 分析总结</h4><div class="note-bullets">${bulletHtml(paper.analysis_summary)}</div>
+      <h4>💡 个人观点</h4><p>${escapeHtml(paper.personal_view)}</p>
+      <p class="full-text-proof">基于 arXiv PDF 全文解读${paper.full_text_pages ? ` · ${paper.full_text_pages} 页` : ""}</p>
+    </section>` : "";
   return `<article class="paper-card" style="--topic-color:${color};--score:${Number(paper.score) || 0}" data-id="${escapeHtml(paper.id)}">
     <div class="paper-card-head">
       <div class="score" aria-label="${escapeHtml(scoreHelp)}" title="${escapeHtml(scoreHelp)}"><b>${paper.score}</b><small>推荐分</small></div>
@@ -428,8 +482,8 @@ function renderCard(paper) {
     ${editorialHtml}
     <div class="card-actions"><button class="detail-button" type="button" data-action="abstract" aria-expanded="false">${hasEditorialNote ? "展开笔记" : "查看摘要"} ▼</button><a class="link-button" href="${escapeHtml(paper.pdf_url || paper.url.replace("/abs/", "/pdf/"))}" target="_blank" rel="noopener">PDF ↗</a></div>
     <div class="abstract-panel">
-      <h4>摘要</h4><p>${escapeHtml(paper.abstract || "暂无摘要。")}</p>
       ${noteHtml}
+      <h4>${hasEditorialNote ? "论文原始摘要" : "摘要"}</h4><p>${escapeHtml(paper.abstract || "暂无摘要。")}</p>
       <h4>作者机构</h4><div class="institution-row"><span class="institution-type">${escapeHtml(organizationSector)}</span>${institutionHtml}</div>
     </div>
   </article>`;
@@ -446,11 +500,19 @@ function handleCardClick(event) {
     render();
   }
   if (action === "follow-topic" && paper) toggleFollowedTopic(paper.topic || "其他");
+  if (action === "copy-note" && paper) {
+    const button = event.target.closest("[data-action='copy-note']");
+    copyPaperNote(paper).then(() => {
+      button.textContent = "已复制 ✓";
+      window.setTimeout(() => { button.textContent = "复制"; }, 1800);
+    });
+    return;
+  }
   if (action === "abstract") {
     const panel = card.querySelector(".abstract-panel");
     const open = panel.classList.toggle("open");
     event.target.setAttribute("aria-expanded", String(open));
-    const hasEditorialNote = paper?.published >= NOTE_START_DATE && Boolean(paper?.article_theme && paper?.research_question && paper?.main_contribution);
+    const hasEditorialNote = paper ? hasFullTextNote(paper) : false;
     event.target.textContent = open
       ? (hasEditorialNote ? "收起笔记 ▲" : "收起摘要 ▲")
       : (hasEditorialNote ? "展开笔记 ▼" : "查看摘要 ▼");
