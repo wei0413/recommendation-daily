@@ -44,6 +44,7 @@ jobs:
           FULL_TEXT_CHUNK_CHARS: "45000"
         run: python scripts/enrich_papers.py
       - name: Save refreshed data
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
