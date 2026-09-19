@@ -31,6 +31,8 @@ const topicColors = {
 };
 
 const NOTE_START_DATE = "2026-09-11";
+const COUNTER_API_BASE = "https://counterapi.com/api/recommendation-daily";
+const DAILY_LIKE_KEY = "recsys-daily-liked-on";
 
 const state = {
   papers: [],
@@ -124,6 +126,7 @@ const resetPaging = () => { state.pageSize = 30; };
 
 async function init() {
   renderSkeletons();
+  initEngagement();
   try {
     const response = await fetch("./data/recommendations.json", { cache: "no-store" });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -157,6 +160,85 @@ async function init() {
     $("#papers").innerHTML = '<div class="empty"><strong>论文数据加载失败</strong><span>请稍后刷新页面。</span></div>';
     $("#papers").setAttribute("aria-busy", "false");
   }
+}
+
+function beijingDateKey() {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Shanghai",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date());
+}
+
+async function readCounter(action, key, increment = false) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000);
+  const params = new URLSearchParams();
+  if (!increment) params.set("readOnly", "true");
+  try {
+    const response = await fetch(`${COUNTER_API_BASE}/${action}/${key}?${params}`, {
+      cache: "no-store",
+      signal: controller.signal,
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const payload = await response.json();
+    const value = Number(payload.value);
+    if (!Number.isFinite(value)) throw new Error("Invalid counter response");
+    return value;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+function formatCounter(value) {
+  return new Intl.NumberFormat("zh-CN").format(Math.max(0, Number(value) || 0));
+}
+
+function setLikedState(liked) {
+  const button = $("#siteLikeButton");
+  button.setAttribute("aria-pressed", String(liked));
+  button.disabled = liked;
+  $("#siteLikeHint").textContent = liked ? "今日已赞" : "点赞";
+  button.title = liked ? "今天已经点过赞，明天可以再来" : "每天可以为网站点赞一次";
+}
+
+async function initEngagement() {
+  const today = beijingDateKey();
+  setLikedState(localStorage.getItem(DAILY_LIKE_KEY) === today);
+
+  readCounter("view", "homepage", true)
+    .then(value => { $("#pageViewCount").textContent = formatCounter(value); })
+    .catch(() => { $("#pageViewCount").textContent = "—"; });
+
+  let currentLikes = 0;
+  readCounter("like", "homepage")
+    .then(value => {
+      currentLikes = value;
+      $("#siteLikeCount").textContent = formatCounter(value);
+    })
+    .catch(() => { $("#siteLikeCount").textContent = "—"; });
+
+  $("#siteLikeButton").addEventListener("click", async () => {
+    if (localStorage.getItem(DAILY_LIKE_KEY) === beijingDateKey()) {
+      setLikedState(true);
+      return;
+    }
+    const button = $("#siteLikeButton");
+    button.disabled = true;
+    $("#siteLikeHint").textContent = "提交中…";
+    try {
+      const value = await readCounter("like", "homepage", true);
+      currentLikes = Math.max(value, currentLikes + 1);
+      $("#siteLikeCount").textContent = formatCounter(currentLikes);
+      localStorage.setItem(DAILY_LIKE_KEY, beijingDateKey());
+      setLikedState(true);
+    } catch {
+      button.disabled = false;
+      $("#siteLikeHint").textContent = "重试点赞";
+      button.title = "点赞服务暂时不可用，请稍后重试";
+    }
+  });
 }
 
 function renderSkeletons() {

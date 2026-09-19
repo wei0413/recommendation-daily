@@ -52,12 +52,17 @@ def extract_json(text: str) -> list[dict]:
     return value
 
 
+def utf8_safe(text: str) -> str:
+    """Replace isolated PDF surrogate code points before JSON/HTTP encoding."""
+    return text.encode("utf-8", errors="replace").decode("utf-8")
+
+
 def call_model(prompt: str, max_tokens: int = 8192) -> str:
     payload = {
         "model": MODEL,
         "max_tokens": max_tokens,
         "temperature": 0.2,
-        "messages": [{"role": "user", "content": prompt}],
+        "messages": [{"role": "user", "content": utf8_safe(prompt)}],
     }
     request = urllib.request.Request(
         f"{BASE_URL}/v1/messages",
@@ -127,6 +132,7 @@ def extract_pdf_pages(pdf_data: bytes) -> list[str]:
     pages = []
     for page_number, page in enumerate(reader.pages, start=1):
         text = page.extract_text() or ""
+        text = utf8_safe(text)
         text = re.sub(r"[ \t]+", " ", text)
         text = re.sub(r"\n{3,}", "\n\n", text).strip()
         if text:
@@ -194,10 +200,24 @@ def request_note(paper: dict, full_text: str) -> dict:
 
 论文全文/全篇分段证据：
 {full_text}"""
-    notes = extract_json(call_model(prompt))
-    if not notes:
-        raise ValueError("model returned an empty JSON array")
-    return notes[0]
+    last_error: Exception | None = None
+    for attempt in range(2):
+        try:
+            notes = extract_json(call_model(prompt))
+            if not notes:
+                raise ValueError("model returned an empty JSON array")
+            if not isinstance(notes[0], dict):
+                raise ValueError("model response first array item was not an object")
+            return notes[0]
+        except (json.JSONDecodeError, TypeError, ValueError) as exc:
+            last_error = exc
+            if attempt == 0:
+                prompt += "\n\n上一轮响应格式无效。请严格只返回一个 JSON 数组，数组中只能有一个对象，不要输出解释、NaN 或 Markdown。"
+    raise ValueError(f"model returned invalid JSON twice: {last_error}")
+
+
+def save_payload(payload: dict) -> None:
+    OUTPUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
 def main() -> None:
@@ -213,7 +233,7 @@ def main() -> None:
 
     if not TOKEN:
         if removed:
-            OUTPUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            save_payload(payload)
         print("ANTHROPIC_AUTH_TOKEN is not configured; skipping AI notes.")
         return
 
@@ -249,9 +269,10 @@ def main() -> None:
         paper["note_basis"] = "full_text_pdf"
         paper["full_text_pages"] = len(pages)
         completed += 1
+        save_payload(payload)
         print(f"Generated full-text note for {paper['id']} from {len(pages)} PDF pages ({index}/{len(pending)}).")
 
-    OUTPUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    save_payload(payload)
     print(f"Generated full-text editorial notes for {completed} papers with {MODEL}.")
 
 

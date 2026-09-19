@@ -87,6 +87,16 @@
           <input id="searchInput" type="search" placeholder="搜索标题、作者、摘要或 arXiv ID" autocomplete="off">
           <kbd>/</kbd>
         </label>
+        <div class="engagement-module" aria-label="网站浏览与点赞数据">
+          <div class="engagement-metric" title="推荐论文雷达在两个公开网址上的累计浏览量">
+            <span class="engagement-icon" aria-hidden="true">◉</span>
+            <span><b id="pageViewCount">—</b><small>总浏览量</small></span>
+          </div>
+          <button class="site-like" id="siteLikeButton" type="button" aria-pressed="false" title="每天可以为网站点赞一次">
+            <span class="engagement-icon" aria-hidden="true">♥</span>
+            <span><b id="siteLikeCount">—</b><small id="siteLikeHint">点赞</small></span>
+          </button>
+        </div>
         <button class="saved-toggle" id="savedToggle" type="button" aria-pressed="false">
           <span aria-hidden="true">☆</span> 收藏 <b id="savedCount">0</b>
         </button>
