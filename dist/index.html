@@ -24,21 +24,35 @@
 
     <p class="intro">从 arXiv 的噪声里，找到值得今天读的推荐系统论文。</p>
 
-    <section class="control-section" aria-labelledby="date-label">
+    <section class="control-section calendar-section" aria-labelledby="date-label">
       <div class="control-heading">
         <h2 id="date-label">日期窗口</h2>
         <button class="text-button" id="resetDates" type="button">最新</button>
       </div>
-      <div class="date-fields">
-        <label>从<input id="startDate" type="date"></label>
-        <span aria-hidden="true">→</span>
-        <label>至<input id="endDate" type="date"></label>
-      </div>
+      <div id="datePicker" class="calendar-panel" aria-label="论文日期选择器"></div>
+      <p id="dateRangeDisplay" class="date-range-display"></p>
     </section>
 
     <section class="control-section" aria-labelledby="topic-label">
-      <h2 id="topic-label">研究方向</h2>
+      <div class="control-heading">
+        <h2 id="topic-label">研究方向</h2>
+        <button class="text-button" id="clearTopic" type="button">全部</button>
+      </div>
       <div id="topicFilters" class="topic-filters"></div>
+    </section>
+
+    <section class="control-section interest-section" aria-labelledby="interest-label">
+      <div class="control-heading">
+        <h2 id="interest-label">我的关注</h2>
+        <button class="text-button interest-only" id="interestOnly" type="button" aria-pressed="false">只看关注</button>
+      </div>
+      <p class="control-help">点研究方向旁的星标关注，也可以添加自己的关键词。</p>
+      <div id="followedTopics" class="followed-topics"></div>
+      <form id="customInterestForm" class="custom-interest-form">
+        <label class="sr-only" for="customInterestInput">添加自己的研究方向</label>
+        <input id="customInterestInput" type="text" maxlength="24" placeholder="如：CTR 预估">
+        <button type="submit" aria-label="添加研究方向">＋</button>
+      </form>
     </section>
 
     <section class="control-section" aria-labelledby="sort-label">
@@ -102,4 +116,3 @@
   </template>
 </body>
 </html>
-
