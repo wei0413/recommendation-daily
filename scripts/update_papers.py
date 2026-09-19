@@ -10,11 +10,14 @@ from __future__ import annotations
 import json
 import os
 import re
+import shutil
+import subprocess
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.error import HTTPError, URLError
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -25,7 +28,12 @@ NAMESPACE = {
     "atom": "http://www.w3.org/2005/Atom",
     "arxiv": "http://arxiv.org/schemas/atom",
 }
-USER_AGENT = "recommendation-daily/1.0 (https://github.com/wei0413/recommendation-daily)"
+USER_AGENT = (
+    "recommendation-daily/1.1 "
+    "(+https://github.com/wei0413/recommendation-daily; "
+    "mailto:wei0413@users.noreply.github.com)"
+)
+ACCEPT = "application/atom+xml, application/xml;q=0.9, */*;q=0.8"
 
 QUERY = (
     '(cat:cs.IR OR cat:cs.LG OR cat:cs.AI) AND '
@@ -156,6 +164,70 @@ def reason_for(topic: str, title: str) -> str:
     return reasons[topic]
 
 
+def download_feed(url: str) -> bytes:
+    """Download an Atom feed, with curl as a compatibility fallback.
+
+    arXiv's edge occasionally returns HTTP 406 to Python's urllib client on
+    GitHub-hosted runners even though the same request is accepted from curl.
+    Trying both clients keeps the scheduled update reliable without adding a
+    Python dependency.
+    """
+    request = urllib.request.Request(
+        url,
+        headers={
+            "User-Agent": USER_AGENT,
+            "Accept": ACCEPT,
+            "Cache-Control": "no-cache",
+        },
+    )
+    urllib_error = "unknown error"
+    try:
+        with urllib.request.urlopen(request, timeout=90) as response:
+            return response.read()
+    except HTTPError as exc:
+        urllib_error = f"HTTP {exc.code} {exc.reason}"
+    except (URLError, TimeoutError, OSError) as exc:
+        urllib_error = str(exc)
+
+    curl = shutil.which("curl")
+    if curl:
+        result = subprocess.run(
+            [
+                curl,
+                "--fail",
+                "--silent",
+                "--show-error",
+                "--location",
+                "--retry",
+                "4",
+                "--retry-all-errors",
+                "--retry-delay",
+                "3",
+                "--connect-timeout",
+                "20",
+                "--max-time",
+                "120",
+                "--user-agent",
+                USER_AGENT,
+                "--header",
+                f"Accept: {ACCEPT}",
+                url,
+            ],
+            capture_output=True,
+            check=False,
+        )
+        if result.returncode == 0 and result.stdout:
+            return result.stdout
+        curl_error = clean(result.stderr.decode("utf-8", errors="replace"))
+    else:
+        curl_error = "curl is not installed"
+
+    raise RuntimeError(
+        "arXiv feed download failed; "
+        f"urllib: {urllib_error}; curl: {curl_error or 'empty response'}"
+    )
+
+
 def fetch_entries() -> list[dict]:
     max_results = int(os.environ.get("ARXIV_MAX_RESULTS", "300"))
     params = urllib.parse.urlencode({
@@ -169,9 +241,10 @@ def fetch_entries() -> list[dict]:
     if local_feed:
         root = ET.fromstring(Path(local_feed).read_bytes())
     else:
-        request = urllib.request.Request(f"{API}?{params}", headers={"User-Agent": USER_AGENT})
-        with urllib.request.urlopen(request, timeout=60) as response:
-            root = ET.fromstring(response.read())
+        try:
+            root = ET.fromstring(download_feed(f"{API}?{params}"))
+        except ET.ParseError as exc:
+            raise RuntimeError(f"arXiv returned invalid Atom XML: {exc}") from exc
 
     papers = []
     for entry in root.findall("atom:entry", NAMESPACE):
@@ -221,8 +294,17 @@ def main() -> None:
     if OUTPUT.exists():
         old_papers = json.loads(OUTPUT.read_text(encoding="utf-8")).get("papers", [])
 
+    try:
+        fetched_papers = fetch_entries()
+    except RuntimeError as exc:
+        if old_papers:
+            print(f"::warning::{exc}")
+            print(f"Keeping {len(old_papers)} existing papers; the next run will retry arXiv.")
+            return
+        raise
+
     merged = {paper["id"]: paper for paper in old_papers}
-    for paper in fetch_entries():
+    for paper in fetched_papers:
         previous = merged.get(paper["id"], {})
         for key in ENRICHMENT_KEYS:
             if previous.get(key):
