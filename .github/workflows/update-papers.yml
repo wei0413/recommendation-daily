@@ -40,7 +40,7 @@ jobs:
           ANTHROPIC_BASE_URL: ${{ vars.ANTHROPIC_BASE_URL }}
           ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL }}
           ENRICH_LIMIT: "30"
-          ENRICH_START_DATE: "2026-09-11"
+          ENRICH_START_DATE: "2026-09-10"
           FULL_TEXT_DIRECT_LIMIT: "120000"
           FULL_TEXT_CHUNK_CHARS: "45000"
         run: python scripts/enrich_papers.py

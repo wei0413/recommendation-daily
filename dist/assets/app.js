@@ -30,7 +30,7 @@ const topicColors = {
   "其他": "#64748b",
 };
 
-const NOTE_START_DATE = "2026-09-11";
+const NOTE_START_DATE = "2026-09-10";
 const COUNTER_API_BASE = "https://counterapi.com/api/recommendation-daily";
 const DAILY_LIKE_KEY = "recsys-daily-liked-on";
 

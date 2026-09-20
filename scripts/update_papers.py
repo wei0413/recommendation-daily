@@ -36,7 +36,7 @@ USER_AGENT = (
 ACCEPT = "application/atom+xml, application/xml;q=0.9, */*;q=0.8"
 
 QUERY = (
-    '(cat:cs.IR OR cat:cs.LG OR cat:cs.AI) AND '
+    '(cat:cs.IR OR cat:cs.LG OR cat:cs.AI OR cat:cs.CL OR cat:cs.CV OR cat:stat.ML) AND '
     '(all:"recommender system" OR all:"recommendation system" OR '
     'ti:recommendation OR ti:recommender)'
 )
