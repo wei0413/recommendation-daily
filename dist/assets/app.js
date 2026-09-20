@@ -47,6 +47,9 @@ const state = {
   followedTopics: new Set(JSON.parse(localStorage.getItem("recsys-daily-followed-topics") || "[]")),
   customInterests: JSON.parse(localStorage.getItem("recsys-daily-custom-interests") || "[]"),
   availableDates: new Map(),
+  earliestDate: "",
+  generatedAt: "",
+  followLatest: true,
   calendarYear: null,
   calendarMonth: null,
   selectionState: "ready",
@@ -109,6 +112,11 @@ const formatDisplayDate = value => value
   ? new Intl.DateTimeFormat("zh-CN", { month: "short", day: "numeric" }).format(new Date(value + "T00:00:00"))
   : "—";
 const formatDate = (year, month, day) => `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+const shiftDate = (value, days) => {
+  const [year, month, day] = value.split("-").map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day + days));
+  return formatDate(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+};
 const parseDate = value => {
   const [year, month, day] = value.split("-").map(Number);
   return new Date(year, month - 1, day);
@@ -119,10 +127,25 @@ const readDateHash = () => {
 };
 const updateDateHash = () => {
   if (!state.startDate) return;
+  if (state.followLatest) {
+    history.replaceState(null, "", `${location.pathname}${location.search}#latest`);
+    return;
+  }
   const range = state.startDate === state.endDate ? state.startDate : `${state.startDate}~${state.endDate}`;
   history.replaceState(null, "", `${location.pathname}${location.search}#dates=${range}`);
 };
 const resetPaging = () => { state.pageSize = 30; };
+
+function setLatestWindow() {
+  const today = beijingDateKey();
+  state.startDate = shiftDate(today, -6);
+  state.endDate = today;
+  state.followLatest = true;
+  state.selectionState = "ready";
+  const date = parseDate(today);
+  state.calendarYear = date.getFullYear();
+  state.calendarMonth = date.getMonth();
+}
 
 async function init() {
   renderSkeletons();
@@ -132,6 +155,7 @@ async function init() {
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const payload = await response.json();
     state.papers = payload.papers || [];
+    state.generatedAt = payload.generated_at || "";
     state.papers.forEach(paper => {
       const date = paper.published;
       if (date) state.availableDates.set(date, (state.availableDates.get(date) || 0) + 1);
@@ -140,13 +164,22 @@ async function init() {
     const dates = [...state.availableDates.keys()].sort();
     const latest = dates.at(-1) || "";
     if (latest) {
+      state.earliestDate = dates[0];
       const hashRange = readDateHash();
-      state.startDate = hashRange?.start || dates[Math.max(0, dates.length - 7)] || latest;
-      state.endDate = hashRange?.end || latest;
-      if (state.startDate > state.endDate) [state.startDate, state.endDate] = [state.endDate, state.startDate];
-      const calendarDate = parseDate(state.endDate);
-      state.calendarYear = calendarDate.getFullYear();
-      state.calendarMonth = calendarDate.getMonth();
+      const legacyDefault = hashRange
+        && hashRange.start === dates[Math.max(0, dates.length - 7)]
+        && hashRange.end === latest;
+      if (!hashRange || location.hash === "#latest" || legacyDefault) {
+        setLatestWindow();
+      } else {
+        state.startDate = hashRange.start;
+        state.endDate = hashRange.end;
+        state.followLatest = false;
+        if (state.startDate > state.endDate) [state.startDate, state.endDate] = [state.endDate, state.startDate];
+        const calendarDate = parseDate(state.endDate);
+        state.calendarYear = calendarDate.getFullYear();
+        state.calendarMonth = calendarDate.getMonth();
+      }
     }
 
     renderCalendar();
@@ -252,12 +285,19 @@ function renderCalendar() {
   const month = state.calendarMonth;
   const startWeekDay = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const today = beijingDateKey();
+  const todayDate = parseDate(today);
+  const earliestDate = state.earliestDate ? parseDate(state.earliestDate) : null;
+  const atEarliestMonth = earliestDate
+    && year === earliestDate.getFullYear()
+    && month === earliestDate.getMonth();
+  const atLatestMonth = year === todayDate.getFullYear() && month === todayDate.getMonth();
   const weekdays = ["日", "一", "二", "三", "四", "五", "六"];
   let html = `
     <div class="calendar-head">
-      <button class="calendar-nav" type="button" data-calendar-nav="-1" aria-label="上个月">‹</button>
+      <button class="calendar-nav" type="button" data-calendar-nav="-1" aria-label="上个月" ${atEarliestMonth ? "disabled" : ""}>‹</button>
       <strong>${year} 年 ${month + 1} 月</strong>
-      <button class="calendar-nav" type="button" data-calendar-nav="1" aria-label="下个月">›</button>
+      <button class="calendar-nav" type="button" data-calendar-nav="1" aria-label="下个月" ${atLatestMonth ? "disabled" : ""}>›</button>
     </div>
     <div class="calendar-grid">
       ${weekdays.map(day => `<span class="calendar-dow">${day}</span>`).join("")}
@@ -266,12 +306,15 @@ function renderCalendar() {
   for (let day = 1; day <= daysInMonth; day += 1) {
     const date = formatDate(year, month, day);
     const available = state.availableDates.has(date);
+    const selectable = date <= today && (!state.earliestDate || date >= state.earliestDate);
     const classes = ["calendar-day"];
+    if (selectable) classes.push("selectable");
     if (available) classes.push("available");
     if (state.startDate && state.endDate && date > state.startDate && date < state.endDate) classes.push("in-range");
     if (date === state.startDate || date === state.endDate) classes.push("selected");
     const count = state.availableDates.get(date) || 0;
-    html += `<button type="button" class="${classes.join(" ")}" ${available ? `data-date="${date}" title="${date} · ${count} 篇"` : "disabled"}>${day}</button>`;
+    const title = available ? `${date} · ${count} 篇` : `${date} · 暂无论文`;
+    html += `<button type="button" class="${classes.join(" ")}" ${selectable ? `data-date="${date}" title="${title}"` : "disabled"}>${day}</button>`;
   }
   html += "</div>";
   $("#datePicker").innerHTML = html;
@@ -281,6 +324,8 @@ function renderRangeDisplay() {
   const display = $("#dateRangeDisplay");
   if (!state.startDate) {
     display.textContent = "暂无日期数据";
+  } else if (state.followLatest) {
+    display.textContent = `${state.startDate} → ${state.endDate} · 跟随最新`;
   } else if (state.selectionState === "picking") {
     display.textContent = `当前 ${state.startDate} · 再点一个日期可选区间`;
   } else if (state.startDate === state.endDate) {
@@ -291,6 +336,7 @@ function renderRangeDisplay() {
 }
 
 function handleDateClick(date) {
+  state.followLatest = false;
   if (state.selectionState === "ready") {
     state.startDate = date;
     state.endDate = date;
@@ -366,15 +412,7 @@ function bindEvents() {
     if (dateButton) handleDateClick(dateButton.dataset.date);
   });
   $("#resetDates").addEventListener("click", () => {
-    const latest = [...state.availableDates.keys()].sort().at(-1) || "";
-    state.startDate = latest;
-    state.endDate = latest;
-    state.selectionState = "ready";
-    if (latest) {
-      const date = parseDate(latest);
-      state.calendarYear = date.getFullYear();
-      state.calendarMonth = date.getMonth();
-    }
+    setLatestWindow();
     updateDateHash();
     resetPaging();
     renderCalendar();
@@ -491,11 +529,14 @@ function render() {
   renderTopicFilters();
   const papers = allPapers.slice(0, state.pageSize);
   const latest = state.papers.map(paper => paper.published).filter(Boolean).sort().at(-1);
+  const checkedAt = state.generatedAt
+    ? new Intl.DateTimeFormat("zh-CN", { timeZone: "Asia/Shanghai", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit", hour12: false }).format(new Date(state.generatedAt))
+    : "—";
   $("#paperCount").textContent = allPapers.length;
   $("#topicCount").textContent = new Set(allPapers.map(paper => paper.topic)).size;
-  $("#latestDate").textContent = formatDisplayDate(latest);
+  $("#latestDate").textContent = checkedAt;
   $("#savedCount").textContent = state.saved.size;
-  $("#dateSummary").textContent = latest ? `${latest} · ARXIV SIGNAL` : "ARXIV SIGNAL";
+  $("#dateSummary").textContent = latest ? `最新论文 ${latest} · ARXIV SIGNAL` : "ARXIV SIGNAL";
   $("#resultCopy").textContent = state.interestOnly
     ? "只显示我的关注方向"
     : state.savedOnly
