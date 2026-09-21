@@ -2,8 +2,8 @@ name: Update papers and deploy
 
 on:
   schedule:
-    # 10:00 Asia/Shanghai, Monday through Friday.
-    - cron: "0 2 * * 1-5"
+    # 10:17 Asia/Shanghai, Monday through Friday.
+    - cron: "17 2 * * 1-5"
   workflow_dispatch:
 
 permissions:
