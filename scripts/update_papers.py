@@ -416,7 +416,7 @@ def main() -> None:
             raise RuntimeError(
                 f"primary arXiv query failed ({primary_exc}); RSS fallback failed ({fallback_exc})"
             ) from fallback_exc
-        print("Recovered with arXiv RSS discovery and batched Atom metadata lookup.")
+        print("Recovered with arXiv RSS discovery and citation metadata lookup.")
 
     merged = {paper["id"]: paper for paper in old_papers}
     for paper in fetched_papers:

@@ -15,7 +15,7 @@ python -m http.server 8000 -d dist
 
 ## 自动更新
 
-`scripts/update_papers.py` 使用 arXiv 公共 API，从 `cs.IR`、`cs.LG`、`cs.AI`、`cs.CL`、`cs.CV` 和 `stat.ML` 中拉取近期推荐系统论文；宽泛 API 查询不可用时，会通过 arXiv 官方 RSS 发现当天候选论文，再以小批量 Atom 查询补齐准确元数据。脚本根据标题、摘要、时效和论文类型计算阅读排序分，并自动标注研究方向。`scripts/enrich_affiliations.py` 从公开论文页补充机构信息；`scripts/enrich_papers.py` 下载并解析 arXiv PDF 全文，再使用 Anthropic 兼容接口，为 2026-09-10 及之后的论文生成文章简介、重点思路、分析总结和个人观点。长论文会先逐段通读并提取证据，再汇总成最终笔记；PDF 无法读取时不会退回为摘要推断。分类覆盖生成式推荐、LLM 与 Agent、序列与会话、多模态、联邦与隐私、图与知识增强、跨域与冷启动、对话交互、公平可信、强化学习、评测复现和工业系统等方向。
+`scripts/update_papers.py` 使用 arXiv 公共 API，从 `cs.IR`、`cs.LG`、`cs.AI`、`cs.CL`、`cs.CV` 和 `stat.ML` 中拉取近期推荐系统论文；宽泛 API 查询不可用时，会通过 arXiv 官方 RSS 发现当天候选论文，再从单篇摘要页的 citation 元数据补齐准确提交日期。脚本根据标题、摘要、时效和论文类型计算阅读排序分，并自动标注研究方向。`scripts/enrich_affiliations.py` 从公开论文页补充机构信息；`scripts/enrich_papers.py` 下载并解析 arXiv PDF 全文，再使用 Anthropic 兼容接口，为 2026-09-10 及之后的论文生成文章简介、重点思路、分析总结和个人观点。长论文会先逐段通读并提取证据，再汇总成最终笔记；PDF 无法读取时不会退回为摘要推断。分类覆盖生成式推荐、LLM 与 Agent、序列与会话、多模态、联邦与隐私、图与知识增强、跨域与冷启动、对话交互、公平可信、强化学习、评测复现和工业系统等方向。
 
 GitHub Actions 会在北京时间工作日上午 10:17 运行，并在 10:47、11:17 提供两次备用调度；备用任务会先检查北京时间当天是否已成功更新，已更新则直接跳过。更新数据后会部署到 GitHub Pages；也可以在 Actions 页面手动触发，手动触发始终执行。没有配置大模型密钥时，论文抓取、分类和发布仍会运行，只跳过中文笔记生成。
 
