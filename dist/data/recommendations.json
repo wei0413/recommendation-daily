@@ -7850,15 +7850,18 @@
         "cs.IR"
       ],
       "topic": "工业系统与效率",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "JD.com, Beijing, China"
+      ],
+      "institution_type": "研究机构",
+      "organization_sector": "国内研究机构",
+      "primary_institution": "JD.com, Beijing, China",
       "score": 60,
       "reason": "强调规模、效率或线上部署，对工程落地和系统设计更有参考价值。",
       "abstract": "In industrial recommendation systems, the re-ranking stage balances business objectives and diversity for sequence-level optimization while modeling contextual information. However, constrained by fixed upstream supply, existing methods fail to deliver further effectiveness gains, especially under low-quality supply. To overcome this, re-ranking can actively balance immediate and exploratory value, for instance, by prioritizing exploratory exposure under low-quality supply to preserve browsing potential and facilitate serendipitous conversions. Therefore, we propose a Dual Exploration-Driven Generative Re-Ranking (DEGR) method. DEGR adopts a hybrid supervised-reinforcement exploration and optimization paradigm, guided by an exploratory reward model that adaptively balances immediate and exploratory value. The hybrid optimization paradigm integrates three key components: supervised learning, exploration diversity constraint, and adaptive reward-weighted ORPO for preference optimization. Through this dual exploration, the generator ultimately acts as an adaptive cross-request contextual bridge. Offline and online experiments indicate that DEGR outperforms SOTA methods, achieving improvements of up to 1.22% UCTR and 0.20% PV in the JD E-commerce recommendation system.",
       "url": "https://arxiv.org/abs/2608.04809",
-      "pdf_url": "https://arxiv.org/pdf/2608.04809v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.04809v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.04625",
@@ -7879,15 +7882,21 @@
         "cs.AI"
       ],
       "topic": "序列与会话推荐",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "The Hong Kong Polytechnic University, Hong Kong SAR, China",
+        "Kuaishou Technology, Beijing, China",
+        "University of Electronic Science and Technology of China, Chengdu, SiChuan, China",
+        "Southwest Jiaotong University, Chengdu, SiChuan, China"
+      ],
+      "institution_type": "产学合作",
+      "organization_sector": "产学合作",
+      "primary_institution": "The Hong Kong Polytechnic University, Hong Kong SAR, China",
       "score": 60,
       "reason": "聚焦用户行为序列与下一步偏好建模，和序列推荐主线直接相关。",
       "abstract": "Industrial recommendation strategy iteration heavily relies on large-scale A/B experimentation. Traditional tuning requires experts to repeatedly design strategies, configure experiments, analyze results, and adjust parameters, making the process labor-intensive and time-consuming. Meanwhile, valuable knowledge from historical experiments is often fragmented, making systematic reuse difficult through manual expert effort alone. Existing RAG agents partially alleviate this burden by retrieving prior strategies, but typically organize experience in a flat manner, overlooking the hierarchical relationships among business scenarios, recommendation stages, optimization objectives, and experimental contexts. This often results in mismatched retrieval and limited cross-scenario transfer, while preventing agents from continuously refining strategies and parameters through sequential A/B feedback. % To address these limitations, we propose A/B Agent, a closed-loop A/B agent for industrial recommendation strategy optimization. The framework comprises three tightly coupled core components: Historical Strategy Knowledge Organization, Autonomous Target-Aware Strategy Generation, and Experiment-Guided Strategy Self-Evolution. It organizes historical strategies into a hierarchical experience tree, retrieves transferable evidence through multi-path Tree-RAG to generate executable strategies, and continuously analyzes online A/B feedback to guide autonomous tuning and update the experience tree for self-evolution. Extensive offline and online evaluations demonstrate its effectiveness, including a 4.829% improvement in GMV in a real-world short-video e-commerce recommendation system while maintaining positive gains across all guardrail metrics.",
       "url": "https://arxiv.org/abs/2608.04625",
-      "pdf_url": "https://arxiv.org/pdf/2608.04625v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.04625v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.04455",
@@ -7906,15 +7915,19 @@
         "cs.LG"
       ],
       "topic": "公平、可信与安全",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Twitch Interactive, San Francisco, California, USA",
+        "Amazon Prime Video, Sunnyvale, California, USA"
+      ],
+      "institution_type": "工业界",
+      "organization_sector": "海外工业界",
+      "primary_institution": "Twitch Interactive, San Francisco, California, USA",
       "score": 60,
       "reason": "讨论偏差、鲁棒性或可信问题，适合补齐推荐系统治理视角。",
       "abstract": "One of the most challenging problems entertainment live-streaming services face in recommendation systems is that user behaviors are sparse and delayed, and interaction data exhibits bias for different user segments. Unlike e-commerce applications where user actions follow linear sequences, live-streaming viewers engage in multiple concurrent behaviors of watching, chatting, following, and spending, each occurring with varying delays. We address these challenges through three key contributions: 1) a delayed window approach that extends feedback collection beyond immediate responses, 2) a multi-model architecture that combines fresh and delayed signals, and a segment-aware targeting module that optimizes ranking scores differently across user lifecycle stages, and 3) Multi-gate Mixture-of-Experts (MMoE) integration that jointly models correlated targets while reducing model parameters by 41.9% compared to independent models. Online A/B testing demonstrates significant improvements, including a +0.09% increase in Daily Active Viewers (DAV), generating millions more annual active viewer days, and +0.56% increase in highly engaged viewers' capped Average Revenue Per User (ARPU). Viewer-segment targeting achieved an additional +0.15% DAV improvement for newer and less engaged viewers, while MMoE enhancement added +0.08% overall DAV and +0.27% new follows. The proposed system processes ranking requests with low latency, providing a scalable approach for balancing multiple business objectives across diverse user populations. In addition, we tested the multi-model architecture on the Twitch mobile live feed and achieved a +1.12% increase in positive user-channel interactions (clicks, follows, and likes), demonstrating applicability beyond the primary use case.",
       "url": "https://arxiv.org/abs/2608.04455",
-      "pdf_url": "https://arxiv.org/pdf/2608.04455v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.04455v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.03692",
@@ -7934,15 +7947,19 @@
         "cs.IR"
       ],
       "topic": "生成式推荐",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "University of Science and Technology of China, Hefei, China",
+        "Kuaishou Technology, Beijing, China"
+      ],
+      "institution_type": "产学合作",
+      "organization_sector": "产学合作",
+      "primary_institution": "University of Science and Technology of China, Hefei, China",
       "score": 65,
       "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
       "abstract": "As user behavior histories continue to grow on modern Internet platforms, effectively modeling long behavior sequences has become crucial for predicting user interests in candidate items. Existing methods have evolved along two directions. One line dynamically retrieves target-relevant behaviors from long histories, enabling target-aware modeling but requiring target-dependent computation during inference. The other line compresses entire behavior sequences into compact user representations, achieving high efficiency and scalability but sacrificing target-specific adaptation due to target-independent encoding. The key challenge is therefore to enable target-aware modeling while preserving the efficiency and scalability of compressed user representations. To address this challenge, we propose \\textbf{SITA}, a target-aware compression framework for long-sequence recommendation. SITA enables target-aware compression by organizing compressed interests into semantic structures through semantic identifiers learned via parallel semantic quantization. Conditioned on the semantic identifier of the target item, SITA adaptively aggregates the corresponding structured interests to construct the target-specific user representation. Extensive experiments on public datasets and a large-scale industrial dataset demonstrate that SITA consistently outperforms representative baselines while maintaining strong scalability, highlighting its strong potential for real-world recommender systems.",
       "url": "https://arxiv.org/abs/2608.03692",
-      "pdf_url": "https://arxiv.org/pdf/2608.03692v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.03692v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.03647",
@@ -7961,15 +7978,20 @@
         "cs.LG"
       ],
       "topic": "评测、数据与复现",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "organization=Shenzhen Key Laboratory of Safety and Security for Next Generation of Industrial Internet, Southern University of Science and Technology, city=Shenzhen, country=China",
+        "organization=Department of Statistics and Data Science, Southern University of Science and Technology, city=Shenzhen, country=China",
+        "organization=School of Mathematical and Computational Sciences, Massey University, city=Auckland, country=New Zealand"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "国内学术界",
+      "primary_institution": "organization=Shenzhen Key Laboratory of Safety and Security for Next Generation of Industrial Internet, Southern University of Science and Technology, city=Shenzhen, country=China",
       "score": 62,
       "reason": "提供评测、数据或综述视角，便于校准实验设计并定位研究空白。",
       "abstract": "Out-of-distribution (OOD) recommendation is vulnerable to preference shifts induced by a latent environment. Existing methods can infer latent states from logged interactions, yet the statistical meaning of the latent environment and its effect on preference remain underdetermined. We formulate this task as conditionally identifiable risk-aware recommendation (CI-RR) and propose Conditionally Identifiable Latent-Environment Recommendation (CILER). CILER uses a user-conditioned exponential family to model the latent environment and a feature-indexed polynomial to specify how it changes preference. It predicts by marginalizing item probabilities over the inferred environment distribution. Under sufficient variation, correct specification, and decoder regularity, CILER identifies the environment-sensitive representation up to the stated equivalence class. We further bound excess deployment log-risk by environment-inference error. Controlled studies test the observable consequences of sufficient variation and model specification. Experiments on three datasets show that CILER improves all twelve OOD ranking metrics under feature, temporal, and geographical shifts within shared support.",
       "url": "https://arxiv.org/abs/2608.03647",
-      "pdf_url": "https://arxiv.org/pdf/2608.03647v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.03647v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.03382",
@@ -7986,15 +8008,18 @@
         "cs.LG"
       ],
       "topic": "LLM 与 Agent",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "NAVER WEBTOON, South Korea"
+      ],
+      "institution_type": "研究机构",
+      "organization_sector": "海外研究机构",
+      "primary_institution": "NAVER WEBTOON, South Korea",
       "score": 62,
       "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
       "abstract": "Multi-armed bandit algorithms, especially Thompson sampling, are widely used in online recommendation. Despite their ability to adapt from online feedback, these methods often suffer from cold-start limitations when newly introduced arms have little or no interaction history. In our setting, the candidate arms are user-generated textual comments, whose semantic content can reveal a title's appeal before sufficient interaction feedback is available. We therefore use large language models (LLMs) to extract semantic signals from comment text and convert them into informative Bayesian priors that warm-start Thompson sampling under sparse early-stage feedback. To account for aggregate segment-level differences in response patterns, we maintain and update posteriors separately for each gender-age segment. In a real-world online A/B/C test, we compare a uniform prior with two LLM-based designs: a Gender Prior for demographic-affinity cues and a Content Prior for title-specific identity cues. The results show that LLM-based priors are most beneficial in sparse-feedback regimes -- with the largest gains emerging once a small amount of interaction evidence has accumulated -- and that prior design leads to distinct funnel-level effects. We further analyze prior-reward alignment and demographic heterogeneity, finding that click-oriented alignment is strongest for the Gender Prior and that treatment effects vary substantially across demographic segments. These findings suggest that LLM-derived priors can serve as a practical warm-start mechanism for text-rich bandit recommendation, while also revealing deployment trade-offs.",
       "url": "https://arxiv.org/abs/2608.03382",
-      "pdf_url": "https://arxiv.org/pdf/2608.03382v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.03382v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.03899",
@@ -8019,7 +8044,8 @@
       "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
       "abstract": "Recommender systems remain domain-bound: a model trained on one interaction environment typically requires retraining or target-domain adaptation before it can operate on a new catalogue. A recommender trained on movies cannot be directly deployed to recommend groceries or video games. Existing approaches mitigate this by transferring restricted forms of recommendation knowledge, adapting to the target domain, or leveraging large language models (LLMs) for transferable representations. We instead ask whether recommendation-specific knowledge learned solely from multiple heterogeneous domains can generalize to entirely unseen domains without target-domain adaptation or language-model pretraining. We introduce ATLAS, a multi-source recommendation domain generalization framework that learns a shared, domain-invariant user-item representation from disjoint source domains, enabling zero-shot recommendation on unseen domains. ATLAS combines a Gromov-Wasserstein alignment that preserves how users relate to one another across domains, an adversarial objective that makes item representations indistinguishable across domains, and residual vector quantization (RVQ) codebooks that compress user and item embeddings into a discrete latent space, capturing hierarchical interaction patterns while suppressing domain-specific variation. Trained on five Amazon domains and applied directly to ten unseen domains, ATLAS outperforms state-of-the-art sequential, graph-based, cross-domain, quantization-based, and LLM-based baselines on most unseen domains, with an average relative gain in HitRate of 24%. Ablations and representation analyses validate each component, and we identify a pronounced source-domain diversity effect: increasing source heterogeneity substantially improves zero-shot transfer. ATLAS establishes recommendation domain generalization as a promising paradigm for zero-shot recommendation.",
       "url": "https://arxiv.org/abs/2608.03899",
-      "pdf_url": "https://arxiv.org/pdf/2608.03899v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.03899v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.03091",
@@ -8034,15 +8060,18 @@
         "cs.IR"
       ],
       "topic": "公平、可信与安全",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "RMIT University, Melbourne, Australia"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "海外学术界",
+      "primary_institution": "RMIT University, Melbourne, Australia",
       "score": 60,
       "reason": "讨论偏差、鲁棒性或可信问题，适合补齐推荐系统治理视角。",
       "abstract": "Large language models (LLMs) have emerged as promising listwise rerankers for recommender systems, but their reliability under equivalent candidate permutations remains unclear. Since recommendation candidates form an unordered set, a reranker should not depend on the arbitrary order used to serialize them. However, decoder-only LLM rerankers can allow input order to affect model scores, pairwise preferences, and rankings. We study how position bias affects the ranking process induced by LLM-based rerankers. Instead of measuring only changes in final ranked lists, we treat rankings produced under equivalent candidate permutations as observations of an induced preference system. We introduce an evaluation framework measuring pairwise preference instability, global preference inconsistency, and listwise output consistency. This framework characterizes candidate-order sensitivity at the pairwise, global, and output levels. Experiments across multiple LLMs, datasets, and list lengths show that these consistency measures are closely aligned, but can diverge from recommendation effectiveness and marginal position-exposure bias. Improving relevance or flattening exposure across positions does not necessarily restore stable pairwise preferences, globally coherent preference structures, or consistent ranked outputs. These results show that reducing marginal exposure skew is insufficient to establish ranking-function validity in LLM-based reranking. Code is available at https://github.com/ejbito/InvariRank .",
       "url": "https://arxiv.org/abs/2608.03091",
-      "pdf_url": "https://arxiv.org/pdf/2608.03091v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.03091v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.01732",
@@ -8057,15 +8086,19 @@
         "cs.AI"
       ],
       "topic": "LLM 与 Agent",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Dept. of Computer Engineering San Jose State University San Jose, CA, USA meenakshi.rajpurohit@sjsu.edu",
+        "Dept. of Computer Engineering San Jose State University San Jose, CA, USA jainish.patel@sjsu.edu"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "海外学术界",
+      "primary_institution": "Dept. of Computer Engineering San Jose State University San Jose, CA, USA meenakshi.rajpurohit@sjsu.edu",
       "score": 71,
       "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
       "abstract": "Modern recommender systems produce predictions that users cannot interrogate. The two dominant improvements, collaborative filtering and LLM-based reasoning, each fall short: collaborative filtering captures behavioural signals but offers no reasoning, while large language models (LLMs) generate fluent explanations but hallucinate and are poorly grounded in a user's history. We present X-KGRank, a knowledge graph retrieval augmented framework that unifies structural collaborative filtering with LLM-based explanation. From the MovieLens-1M dataset (6,040 users, 3,704 items, 988,129 interactions) we construct a heterogeneous knowledge graph of 9,762 nodes and 999,264 edges spanning three relation types (RATED, HAS_GENRE, and CO_RATED) persisted in Neo4j. We train a LightGCN ranker with content-aware SBERT initialization and a rating weighted BPR objective, and apply a popularity selective routing strategy that grounds long-tail items (1,855 of 3,704) in knowledge-graph paths while serving popular items from pre-trained knowledge, reducing KG-augmented generations by roughly 50%. On the MovieLens-1M test set under a 99-sample protocol, X-KGRank achieves NDCG@10 = 0.2956 and Recall@10 = 0.5371, improving over a strong popularity baseline by 17.1% on both metrics, by 15.6% on NDCG@20 (0.3449 vs. 0.2983), and by 14.6% on MRR (0.2435 vs. 0.2124). Across three LLM backbones evaluated on 16 cases, a 1.5-billion-parameter model (Qwen2.5-1.5B) matches a 7-billion-parameter model (Mistral-7B) on heuristic explanation quality (0.97 vs. 0.94), yet qualitative analysis shows the smaller model is more prone to factual fabrication.",
       "url": "https://arxiv.org/abs/2608.01732",
-      "pdf_url": "https://arxiv.org/pdf/2608.01732v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.01732v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.16922",
@@ -8080,15 +8113,19 @@
         "cs.CY"
       ],
       "topic": "LLM 与 Agent",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Department of Industrial and Systems Engineering, University of Houston, Houston, TX, USA",
+        "Department of Technology Management and Innovation, New York University, New York, NY, USA"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "海外学术界",
+      "primary_institution": "Department of Industrial and Systems Engineering, University of Houston, Houston, TX, USA",
       "score": 68,
       "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
       "abstract": "While mainstream recommender systems (RS) rely on diverse heuristics to rank alternatives, they generally lack a principled account of user welfare (i.e., whether accepting the recommendation will leave the user better off than other alternatives). The problem is particularly acute in activity-based travel behavior, where users incur costs they cannot recoup (i.e., energy, time) regardless of eventual satisfaction. As a result, existing systems may recommend options based on popularity or collaborative filtering, but may still leave users worse off than nearby or self-selected alternatives. We address this gap by introducing a welfare-oriented framework for activity recommendation that evaluates suggestions in terms of net utility, defined as experienced benefit minus travel costs. Specifically, we formalize two operational decision criteria: Positive Utility Probability (PUP) recommends only when the probability of non-negative net utility exceeds a threshold, while Regret Minimization (RM) recommends only when expected regret relative to the user's best organic alternative falls below a tolerance level. To evaluate these criteria, we develop an agent-based simulation in which heterogeneous synthetic travelers interact with multiple RS over time in a spatial environment with realistic travel costs, congestion, and behavioral feedback loops. This framework enables controlled counterfactual evaluations, and offers a practical foundation for designing RS that treat user welfare as a primary objective rather than an incidental byproduct.",
       "url": "https://arxiv.org/abs/2608.16922",
-      "pdf_url": "https://arxiv.org/pdf/2608.16922v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.16922v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.02738",
@@ -8121,7 +8158,8 @@
       "reason": "提供评测、数据或综述视角，便于校准实验设计并定位研究空白。",
       "abstract": "Industrial recommenders increasingly adopt the pretrain-then-transfer paradigm, yet behavioral distribution drift raises two questions: what to learn from behavior sequences, and how to transfer the learned knowledge while the pretrained model is continually refreshed. To resolve them, we propose Knowledge-Geometry Decoupling (KGD). For what to learn, conventional next-token prediction treats adjacency as dependency and may encode spurious transitions across unrelated sessions. We introduce Behavioral Multi-Token Prediction (BMTP) to retain only collaboratively or semantically related future items as supervision, yielding cleaner and more transferable behavioral knowledge. For how to transfer, pretrained knowledge and task-specific geometry impose conflicting optimization demands on shared parameters. To handle it, KGD assigns them to separate parameter sets: a refreshable encoder owns behavioral knowledge, while a task learner reads contextualized encoder states through read-only cross-attention and writes task-specific geometry through Anchored Calibration Residual (ACR) orthogonal to the pretrained embedding. The decoupled ownership enables continual knowledge refresh without task-gradient interference or invalidating downstream adaptation. KGD improves over strong pretrain-transfer baselines by 4-12% on eight public benchmarks and sustains its advantage over a 90-day production stream where baselines show no gains. KGD has been fully deployed in Shopee. In a live A/B test on Shopee Homepage Search, it increases GMV per user by 1.75% and advertising revenue by 1.53%, demonstrating its high practical value. We provide the core implementation of KGD at https://github.com/FuCongResearchSquad/KGD4REC.",
       "url": "https://arxiv.org/abs/2608.02738",
-      "pdf_url": "https://arxiv.org/pdf/2608.02738v2"
+      "pdf_url": "https://arxiv.org/pdf/2608.02738v2",
+      "affiliation_checked": true
     },
     {
       "id": "2608.02477",
@@ -8150,7 +8188,8 @@
       "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
       "abstract": "Generative Recommendation (GR) formulates recommendation as autoregressive generation over discrete semantic identifiers (IDs). Although recent multimodal GR methods improve semantic ID construction with visual and textual information, they typically require item-level paired observations, restricting tokenization to the intersection of modality availability. Moreover, incorporating unpaired observations is nontrivial because small representation shifts may cross quantization boundaries and produce incompatible identifier sequences. To address this challenge, we propose \\textbf{Unpair}ed Modality-Agnostic \\textbf{G}enerative \\textbf{R}ecommendation (UnpairGR), which learns a unified semantic-ID space from paired, image-only, and text-only observations. UnpairGR confines modality-specific processing to lightweight input projections while sharing the subsequent Transformer and residual codebooks across all observation conditions. Paired observations establish a reliability-guided cross-modal consensus, whereas unimodal observations directly refine the same representations and codes. The learned tokenizer is then fixed to provide stationary targets for a single autoregressive recommender, without feature imputation, modality-specific codebooks, or fallback mappings. Extensive experiments on three benchmark datasets demonstrate that UnpairGR consistently improves recommendation performance under both fully observed and incomplete-observation settings.",
       "url": "https://arxiv.org/abs/2608.02477",
-      "pdf_url": "https://arxiv.org/pdf/2608.02477v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.02477v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.02048",
@@ -8179,7 +8218,8 @@
       "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
       "abstract": "Generative recommendation (GR) has emerged as a promising paradigm for recommender systems. Scaling up GR models can improve recommendation performance, but it also substantially increases inference cost. Knowledge distillation provides a practical solution by transferring knowledge from a large GR model to a lightweight one. However, existing distillation methods do not account for two GR-specific challenges: imbalanced distillation difficulty across the semantic ID (SID) hierarchy and incorrect prefix pruning during beam search. To address these challenges, we propose SmartGR, a novel distillation framework that utilizes Hierarchy-Aware SID Distillation to transfer the teacher's modeling capability across the hierarchy and leverages Beam-Aware Ranking Distillation to distill the teacher's ranking preferences during beam search. Extensive experiments on four benchmark datasets demonstrate the effectiveness and efficiency of SmartGR, improving the performance by 8.6% while achieving a 2.39$\\times$ inference speedup on average.",
       "url": "https://arxiv.org/abs/2608.02048",
-      "pdf_url": "https://arxiv.org/pdf/2608.02048v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.02048v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.01949",
@@ -8203,15 +8243,20 @@
         "cs.IR"
       ],
       "topic": "LLM 与 Agent",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "ByteDance, Beijing, China",
+        "ByteDance, Peking University, Beijing, China",
+        "Peking University, Beijing, China"
+      ],
+      "institution_type": "产学合作",
+      "organization_sector": "产学合作",
+      "primary_institution": "ByteDance, Beijing, China",
       "score": 65,
       "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
       "abstract": "Push notification is a critical recommendation scenario on large-scale platforms, allowing the system to proactively reach users outside the application to improve long-term re-engagement. However, designing an optimal push system requires handling a complex action space for the \"whether and when\" delivery problem under strict system resource constraints. Existing solutions typically fall into two passive paradigms: pre-planned frequency methods that allocate delivery times via offline modeling, limiting real-time adaptability; and fixed-interval triggering methods that periodically poll the system, creating a strict dilemma between excessive computational overhead and diminished optimal timing capture. Furthermore, such multi-stage frameworks severely suffer from local optima. To overcome these limitations, in this paper, we propose STEPS, a proactive, Self-Triggered End-to-end Agentic Push Recommendation System, which is already fully deployed at Douyin with over 1 billion users. STEPS reformulates push recommendation as a self-triggered agentic process in which the system decides not only whether to send a push, but also when to invoke itself again, thereby forming a closed loop that balances real-time effectiveness and efficiency. Specifically, STEPS consists of two decision transformer-based agents: a planning agent that schedules the next system invocation using a gated ordinal regression method, and an execution agent that decides whether to send a push based on trajectory rewards. Furthermore, we introduce a lightweight filtering agent to both control computational overhead and act as a crucial safeguard against unreasonable planning behaviors. Online A/B testing demonstrates that STEPS significantly increases user active days by 0.2843% and reduces the push permission disablement rate by 1.9089%, while the filtering agent reduces computational overhead by 79.42%.",
       "url": "https://arxiv.org/abs/2608.01949",
-      "pdf_url": "https://arxiv.org/pdf/2608.01949v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.01949v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.01846",
@@ -8236,7 +8281,8 @@
       "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
       "abstract": "Next Point-of-Interest (POI) recommendation benefits from textual and visual content that describes venue semantics, yet such content is often incomplete in real-world services. Missing modalities weaken POI representations and reduce the semantic evidence available for ranking. The resulting representations also provide unreliable evidence for modeling higher-order user--POI interactions. We propose HyperAgent4POI, which uses Dynamic Semantic Message Passing (DSMP) to perform modality completion and soft incidence refinement within each hypergraph layer. Persistent node agents share a frozen Llama backbone and use role-specific adapters to produce node-to-hyperedge messages. Semantic hyperedge motifs formed from these messages guide soft incidence scoring and modality completion. Final node representations are cached for online ranking without LLM calls. Experiments on three real-world LBSN datasets show consistent ranking gains over 15 baselines across modality-missing rates, while cached inference provides practical online efficiency. Under a 60% modality-missing rate, HyperAgent4POI improves NDCG@20 over the strongest baseline by 8.2% on average across the three datasets.",
       "url": "https://arxiv.org/abs/2608.01846",
-      "pdf_url": "https://arxiv.org/pdf/2608.01846v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.01846v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.01731",
@@ -8249,15 +8295,18 @@
         "cs.IR"
       ],
       "topic": "其他",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "CyberAgent, Inc., Tokyo, Japan"
+      ],
+      "institution_type": "工业界",
+      "organization_sector": "海外工业界",
+      "primary_institution": "CyberAgent, Inc., Tokyo, Japan",
       "score": 62,
       "reason": "与推荐系统研究直接相关，适合快速浏览其问题设定和实验结论。",
       "abstract": "Matching platforms such as job posting services and online dating platforms have become widely used over the past decade. For a matching platform to be successful, it is crucial to design appropriate reciprocal recommendation systems (RRSs) that consider the preferences of users on both sides (job candidates and employers) and prevent opportunities from being concentrated too heavily on a few popular users. However, prioritizing concentration mitigation too much can lead to recommending undesirable results to some individual users, resulting in their dissatisfaction. In this paper, we formulate the concept of ``optimality of direct effects'' of the recommendation list for an individual user, given the recommendations to other users. Furthermore, we propose a novel method, MODE, that computes mutually optimal recommendations in direct effects. Experiments with synthetic and real-world data demonstrate that MODE surpasses other existing methods in terms of mutual optimality of direct effects, exhibits faster processing speeds, and enables a higher expected number of matches.",
       "url": "https://arxiv.org/abs/2608.01731",
-      "pdf_url": "https://arxiv.org/pdf/2608.01731v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.01731v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.01725",
@@ -8274,15 +8323,18 @@
         "cs.LG"
       ],
       "topic": "LLM 与 Agent",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Department of Computer Science, North Carolina State University, Raleigh, NC 27695, USA"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "海外学术界",
+      "primary_institution": "Department of Computer Science, North Carolina State University, Raleigh, NC 27695, USA",
       "score": 60,
       "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
       "abstract": "Modern computing and networking infrastructure emits telemetry continuously, yet operators convert it into decisions with a separate predictor per task, entity, and horizon. One generative model, pretrained once over an operator's own event streams, could replace this fleet, an approach that already scales to high-cardinality streams in recommendation systems. However, point-forecast error on operational telemetry saturates near simple last-value baselines, so lower error alone need not improve the decisions it feeds. To close this gap, we present \\sys, a generative foundation model for network and systems telemetry, evaluated by replaying the decisions its calibrated conditional quantiles drive. \\sys treats heterogeneous telemetry as event-driven, irregularly timed entity streams and serves flexible forecast horizons in a single pass, requiring no future timestamps. To our knowledge, \\sys is the first pretrained telemetry model to improve both HPC scheduling and network provisioning decisions under replay, its runtime estimator transferring zero-shot across months and its pretrained weights across domains from hours of target data. Extensive experiments on HPC job logs and network traffic confirm that \\sys lowers the mean bounded slowdown of backfilling by up to approximately $77\\%$ over deployed user estimates and roughly halves the deployed rule's violation rate. Our code is available at https://github.com/ZzZTripleZzZ/all-in-one.",
       "url": "https://arxiv.org/abs/2608.01725",
-      "pdf_url": "https://arxiv.org/pdf/2608.01725v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.01725v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.01260",
@@ -8310,7 +8362,8 @@
       "reason": "聚焦用户行为序列与下一步偏好建模，和序列推荐主线直接相关。",
       "abstract": "Recent semantic and generative-retrieval recommenders report substantial improvements over ID-only sequential baselines, but it remains unclear whether these gains arise from language-model reasoning, semantic-ID generation, end-to-end semantic architectures, stronger offline item representations, or complementary semantic and collaborative signals. We investigate this attribution ambiguity through LIME-Rec, a lightweight and auditable recovery test. LIME-Rec combines three independent experts: a SASRec sequential expert, an ItemCF co-occurrence expert, and a semantic expert based on frozen BAAI/bge-base-en-v1.5 item embeddings. Their full-catalog scores are normalized per user and combined through auditable score-level fusion followed by bounded history calibration. The fusion gate and calibration head are fitted on validation data only, require no serving-time language-model inference, and keep each expert contribution separately inspectable. On Amazon Beauty, Toys, and Sports, LIME-Rec achieves R@10 scores of 0.0996, 0.1105, and 0.0593, outperforming the strongest comparison baseline by 7.0%-12.0%. Three-expert fusion without history calibration consistently outperforms calibrated SASRec, showing that calibration alone does not explain the recovery. Randomly permuting item-text embeddings across item IDs reduces R@10 by 13.6%-17.5%, indicating that the gains depend on genuine item-text correspondence rather than additional representation capacity. These results suggest that lightweight recovery from offline item representations and transparent fusion should be ruled out before improvements are attributed to serving-time language modeling, semantic-ID generation, or heavier semantic machinery.",
       "url": "https://arxiv.org/abs/2608.01260",
-      "pdf_url": "https://arxiv.org/pdf/2608.01260v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.01260v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.16919",
@@ -8335,7 +8388,8 @@
       "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
       "abstract": "Recent advances in large language models and agent-based recommendation frameworks have introduced new opportunities for more flexible and context-aware recommendation. However, existing methods still largely rely on semantic matching, end-to-end generation, or loosely structured agent workflows, without explicitly modeling how user preferences are processed and translated into final decisions. To address this limitation, we propose CARA, a cognitively inspired recommendation framework that formulates recommendation as a structured decision-making process. The core intuition of CARA is that user decisions are jointly shaped by two complementary mechanisms: intuitive affective preference and deliberate rational evaluation. Accordingly, CARA organizes recommendation into two coordinated stages: candidate filtering, which narrows the search space based on coarse-grained preference constraints, and dual-perspective decision modeling, which captures recommendation decisions through affective and rational judgment. We further introduce a boundary-aware KTO strategy that prioritizes instructions the model can solve occasionally but not consistently, thereby increasing the density of informative preference signals. Extensive experiments on three Amazon Reviews domains show that CARA achieves the best performance on most evaluation metrics, with relative improvements of up to 10.15% over the baseline.",
       "url": "https://arxiv.org/abs/2608.16919",
-      "pdf_url": "https://arxiv.org/pdf/2608.16919v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.16919v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.01315",
@@ -8350,15 +8404,19 @@
         "cs.IR"
       ],
       "topic": "生成式推荐",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Gaoling School of Artificial Intelligence, Renmin University of China, Beijing, China",
+        "ByteDance, Beijing, China"
+      ],
+      "institution_type": "产学合作",
+      "organization_sector": "产学合作",
+      "primary_institution": "Gaoling School of Artificial Intelligence, Renmin University of China, Beijing, China",
       "score": 62,
       "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
       "abstract": "Generative Recommendation (GR) has exhibited great potential by modeling item transitions as a sequence-to-sequence task. Despite the success of GR, existing frameworks primarily focus on modeling individual user sequences within a constrained internal parametric space, failing to explicitly leverage cross-user collaborative signals. To address this issue, we propose \\textbf{OMEGA}, a cOllaborative MEmory augmentation framework for Generative recommendAtion. OMEGA bridges the gap between implicit parametric knowledge and explicit collaborative signals. We first introduce a latent context compression method that utilizes learnable query tokens to distill sequential user behavior into compact representations, significantly reducing storage overhead. These compressed representations are aggregated into a collaborative memory bank, serving as an explicit repository of global behavioral patterns. To ensure precise knowledge acquisition, we design a lightweight and target-aware retrieval mechanism that identifies pertinent memories by considering both sequence-level and target-level similarities. Furthermore, a context-aware integration module, equipped with a gated cross-attention mechanism, is employed to adaptively fuse the retrieved collaborative memories with the local user context while mitigating the interference of noisy patterns. Empirical evaluations on multiple real-world datasets demonstrate that OMEGA significantly outperforms existing advanced GR models, validating the potential of external memory as a complement to the generative paradigm.",
       "url": "https://arxiv.org/abs/2608.01315",
-      "pdf_url": "https://arxiv.org/pdf/2608.01315v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.01315v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.00938",
@@ -8393,7 +8451,8 @@
       "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
       "abstract": "Productionizing generative recommenders for high-volume, real-time ads retrieval creates two serving challenges: eligibility, ensuring that each generated ad is eligible for the request under the advertiser's audience targeting rules, and compute, which requires meeting strict latency and GPU cost requirements while remaining capable of generating thousands of ads per request with wide-beam decoding. This paper presents GRACE, a serving system for ads generative retrieval that addresses both challenges. For eligibility, GRACE introduces Generative Target Matching (GTM), which extends catalog-valid constrained decoding with personalized filtering over Semantic ID (SID) prefixes using bitmask and Bloom filter matchers derived from targeting rules. SID-level GTM improves final ad-level target matching pass rate from 23.55% to 40.42% over constrained decoding alone. For compute-cost and latency, GRACE targets encoder-decoder Transformers, which are more lightweight than LLMs. It redesigns the decoder around the wide-beam, short-sequence regime, covering attention kernels, KV cache, and beam search optimizations. On NVIDIA GH200, compared with the faster of FlashAttention-2 and FlashAttention-3 baselines, GRACE improves cross-attention latency by 68.0 times and self-attention latency by 23.4-25.8 times across decode steps. Together, these changes reduce decoder latency by 11.1 times, keeping ads generative retrieval within latency and compute requirements.",
       "url": "https://arxiv.org/abs/2608.00938",
-      "pdf_url": "https://arxiv.org/pdf/2608.00938v2"
+      "pdf_url": "https://arxiv.org/pdf/2608.00938v2",
+      "affiliation_checked": true
     },
     {
       "id": "2608.00816",
@@ -8418,7 +8477,8 @@
       "reason": "讨论偏差、鲁棒性或可信问题，适合补齐推荐系统治理视角。",
       "abstract": "In recommendation systems, users interact with only a small fraction of a vast item catalog, producing feedback that is both sparse and noisy. This challenges post-training generative recommenders: reward models trained from logged interactions often fail to generalize, while directly optimizing imperfect rewards can lead to reward over-optimization. We propose Exponential reward-weighted fine-tuning (Exp-RSFT), where each logged interaction is weighted by $\\exp(r/λ)$, avoids this failure by optimizing directly on the logged rewards, with the temperature $λ$ regularizing against their noise. We theoretically show that Exp-RSFT's suboptimality decomposes into two costs: a coverage cost arising from limitations of the logging policy and a noise cost from imperfect feedback. The temperature $λ$ balances these competing effects, yielding an optimal tradeoff between exploiting high-reward behavior and robustness to noise. Across three public benchmarks and a large-scale industrial dataset, we verify this theoretical prediction: performance follows an inverted-U trend as a function of $λ$, while PPO and DPO often over-optimize unreliable reward models and degrade recommendation quality. Exp-RSFT consistently improves ranking performance without requiring online exploration or preference data.",
       "url": "https://arxiv.org/abs/2608.00816",
-      "pdf_url": "https://arxiv.org/pdf/2608.00816v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.00816v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.00750",
@@ -8439,15 +8499,20 @@
         "cs.IR"
       ],
       "topic": "生成式推荐",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "City University of Hong Kong, Hong Kong, China",
+        "Kuaishou Technology, Beijing, China",
+        "Independent, Fuzhou, China"
+      ],
+      "institution_type": "产学合作",
+      "organization_sector": "产学合作",
+      "primary_institution": "City University of Hong Kong, Hong Kong, China",
       "score": 65,
       "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
       "abstract": "Generative recommenders select items by autoregressively decoding semantic identifiers (SIDs), whose token positions induce a coarse-to-fine hierarchy over the item space. In practice, SID decoders are trained via supervised next-token prediction, which imitates logged trajectories rather than directly optimizing downstream utility. This motivates post-training with outcome feedback to guide decoding toward higher utility. However, logged feedback is only observed for the final exposed item, causing most post-training methods to operate at the item level and broadcast the same terminal signal across all SID tokens. As a result, token-level credit assignment becomes sparse, high-variance, and layer-dependent. To this end, we propose Hierarchical Residual Policy Optimization (HRPO), a post-training framework that converts item-level outcomes into dense, token-aligned learning signals for conservative token-wise improvement. Specifically, HRPO first estimates SID prefix-level utilities via group-wise reward smoothing over feature-based user clusters. It then decomposes these utilities into residual token credits and accumulates them into credit-to-go signals. Finally, Residual-Return Policy Optimization (RRPO) optimizes the residual credits using clipped updates, group-normalized advantages, and KL regularization to preserve stability. Experiments on a public dataset and an online A/B test in a large-scale commercial system show consistent gains in session-level utility and key business metrics. Source code and the archived artifact are available for reproduction.",
       "url": "https://arxiv.org/abs/2608.00750",
-      "pdf_url": "https://arxiv.org/pdf/2608.00750v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.00750v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.00669",
@@ -8466,15 +8531,20 @@
         "cs.IR"
       ],
       "topic": "LLM 与 Agent",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "organization=Harbin Institute of Technology Qingdao Research Institute, city=Qingdao, postcode=266109, country=China",
+        "organization=Harbin Institute of Technology (Weihai), city=Weihai, postcode=264209, country=China",
+        "organization=Shandong Provincial Key Laboratory of Digital Service Computing Technology and Systems, city=Weihai, postcode=264200, country=China"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "国内学术界",
+      "primary_institution": "organization=Harbin Institute of Technology Qingdao Research Institute, city=Qingdao, postcode=266109, country=China",
       "score": 65,
       "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
       "abstract": "Large language models (LLMs) offer new opportunities for recommendation by interpreting item descriptions, user instructions, and external knowledge through natural-language prompts. However, existing graph-augmented LLM recommenders often use knowledge graphs mainly as prompt-level evidence, leaving ranking decisions weakly constrained by structured user-item relations. This is problematic for next-item recommendation, where the model must compare candidates under the same user context while preserving temporal preference, collaborative signals, and attribute matches. To address this issue, we propose \\emph{GARDRec}, a Graph-grounded Adaptive Reasoning and Decision-aware Recommendation framework for LLM-based next-item ranking. GARDRec constructs semantic-structural item representations from textual node features and graph propagation, derives personalized graph contexts from temporally weighted histories and first-order neighborhoods, and aligns graph-derived representations with a frozen LLM through continuous multimodal prompts. Explicit interaction and matching features are injected through late-stage decision branches, while inter-candidate attention and restricted generative likelihood support final ranking. Experiments on three public benchmarks with multiple LLM backbones show that GARDRec generally improves candidate-ranking performance over representative baselines. Ablation and diagnostic analyses verify the contributions of graph projection, neighborhood retrieval, explicit decision features, ranking loss, and generative calibration.",
       "url": "https://arxiv.org/abs/2608.00669",
-      "pdf_url": "https://arxiv.org/pdf/2608.00669v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.00669v1",
+      "affiliation_checked": true
     },
     {
       "id": "2607.29241",
