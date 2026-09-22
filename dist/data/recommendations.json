@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-22T03:45:32Z",
+  "generated_at": "2026-09-22T03:47:51Z",
   "source": "arXiv",
   "papers": [
     {
@@ -8574,7 +8574,8 @@
       "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
       "abstract": "Optimizing modern recommender models still depends heavily on engineers manually iterating over architectural, objective, and training-strategy changes. While LLM-based agents can automate this trial-and-error process, allowing the LLM to both select modification directions and generate concrete hypotheses often leads to unstable search under limited experiment budgets. Inspired by the above challenge, we propose RecHarness, a Bandit-Routed Agentic Harness for automated recommender model optimization. RecHarness separates the optimization process into two steps: a bandit router selects the next modification direction according to historical validation feedback, while the LLM generates a concrete optimization hypothesis and executable code edit within the selected direction. To sustain long-horizon exploration, RecHarness uses a jump-basin mechanism to activate a structural-jump arm when local edits stagnate. Across multiple recommendation tasks, datasets, and model backbones, RecHarness achieves more stable performance improvements and uses limited trial budgets more effectively than LLM-reasoning search. During a 7-day online A/B test on a large-scale short-video advertising platform, the selected candidate improves ADVV by 2.084%, Revenue by 0.534%, and Exposure by 0.559%. Code is available at https://github.com/6lyc/RecHarness.",
       "url": "https://arxiv.org/abs/2607.29241",
-      "pdf_url": "https://arxiv.org/pdf/2607.29241v1"
+      "pdf_url": "https://arxiv.org/pdf/2607.29241v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.11241",
@@ -8590,15 +8591,18 @@
         "cs.IR"
       ],
       "topic": "LLM 与 Agent",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "FiT, Tencent, Shenzhen, China"
+      ],
+      "institution_type": "工业界",
+      "organization_sector": "国内工业界",
+      "primary_institution": "FiT, Tencent, Shenzhen, China",
       "score": 65,
       "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
       "abstract": "Deploying LLM agents into industrial recommender operations exposes a three-way tension we frame as the autonomy-determinism-efficiency trilemma: general autonomy (interpreting operator intent, generating glue code zero-shot), industrial determinism (schema-conforming feature extraction, non-crashing A/B, zero compliance-path hallucination), and end-to-end efficiency. Any two can be maximized against the third. We present RecSys Factory, an LLM-agent platform deployed for 78 days across three heterogeneous Tencent recommender business lines. The design principle is autonomy at decision points, not over pipelines, made concrete through three deconstructions that each discharge one vertex of the trilemma. Runtime is deconstructed into three host-emitted event sources (Claude Code Stop hooks, corporate-IM webhooks, workflow scheduler APIs): the platform carries no long-running daemon during the wait phase and consumes zero CPU during the 94% of wall-clock spent waiting on Spark or GPU jobs. Capability is deconstructed into a 29-file skill ecosystem (8,971 lines of SKILL.md) whose per-skill pitfall tables mechanically compile into a 400-entry PitfallStore, confining autonomy to bounded typed decision surfaces inside pre-committed pipelines. Deployment spans three business lines with disjoint label semantics, A/B layer topologies, and operator personas; an onboarding-time compression is observed on two of the three and is reported as a case-study observation, not a generalization claim, and not measured against a controlled pre-platform baseline. The human is retained at the diagnostic-versus-execution boundary via a human-in-the-loop card protocol, deployed as an audit-trail primitive (schema-validated, idempotent, replayable) and reported from an 8-day 16-run pilot. Across the 78-day window the platform recorded 1,624 CLI-tool dispatches at a 78.6% aggregate success rate.",
       "url": "https://arxiv.org/abs/2608.11241",
-      "pdf_url": "https://arxiv.org/pdf/2608.11241v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.11241v1",
+      "affiliation_checked": true
     },
     {
       "id": "2607.29256",
@@ -8617,15 +8621,23 @@
         "cs.LG"
       ],
       "topic": "评测、数据与复现",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "School of Software",
+        "Dalian University of Technology",
+        "Dalian, China",
+        "Department of Information Engineering",
+        "The Chinese University of Hong Kong",
+        "Hong Kong SAR, China"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "国内学术界",
+      "primary_institution": "School of Software",
       "score": 65,
       "reason": "提供评测、数据或综述视角，便于校准实验设计并定位研究空白。",
       "abstract": "Designing polyimide structures with specific glass transition temperatures (Tg) is highly challenging. Existing methods primarily focus on target-conditioned generation, lacking an assessment of the consistency between the generated structure and the target properties. This leads to low-quality candidates deviating from the design objective entering subsequent processes, increasing invalid experiments and prolonging the development cycle. To address this issue, we propose UniPolymer, a unified framework for property prediction, target-conditioned generation, candidate evaluation, and structure recommendation in polyimide design and a dataset containing 10066 deduplicated polyimide repeating units with Tg tags (PITg-Curated) was constructed. To improve the consistency between generated candidate structures and the target Tg, UniPolymer first establishes a reliable structure-property relationship mapping through self-supervised chemical semantic learning, structural consistency enhancement, and multi-scale information fusion. Subsequently, the model employs a continuous-discrete joint Tg representation to guide the autoregressive generation of SELFIES. The generated candidate structures are further evaluated using a frozen property predictor and polyimide-specific structural constraints, and ranked according to their deviation from the target Tg, thereby preventing structures deviating from the target from entering the subsequent validation stage. Experimental results show that UniPolymer achieved a property prediction accuracy of R^2=0.93 and a candidate structure evaluation pass rate of 73.79%, which are 2% and 1.21% higher than the best baseline, respectively. Meanwhile, the predicted Tg values of the recommended candidates are in high agreement with the results of molecular dynamics simulations, thereby reducing the number of candidates that enter the high-cost experimental stage.",
       "url": "https://arxiv.org/abs/2607.29256",
-      "pdf_url": "https://arxiv.org/pdf/2607.29256v1"
+      "pdf_url": "https://arxiv.org/pdf/2607.29256v1",
+      "affiliation_checked": true
     },
     {
       "id": "2607.28997",
@@ -8644,15 +8656,21 @@
         "cs.IR"
       ],
       "topic": "公平、可信与安全",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Dalian University of Technology, School of Computer Science and Technology, Dalian, China",
+        "Wuhan University, School of Computer Science, Wuhan, China",
+        "A*STAR, CFAR and IHPC, Singapore",
+        "South China University of Technology, Institute of Digital Business & Intelligent Logistics, Guangzhou, China"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "国内学术界",
+      "primary_institution": "Dalian University of Technology, School of Computer Science and Technology, Dalian, China",
       "score": 65,
       "reason": "讨论偏差、鲁棒性或可信问题，适合补齐推荐系统治理视角。",
       "abstract": "Next Point-of-Interest (POI) recommendation task focuses on mining user behavioral preference patterns from historical check-ins to provide personalized suggestions for the next destination. Existing methods primarily rely on shallow contextual information and handcrafted feature interactions to predict the next POI. However, the inherent sparsity and complexity of user mobility patterns limit the computational capacity of non-reasoning models to capture deep intent, while large language models (LLMs) perform suboptimally because they lack a deep understanding of semantic IDs (SIDs) when SIDs are trained separately. To address these limitations, we propose Think2Go, a novel generative next POI recommendation framework, which enhances the model's comprehension of SID representations and explores diverse spatial-temporal patterns via test-time computational scaling. We unify supervised fine-tuning (SFT) and reinforcement learning (RL)-based reasoning within a single architecture, enabling joint optimization of memorization and adaptive reasoning to better retain user behavior patterns while exploring diverse user preferences. To further calibrate policy optimization in adaptive reasoning, we propose two advantage weighting mechanisms that integrate (1) prompt epistemic uncertainty, estimated via kernel density methods to assess the spatial-temporal periodic pattern alignment between queries and user history, promoting increased exploration under high epistemic uncertainty; and (2) reward-informed advantage scaling, captured by normalizing rewards against their maxima to adapt update magnitudes, thereby improving training stability and mitigating overfitting to noisy signals. This joint calibration forms an implicit curriculum learning strategy, delivering fine-grained, instance-aware policy updates that prevent entropy collapse and support robust exploration.",
       "url": "https://arxiv.org/abs/2607.28997",
-      "pdf_url": "https://arxiv.org/pdf/2607.28997v1"
+      "pdf_url": "https://arxiv.org/pdf/2607.28997v1",
+      "affiliation_checked": true
     },
     {
       "id": "2607.28940",
@@ -8672,15 +8690,18 @@
         "cs.IR"
       ],
       "topic": "序列与会话推荐",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "LinkedIn, Sunnyvale, California, USA"
+      ],
+      "institution_type": "研究机构",
+      "organization_sector": "海外研究机构",
+      "primary_institution": "LinkedIn, Sunnyvale, California, USA",
       "score": 65,
       "reason": "聚焦用户行为序列与下一步偏好建模，和序列推荐主线直接相关。",
       "abstract": "Modern industrial recommender systems (RecSys) increasingly adopt Transformer-based sequence models, with an emerging paradigm that frames recommendation as next-token prediction over a unified monolithic user sequence. However, collapsing heterogeneous data sources -- such as long-term user behaviors and real-time serving events -- into a single monolithic token stream that obscures their distinct causal roles and temporal characteristics, leading to inefficient modeling and elevated training and serving costs. We propose TransX, a production-oriented encoder-decoder architecture that reformulates recommendation as a sequence-to-sequence action transduction problem. TransX explicitly decouples behavior-stream modeling from serving-event modeling and conditions next-action decoding on scalable cross-attention between nearline behavior encodings and real-time serving representations. To enable low-latency, high-QPS deployment, TransX is co-designed with an amortized serving strategy that combines incremental behavior encoding with per-request key-value caching, rendering serving latency insensitive to behavior sequence length. Extensive offline experiments and large-scale online A/B tests on LinkedIn's recommender systems show that TransX consistently outperforms state-of-the-art DLRMs and sequential baselines, and delivers substantial CTR lift (+6.0%) and conversion gain (+4.4%) while maintaining serving costs comparable to existing production models where our co-designed serving strategy reduces online computation by approximately 80%.",
       "url": "https://arxiv.org/abs/2607.28940",
-      "pdf_url": "https://arxiv.org/pdf/2607.28940v1"
+      "pdf_url": "https://arxiv.org/pdf/2607.28940v1",
+      "affiliation_checked": true
     },
     {
       "id": "2609.20313",
@@ -8695,15 +8716,18 @@
         "cs.LG"
       ],
       "topic": "跨域与冷启动",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Florida State UniversityTallahasseeFloridaUSA"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "海外学术界",
+      "primary_institution": "Florida State UniversityTallahasseeFloridaUSA",
       "score": 62,
       "reason": "关注知识迁移与稀疏反馈，适合研究新用户、新物品和跨场景泛化。",
       "abstract": "Point-of-Interest (POI) recommendation is a core task in location-based services, yet most existing methods assume a fixed user population and POI catalog. Through a large-scale data-driven analysis of 10 U.S. cities, we identify substantial POI churn, user turnover, category drift, and decay in static POI memory, motivating the study of continual dual cold-start POI recommendation. To address this setting, we propose EviRec, a continual evidence-learning framework that estimates how much historical evidence should be trusted separately for each candidate POI. EviRec scores each visible candidate from three complementary views: a matching view based on the user's recent mobility profile, a transition-memory view that captures repeated mobility routines, and a lifecycle view that reflects candidate maturity. Because a near-zero transition score may indicate either irrelevance or insufficient observation, EviRec qualifies the evidence using each candidate's observation state and applies a reliability gate to adaptively route between transition-memory and lifecycle evidence. We evaluate EviRec on a full-year, five-city POI check-in dataset containing more than 30,000 users and 684,200 trajectories. Experimental results show that EviRec consistently outperforms state-of-the-art baselines, with the largest gains concentrated on cold-start queries. In particular, EviRec improves NDCG@10 by 20.4\\% on Dual-New cases over the strongest baseline. In-depth analyses further confirm that these gains arise primarily from candidate-specific reliability gating while largely preserving previously learned mobility routines.",
       "url": "https://arxiv.org/abs/2609.20313",
-      "pdf_url": "https://arxiv.org/pdf/2609.20313v1"
+      "pdf_url": "https://arxiv.org/pdf/2609.20313v1",
+      "affiliation_checked": true
     },
     {
       "id": "2607.29213",
@@ -8726,15 +8750,20 @@
         "cs.LG"
       ],
       "topic": "公平、可信与安全",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Rajax Network Technology (Taobao Shangou of Alibaba) Shanghai & Beijing, China {ljp178097, zhongminzhang.zzm, zisen.szs, zhijia.fzj}@alibaba-inc.com",
+        "Central South University Changsha, China ouyangtao@csu.edu.cn",
+        "Rajax Network Technology (Taobao Shangou of Alibaba) Shanghai & Beijing, China {majiang.mj, shaopengliang.lsp, houzeyang.hzy, guodong.cao, jj229618}@alibaba-inc.com"
+      ],
+      "institution_type": "产学合作",
+      "organization_sector": "产学合作",
+      "primary_institution": "Rajax Network Technology (Taobao Shangou of Alibaba) Shanghai & Beijing, China {ljp178097, zhongminzhang.zzm, zisen.szs, zhijia.fzj}@alibaba-inc.com",
       "score": 62,
       "reason": "讨论偏差、鲁棒性或可信问题，适合补齐推荐系统治理视角。",
       "abstract": "Modern recommender systems in food delivery increasingly leverage multimodal signals, including images, text, and user interaction histories, to enhance user experience, yet effective fusion of these heterogeneous modalities remains challenging, hindering both the joint modeling of multimodal signals and adaptation to evolving user intent. In mainstream two-stage approaches, the separation between content-semantic pretraining of image-text encoders and behavior-driven ranking models limits alignment between semantic understanding and user behavior patterns. To address these issues, we present GALA, a three-stage pipeline whose core innovation lies in an intermediate \"generative RL alignment\" stage that constructs multimodal pretraining data from user behavior and refines it via conversion-based rewards, effectively bridging the pretraining-fine-tuning gap to align with downstream objectives. GALA comprises three stages: first, behavior-aware triplet pretraining on query-image-text pairs from search logs to early capture user intent and content preferences; second, a novel intermediate stage that refines multimodal embeddings through reward-driven optimization (GRPO) to dynamically align them with user behavior and bridge the pretraining-fine-tuning gap; and finally, integration of multimodal and ID embeddings via adaptive gating with a hybrid loss, preserving multimodal contributions under long-term ID-dominant training. GALA has been deployed in the production environment at Taobao Shangou, serving over 200 million daily active users. Compared with state-of-the-art (SOTA) methods, it delivers consistent offline gains of +0.12/+0.20 AUC along with better PCOC metrics. Large-scale online A/B tests further report a 0.55 percent increase in order volume, confirming GALA's effectiveness at industrial scale and its robustness across diverse demand patterns.",
       "url": "https://arxiv.org/abs/2607.29213",
-      "pdf_url": "https://arxiv.org/pdf/2607.29213v1"
+      "pdf_url": "https://arxiv.org/pdf/2607.29213v1",
+      "affiliation_checked": true
     },
     {
       "id": "2607.29010",
@@ -8753,15 +8782,19 @@
         "cs.IR"
       ],
       "topic": "生成式推荐",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Kuaishou Technology, Beijing, China",
+        "Shenzhen University, Shenzhen, China"
+      ],
+      "institution_type": "产学合作",
+      "organization_sector": "产学合作",
+      "primary_institution": "Kuaishou Technology, Beijing, China",
       "score": 62,
       "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
       "abstract": "Generative recommendation benefits from reasoning-enhanced inference, and latent reasoning offers an efficient paradigm by encoding intermediate reasoning processes into compact continuous representations for latency-sensitive deployment. Despite its efficiency, existing latent reasoning approaches typically rely on directly distilling raw chain-of-thought (CoT) trajectories into latent representations, assuming that textual reasoning traces provide sufficient supervision. However, recommendation reasoning trajectories contain diverse reasoning processes with redundant expressions and unstable reasoning paths, making raw CoT supervision suboptimal for learning transferable latent reasoning representations. To address this challenge, we propose EvoReason, a self-evolving latent reasoning framework that adaptively aligns explicit reasoning supervision with the student's latent reasoning space through primitive-guided on-policy distillation. First, EvoReason extracts reusable reasoning primitives from high-quality agentic recommendation trajectories, where each primitive captures an essential reasoning behavior and serves as a pseudo-tool for structured teacher reasoning. Then, based on these primitives, we equip the teacher with primitive-aware reasoning capabilities, enabling it to generate structured CoT supervision with reduced redundancy and improved consistency. Finally, during latent reasoning optimization, EvoReason introduces a self-evolving on-policy distillation mechanism, where the primitive-guided reasoning process evolves according to the student's latent reasoning outcomes. Through this closed-loop co-evolution, policy updates continuously improve latent reasoning behaviors is refined according to the resulting latent reasoning outcomes, enabling progressively better-aligned CoT supervision and more effective reasoning transfer.",
       "url": "https://arxiv.org/abs/2607.29010",
-      "pdf_url": "https://arxiv.org/pdf/2607.29010v1"
+      "pdf_url": "https://arxiv.org/pdf/2607.29010v1",
+      "affiliation_checked": true
     },
     {
       "id": "2607.28971",
@@ -8777,15 +8810,18 @@
         "cs.LG"
       ],
       "topic": "评测、数据与复现",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Danggeun Market Inc. (Karrot), Seoul, Korea"
+      ],
+      "institution_type": "工业界",
+      "organization_sector": "海外工业界",
+      "primary_institution": "Danggeun Market Inc. (Karrot), Seoul, Korea",
       "score": 60,
       "reason": "提供评测、数据或综述视角，便于校准实验设计并定位研究空白。",
       "abstract": "Contrastive learning is widely used for user modeling in large-scale recommender systems, where standard in-batch negatives implicitly assume universal exposure that any user can be shown any item. On local community platforms such as Karrot, however, exposure is geographically constrained; many user-item pairs are impossible by design yet still treated as negatives during training, diluting the contrastive learning signal. We address this impossible negatives problem and propose Region-Constrained Batch Sampling (RCBS), a simple yet effective batching method that constructs region-homogeneous mini-batches so that users are contrasted primarily against items they could feasibly see. By replacing impossible negatives with feasible ones, RCBS naturally introduces harder and more informative negatives under realistic exposure constraints. With offline evaluations and online A/B tests, we show that RCBS consistently improves user representation quality and consequently enhances home feed ranking, retrieval, and display ads ranking. The resulting user embeddings have been deployed in production across various applications.",
       "url": "https://arxiv.org/abs/2607.28971",
-      "pdf_url": "https://arxiv.org/pdf/2607.28971v1"
+      "pdf_url": "https://arxiv.org/pdf/2607.28971v1",
+      "affiliation_checked": true
     },
     {
       "id": "2607.28070",
@@ -8805,15 +8841,18 @@
         "cs.IR"
       ],
       "topic": "序列与会话推荐",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Platform and Content Group, Tencent"
+      ],
+      "institution_type": "工业界",
+      "organization_sector": "国内工业界",
+      "primary_institution": "Platform and Content Group, Tencent",
       "score": 71,
       "reason": "聚焦用户行为序列与下一步偏好建模，和序列推荐主线直接相关。",
       "abstract": "Recent studies in industrial recommendation systems have demonstrated that sequential recommendation models built upon self-attention can benefit from predictable scaling laws by increasing sequence length and model capacity. However, practical recommender systems impose strict latency and resource constraints, making it challenging to balance computational overhead with fine-grained feature interaction. In this paper, we propose CCFormer, an efficient Transformer backbone that unifies cross-field feature interaction and compressed long-sequence modeling for industrial recommendation. Specifically, CCFormer combines feature-field separated cross attention with long-sequence subspace token mixing to exploit long-term preference signals across heterogeneous feature domains. A hierarchical sequence compression strategy with progressively expanded receptive fields enables efficient long-sequence modeling with reduced information loss. Extensive experiments on two public benchmarks and a large-scale industrial dataset demonstrate that CCFormer consistently outperforms state-of-the-art baselines. Online A/B tests in a video recommendation scenario and an advertising ranking scenario at Tencent further validate its industrial practicality, yielding a 3.57% CTR gain and a 1.71% advertising revenue lift, respectively, while accelerating model training by 2.21x over the strong HSTU baseline. CCFormer has been fully deployed in Tencent's production recommendation system, serving the main traffic of both scenarios.",
       "url": "https://arxiv.org/abs/2607.28070",
-      "pdf_url": "https://arxiv.org/pdf/2607.28070v1"
+      "pdf_url": "https://arxiv.org/pdf/2607.28070v1",
+      "affiliation_checked": true
     },
     {
       "id": "2607.27577",
@@ -8832,15 +8871,21 @@
         "cs.LG"
       ],
       "topic": "联邦与隐私推荐",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Google LLC, Mountain View, CA, USA",
+        "Google LLC, Toronto, ON, Canada",
+        "Google LLC, New York, NY, USA",
+        "Google LLC, San Francisco, CA, USA"
+      ],
+      "institution_type": "工业界",
+      "organization_sector": "海外工业界",
+      "primary_institution": "Google LLC, Mountain View, CA, USA",
       "score": 68,
       "reason": "聚焦分布式协同、隐私保护与安全聚合，适合跟踪合规场景下的推荐方法。",
       "abstract": "Heterogeneous recommendation feeds present complex challenges that extend beyond those found in highly homogeneous environments (e.g., music-only or video-only closed-ecosystem platforms). In Google Discover, a unified feed integrates diverse content sourced from the decentralized open web, including web articles, long-form and short-form videos, user-generated content (UGC), and beyond. Different content types exhibit distinct feature densities and user interaction patterns. Building a unified ranking model that sustains high performance across such heterogeneity, while avoiding negative transfer or majority bias, remains a significant industrial challenge. This paper presents an end-to-end case study on the industrial-scale multi-task ranking of heterogeneous feeds, grounded in real-world deployment. We introduce HA-MoE, a heterogeneity-adaptive multi-gated mixture-of-experts architecture that incorporates explicit heterogeneity context into both gating networks and expert representations. This approach enables effective specialization without significantly increasing operational overhead. To support reliable deployment, we introduce LENS, a lightweight observability framework that provides interpretable diagnostics of expert specialization and tracks this functional heterogeneity across continuous retraining. We evaluate our method using Dual-Level AUC (DL-AUC), a heterogeneity-aware evaluation metric that combines global ranking performance with cross-segment ranking correctness. Offline evaluations on a large-scale industrial dataset demonstrate consistent improvements over baseline models. Furthermore, online A/B testing confirms gains in feed activity and exploration metrics. Together, offline and online results validate the effectiveness of our approach for managing heterogeneity in industrial-scale recommender systems.",
       "url": "https://arxiv.org/abs/2607.27577",
-      "pdf_url": "https://arxiv.org/pdf/2607.27577v1"
+      "pdf_url": "https://arxiv.org/pdf/2607.27577v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.00098",
@@ -8864,7 +8909,8 @@
       "reason": "讨论偏差、鲁棒性或可信问题，适合补齐推荐系统治理视角。",
       "abstract": "Medication recommendation from electronic health records must balance predictive accuracy against the risk of adverse drug-drug interactions (DDIs) under polypharmacy. Existing safety-aware recommenders operate at one of two granularities: the drug code, which treats each medication as an indivisible token, or the molecular substructure, which is finer than pharmacological interaction knowledge is actually organized. We argue that the active ingredient is the missing granularity, and introduce GRAIN, a medication recommendation framework built around it. GRAIN encodes longitudinal patient trajectories (diagnoses, procedures, past medications) with a selective state space backbone that handles long, irregular visit sequences in linear time. On top of it we introduce a joint objective unifying three knowledge sources aligned to a common medication vocabulary: a drug-level DDI graph, an ingredient-level DDI graph obtained by normalizing medication codes to active ingredients via RxNorm, and an EHR-derived co-prescription graph. A proportional controller adapts the accuracy-safety trade-off to the observed validation DDI rate rather than fixing it a priori. Under strictly matched settings -- identical preprocessing, cohort, vocabulary, split, and evaluation code -- GRAIN improves over a re-implemented MambaHealth baseline on MIMIC-IV across all standard multi-label metrics (Jaccard 0.4488 to 0.4983, PRAUC 0.6911 to 0.7485, F1 0.5989 to 0.6453) while reducing the drug-level DDI rate from 0.1875 to 0.0948. We further define an ingredient-level DDI rate, a safety measure invisible to drug-code-level evaluation. The results indicate that ingredient-level normalization recovers predictive signal erased by code-level aggregation, and that it is complementary to, rather than in competition with, accurate sequence modeling.",
       "url": "https://arxiv.org/abs/2608.00098",
-      "pdf_url": "https://arxiv.org/pdf/2608.00098v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.00098v1",
+      "affiliation_checked": true
     },
     {
       "id": "2607.27789",
@@ -8887,15 +8933,21 @@
         "cs.IR"
       ],
       "topic": "生成式推荐",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Huazhong Agricultural University, Wuhan, China",
+        "Fudan University, Shanghai, China",
+        "Kuaishou Technology, Beijing, China",
+        "Tianjin University, Tianjin, China"
+      ],
+      "institution_type": "产学合作",
+      "organization_sector": "产学合作",
+      "primary_institution": "Huazhong Agricultural University, Wuhan, China",
       "score": 65,
       "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
       "abstract": "Semantic-ID-based generative recommenders enable efficient next-item generation, but their item-level supervision mainly captures behavioral co-occurrence and local transitions. Large language models (LLMs) can complement these models by reasoning over heterogeneous interaction histories to understand the user's current demand. However, LLMs are not inherently trained with recommendation-specific outcome feedback, and linguistically plausible reasoning therefore does not necessarily lead to effective recommendation decisions. We term this mismatch the Understanding-Action Gap. Accordingly, we distinguish intent knowledge, which captures the user's current demand, from policy knowledge, which specifies the recommendation direction and rejection boundary under that demand. To bridge this gap, we propose a feedback-driven agent framework that first induces task-oriented intent and then discovers recommendation policies according to their incremental utility over an intent-only baseline. Candidate policies are evaluated and refined using outcome-derived feedback rather than linguistic plausibility. We further transfer the resulting intent and policy knowledge into two latent tokens of a lightweight Semantic-ID generator through dual-space relational distillation, enabling LLM-free online inference. Experiments on public benchmarks show consistent improvements over baselines, while large-scale online A/B tests achieve gains of 4.506% in Revenue and 4.621% in ADVV.",
       "url": "https://arxiv.org/abs/2607.27789",
-      "pdf_url": "https://arxiv.org/pdf/2607.27789v1"
+      "pdf_url": "https://arxiv.org/pdf/2607.27789v1",
+      "affiliation_checked": true
     },
     {
       "id": "2607.27760",
@@ -8919,15 +8971,18 @@
         "cs.AI"
       ],
       "topic": "LLM 与 Agent",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "1Xi’an Jiaotong-Liverpool University 2Xiaohongshu 3Peking University 4Beijing Jiaotong University"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "国内学术界",
+      "primary_institution": "1Xi’an Jiaotong-Liverpool University 2Xiaohongshu 3Peking University 4Beijing Jiaotong University",
       "score": 65,
       "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
       "abstract": "Large Language Models (LLMs) have shown strong potential for recommendation by leveraging their semantic understanding and contextual modeling capabilities. Recent studies further introduce reasoning mechanisms to improve user preference modeling. However, explicit natural-language reasoning incurs substantial inference overhead, whereas existing latent reasoning methods mainly focus on generating or verifying intermediate states, leaving their layer-wise preference roles and contributions insufficiently characterized. We propose HiLaR, a Hierarchical Latent Reasoning framework with layer-aware reinforcement optimization for LLM-based recommendation. HiLaR constructs temporal-guided hierarchical user preference representations, aligns them with multiple LLM latent reasoning states, and organizes the reasoning process from broad preferences to fine-grained current intents. To further optimize the reasoning trajectory, HiLaR combines final recommendation feedback with layer-aware process rewards derived from the marginal target-likelihood gain of each state. Experiments on four Amazon benchmark datasets show that HiLaR generally outperforms strong sequential, generative, and LLM-based recommendation baselines. Ablation and sensitivity analyses further verify the contribution of hierarchical representation learning, latent alignment, and process-level optimization. Our code is available in https://github.com/hupeiyu21/HiLaR.",
       "url": "https://arxiv.org/abs/2607.27760",
-      "pdf_url": "https://arxiv.org/pdf/2607.27760v1"
+      "pdf_url": "https://arxiv.org/pdf/2607.27760v1",
+      "affiliation_checked": true
     },
     {
       "id": "2607.27647",
@@ -8948,15 +9003,19 @@
         "cs.IR"
       ],
       "topic": "生成式推荐",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Alibaba Group, Beijing, China",
+        "Institute of Computing Technology, Chinese Academy of Sciences, Beijing, China"
+      ],
+      "institution_type": "产学合作",
+      "organization_sector": "产学合作",
+      "primary_institution": "Alibaba Group, Beijing, China",
       "score": 65,
       "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
       "abstract": "Generative recommendation formulates next-item prediction as conditional autoregressive generation over discrete Semantic IDs, enabling end-to-end recommendation over large-scale item spaces. However, most existing methods follow a history-as-context paradigm that repeatedly reconstructs user preference from behavior history while discarding system-side recommendation decisions after each request. This creates an asymmetric memory: the system remembers what the user has done, but not what it has previously recommended or learned from the resulting feedback. Consequently, useful preference-validation signals, potential negative evidence, and historical exploration information cannot be directly reused across requests. To address these limitations, we propose LoopMemGR, a closed-loop recommendation experience memory framework for generative recommendation. In addition to the conventional behavior log, LoopMemGR maintains a recommendation experience log that records past recommendation--feedback trajectories. It extracts request-relevant evidence through three complementary views: the recency view captures short-term interaction dynamics, the frequency view summarizes recurring recommendation patterns, and the global view distills transferable regularities shared across users. These signals are compressed into a fixed number of experience tokens to condition the generative backbone under a bounded input budget. Extensive experiments on an industrial Taobao dataset demonstrate the effectiveness of closed-loop experience accumulation and multi-view experience extraction.",
       "url": "https://arxiv.org/abs/2607.27647",
-      "pdf_url": "https://arxiv.org/pdf/2607.27647v2"
+      "pdf_url": "https://arxiv.org/pdf/2607.27647v2",
+      "affiliation_checked": true
     },
     {
       "id": "2607.28895",
@@ -8990,15 +9049,18 @@
         "cs.IR"
       ],
       "topic": "联邦与隐私推荐",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Snap, Inc., USA"
+      ],
+      "institution_type": "工业界",
+      "organization_sector": "海外工业界",
+      "primary_institution": "Snap, Inc., USA",
       "score": 62,
       "reason": "聚焦分布式协同、隐私保护与安全聚合，适合跟踪合规场景下的推荐方法。",
       "abstract": "Pretrained large language models (LLMs) are promising retrieval engines because they combine rich semantic priors, strong sequence modeling capabilities, and favorable scaling behavior. However, turning a pretrained LLM into a generative retriever in production deployment raises several challenges: the model must learn an internal item vocabulary that was absent from pretraining, and generate valid item identifiers under strict latency and cost constraints. We address these challenges through the design and launch of SnapLGR, an LLM-based generative retrieval system for short-video recommendation at Snapchat. The system is built around three main designs. First, we construct semantic identifiers (SIDs) from multimodal item embeddings and enhance them with Personalized PageRank (PPR)-based co-engagement contrastive learning, resulting in improved codebook utilization, reduced collisions, and infused collaborative signal. Second, we use continued pretraining (CPT) to ground the introduced SID tokens before supervised fine-tuning (SFT) on user interaction sequences. Third, we make SnapLGR serving practical through TensorRT-LLM CUDA-backed beam search and a decentralized worker-loop architecture. In a live A/B test, the launched system increased View Time by 0.37%, Time Spent by 0.09%, Deep Sessions by 0.18%, and Deep Sessions Unique User by 0.11% relative to the existing TIGER-style generative retrieval baseline. We then decompose this offline gap under a fixed tokenizer and quantify the gains due to model architecture, scaling, and pretraining. Overall, our deployment shows that successful production SnapLGR requires joint design across representation learning, vocabulary grounding, and efficient training and serving.",
       "url": "https://arxiv.org/abs/2607.28895",
-      "pdf_url": "https://arxiv.org/pdf/2607.28895v3"
+      "pdf_url": "https://arxiv.org/pdf/2607.28895v3",
+      "affiliation_checked": true
     },
     {
       "id": "2607.27944",
@@ -9017,15 +9079,18 @@
         "cs.AI"
       ],
       "topic": "生成式推荐",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Kuaishou Technology, Beijing, China"
+      ],
+      "institution_type": "工业界",
+      "organization_sector": "国内工业界",
+      "primary_institution": "Kuaishou Technology, Beijing, China",
       "score": 62,
       "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
       "abstract": "While large language models (LLMs) have advanced ID-based recommendation through Semantic ID (SID) modeling, existing SID generation frameworks largely follow a single-representation-then-quantization paradigm. This design faces two bottlenecks: semantic entanglement mixes heterogeneous attributes, such as geography, brand, and category, causing information loss during quantization, low-quality SIDs, and severe collisions; moreover, black-box representation learning provides neither explicit attribute semantics nor clear geographic or semantic meanings for SID positions. These limitations weaken both retrieval reliability and the ability to diagnose or control SID generation. We propose Interpretable Representation via LLM-Driven Generative Disentanglement for Local-Life Service Recommendation (LGRID). LGRID introduces a generative disentanglement paradigm through an Encode -> Disentangle -> Align -> Quantize pipeline. It first uses joint LLM encoding to preserve cross-attribute geographic-semantic dependencies, rather than encoding fields independently. A Structured Disentangled Block then routes hidden states into attribute-aligned slots for geographic and semantic factors. Synergistic Alignment Learning makes these slots both generatively decodable and discriminative for retrieval, while Dual-Stream Residual Quantization separately discretizes the two streams into compact SIDs with explicit attribute correspondence. This design yields interpretable SIDs with positions grounded in item attributes and local-service semantics. Experiments on Kuaishou and Foursquare show that LGRID consistently outperforms strong SID baselines, achieving up to a 5.44 percent relative AUC gain. It also achieves over 99 percent attribute-decoding accuracy for coarse geographic fields and reduces the full-SID collision rate to 39.9 percent, compared with 97.0 percent for LGSID.",
       "url": "https://arxiv.org/abs/2607.27944",
-      "pdf_url": "https://arxiv.org/pdf/2607.27944v1"
+      "pdf_url": "https://arxiv.org/pdf/2607.27944v1",
+      "affiliation_checked": true
     },
     {
       "id": "2607.27744",
@@ -9086,15 +9151,18 @@
         "cs.IR"
       ],
       "topic": "评测、数据与复现",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Meta AI, Menlo Park, California, USA"
+      ],
+      "institution_type": "工业界",
+      "organization_sector": "海外工业界",
+      "primary_institution": "Meta AI, Menlo Park, California, USA",
       "score": 62,
       "reason": "提供评测、数据或综述视角，便于校准实验设计并定位研究空白。",
       "abstract": "Modern recommendation models gain prediction quality by scaling feature-interaction and sequence modules, but production cost constraints cap how far systems can scale. In this work, we propose Request-Oriented Compute Sharing (ROCS), a modeling and inference paradigm that exploits a unique property of recommendation inference: each user request is evaluated against many candidates, while request-side features are shared across candidates. ROCS defers request-candidate interactions as late as possible, isolates candidate-dependent representations, and evaluates substantial portions of the model once per request rather than once per candidate, significantly improving inference efficiency while maintaining or improving prediction quality. To realize this paradigm, we develop Generalized Layer Masking (GLM) to enforce candidate isolation in feature-interaction architectures, and Deep Cross Attention (DCA) to extend request-oriented sharing to sequence architectures. To support efficient GPU deployment, we co-design In-Kernel Broadcast Optimization (IKBO) that significantly accelerates ROCS model execution. Experiments on public benchmarks show that ROCS consistently improves the quality-efficiency tradeoff across recommendation backbones. On production-scale workloads, ROCS achieves up to a 3x QPS improvement on retrieval models without quality degradation and a 0.5% relative LogLoss improvement with a 50% QPS gain on a short-form video ranking model. ROCS has been deployed across large-scale recommendation systems spanning ads and organic surfaces, retrieval and ranking stages, and more than two orders of magnitude in inference complexity, delivering significant online gains at reduced infrastructure cost.",
       "url": "https://arxiv.org/abs/2607.27744",
-      "pdf_url": "https://arxiv.org/pdf/2607.27744v1"
+      "pdf_url": "https://arxiv.org/pdf/2607.27744v1",
+      "affiliation_checked": true
     },
     {
       "id": "2607.27682",
@@ -9121,7 +9189,8 @@
       "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
       "abstract": "Making LLM-based generative recommendation models stronger and more personalized through natural language and explicit reasoning is a widely anticipated yet still unsolved goal. Such models cast recommendation as autoregressively generating an item's semantic-ID (SID), a short tuple of discrete codes, so that recommending well reduces to emitting the right SID. In this setting the model verbalizes its knowledge poorly, and text and SID tokens live in misaligned embedding spaces. Deep reasoning therefore rarely turns into a correct SID, and enabling explicit \"thinking\" often gives no gain or even hurts. The deeper cause is that a compact SID cannot hold content and collaborative signal at once: the two compete, and collaboration loses. Because a mis-predicted SID is a wrong recommendation, this caps accuracy directly. Costly multi-round training barely helps, and few methods try to supply the missing signal at inference time. What is missing is a reliable channel that carries collaborative signal into SID generation. We therefore propose a framework, guided by personalized natural language, that adds hierarchical collaborative cues as the model generates, without altering the backbone or retraining the SIDs. Rather than mapping language onto SIDs directly, it uses language to attach analyzable links between collaborative patterns and their audiences, restoring the collaborative signal that SIDs miss. The result is consistent gains in recommendation accuracy, grounding generation in collaborative structure at inference time rather than relying on explicit reasoning or retraining.",
       "url": "https://arxiv.org/abs/2607.27682",
-      "pdf_url": "https://arxiv.org/pdf/2607.27682v1"
+      "pdf_url": "https://arxiv.org/pdf/2607.27682v1",
+      "affiliation_checked": true
     },
     {
       "id": "2607.27640",
@@ -9138,15 +9207,18 @@
         "cs.IR"
       ],
       "topic": "图与知识增强",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Visual Computing Group, HTW Berlin, 12459 Berlin, Germany https://visual-computing.com/ E-mail {hezel,barthel,bruno.schilling,konstantin.schall,klaus.jung}@htw-berlin.de"
+      ],
+      "institution_type": "研究机构",
+      "organization_sector": "海外研究机构",
+      "primary_institution": "Visual Computing Group, HTW Berlin, 12459 Berlin, Germany https://visual-computing.com/ E-mail {hezel,barthel,bruno.schilling,konstantin.schall,klaus.jung}@htw-berlin.de",
       "score": 60,
       "reason": "利用图结构或知识图谱建模高阶关系，值得关注表示学习与传播机制。",
       "abstract": "Approximate Nearest Neighbor Search (ANNS) represents a fundamental problem in various applications (image-search, recommendation systems). While graph-based algorithms have demonstrated a good balance between search accuracy and time, handling dynamic datasets, where data points are continuously added or removed, remains a challenge. This paper introduces the Dynamic Exploration Graph (DEG), an extension of the continuous refining Exploration Graph, which retains high search efficiency for static dataset while adding essential support for dynamic data. At the core of the DEG design are two key innovations: a novel vertex deletion algorithm which guarantees graph connectivity and a data distribution-agnostic method for graph expansion. Through these mechanisms, the DEG maintains a balanced and well-connected structure, even under continuous data alterations. Empirical experiments in both streaming and online scenarios demonstrate the superior performance of the DEG, surpassing existing dynamic graph algorithms in terms of construction time and search efficiency. Although optimized for dynamic datasets, the DEG delivers results as good as current state-of-the-art approaches for static dataset, underscoring its broad applicability.",
       "url": "https://arxiv.org/abs/2607.27640",
-      "pdf_url": "https://arxiv.org/pdf/2607.27640v1"
+      "pdf_url": "https://arxiv.org/pdf/2607.27640v1",
+      "affiliation_checked": true
     },
     {
       "id": "2607.27055",
@@ -9165,15 +9237,18 @@
         "cs.IR"
       ],
       "topic": "序列与会话推荐",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "1Gaoling School of Artificial Intelligence, Renmin University of China, Beijing, China 2National University of Singapore, Singapore 3Alibaba Group, Beijing, China tangjiakai5704@ruc.edu.cn"
+      ],
+      "institution_type": "产学合作",
+      "organization_sector": "产学合作",
+      "primary_institution": "1Gaoling School of Artificial Intelligence, Renmin University of China, Beijing, China 2National University of Singapore, Singapore 3Alibaba Group, Beijing, China tangjiakai5704@ruc.edu.cn",
       "score": 73,
       "reason": "聚焦用户行为序列与下一步偏好建模，和序列推荐主线直接相关。",
       "abstract": "Sequential recommenders are commonly trained with one-hot next-item labels under a causal (prefix-only) objective aligned with inference. While deployment-compatible, this supervision offers little insight into relative preferences among non-target items. Yet logged interaction sequences contain an additional supervisory source: interactions following the target often reveal how user intent evolves, making the target easier to interpret. We treat these future interactions as training-only privileged information, available during learning but not at inference. This raises a natural question: can future interactions provide richer supervision while keeping training aligned with inference-time prediction? We propose Privileged Self-Distillation (PSD), a framework that separates learning-time information from inference-time information. PSD applies two attention masks to the same backbone: a future-aware view yields a privileged teacher distribution conditioned on past and future interactions, while a prefix-only view yields the student distribution used for deployment. Distilling the privileged distribution converts future interactions into training-only supervision rather than inference-time inputs. Since both views share a backbone, the teacher's advantage is purely informational, not architectural, removing the need for a separately pretrained teacher and letting its supervision adapt as the student evolves. PSD further uses an advantage-reachability gate to focus distillation on teacher signals likely supported by the observed prefix, along with a momentum-averaged teacher for stable targets. The framework is optimized end-to-end in a single stage, leaving the deployed model and inference cost unchanged. Experiments across public benchmarks and diverse backbones show consistent improvements.",
       "url": "https://arxiv.org/abs/2607.27055",
-      "pdf_url": "https://arxiv.org/pdf/2607.27055v1"
+      "pdf_url": "https://arxiv.org/pdf/2607.27055v1",
+      "affiliation_checked": true
     },
     {
       "id": "2607.27002",
@@ -9221,15 +9296,20 @@
         "cs.IR"
       ],
       "topic": "公平、可信与安全",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Southern University of Science and Technology, Shenzhen, China",
+        "National University of Singapore, Singapore, Singapore",
+        "Singapore Management University, Singapore, Singapore"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "国内学术界",
+      "primary_institution": "Southern University of Science and Technology, Shenzhen, China",
       "score": 68,
       "reason": "讨论偏差、鲁棒性或可信问题，适合补齐推荐系统治理视角。",
       "abstract": "Real-world multimodal recommender systems often face incomplete modality observations, where items lack images, text, or other content features. Such incompleteness weakens item representations and degrades recommendation performance. Existing modality imputation methods estimate missing representations from available item content, but two challenges remain. First, they optimize the recovered representation itself without explicitly considering its relations with other modalities of the same item. The completed modalities may therefore form inconsistent cross-modal relations, causing Cross-modal Structural Distortion. Second, even structurally coherent recovered information may remain ineffective for personalized ranking. Recovered representations receive limited ranking-oriented guidance, while modality missingness disrupts the item neighborhoods required for preference propagation, resulting in a Preference Adaptation Gap. To address these challenges, we propose Calibrated Imputation for Incomplete Multimodal Recommendation (CaIRec), a two-stage framework. Structural Imputation Calibration (SIC) estimates missing-modality representations from shared information inferred from available modalities and calibrates their cross-modal organization through structural regularization and correspondence supervision from observed modality pairs. Preference-oriented Representation Calibration (PRC) performs recommendation-specific adaptation at both the representation and relation levels. It constructs pseudo-missing instances to align recovered representations with observed counterparts shaped by ranking supervision in the recommendation space. It further builds completion-aware item graphs by integrating completed content relations with collaborative evidence. Extensive experiments on three datasets under different modality-missing settings demonstrate the effectiveness and robustness of CaIRec.",
       "url": "https://arxiv.org/abs/2607.26720",
-      "pdf_url": "https://arxiv.org/pdf/2607.26720v2"
+      "pdf_url": "https://arxiv.org/pdf/2607.26720v2",
+      "affiliation_checked": true
     },
     {
       "id": "2607.26500",
@@ -9255,15 +9335,18 @@
         "cs.IR"
       ],
       "topic": "生成式推荐",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Kuaishou Technology, Beijing, China"
+      ],
+      "institution_type": "工业界",
+      "organization_sector": "国内工业界",
+      "primary_institution": "Kuaishou Technology, Beijing, China",
       "score": 68,
       "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
       "abstract": "Industrial recommender systems build candidate pools by assigning explicit quotas to objective-specific retrieval routes. This design offers quota control but increasingly fragments modeling, training, and serving as the route set grows. Semantic-ID-based generative retrieval provides a unified alternative, yet a single decoder entangles objective policies and limits candidate complementarity. We propose Multi-Decoder OneRec, a controllable framework that combines shared representations, isolated objective adaptation, and coordinated decoding. All objectives share a user-context module and the General Decoder, while each objective adds an isolated, parameter-efficient LoRA expert. During training, exposure-sample next-token prediction (NTP) updates the shared base, target-filtered NTP updates the event-based experts, and Kullback-Leibler (KL)-regularized policy optimization updates the Watch-time expert; gradient routing isolates these updates, and the General Decoder supplies a stop-gradient reference. At inference, explicit route quotas allocate the fixed budget and Multi-Decoder Constrained Beam Search reduces cross-route overlap. We publicly release Kwai26, a large-scale multi-objective benchmark with 1.31 billion raw item-level records, 31.85 million Item-ID entries, and 25.03 million items with valid Semantic IDs, together with predefined splits and an evaluation protocol. Under the same 512-item retrieval budget, Multi-Decoder OneRec improves over the single-decoder OneRec baseline by 1.69%-5.62% across four Recall@512 metrics. In a production A/B test, it yields relative gains of 0.37% in app usage time per device, 0.19% in Day-7 retained users, 0.19% in devices with at least one share, and 2.09% in new-content Cold-Start. These results show that generative retrieval can combine shared modeling with objective-specific control and complementary candidate generation.",
       "url": "https://arxiv.org/abs/2607.26500",
-      "pdf_url": "https://arxiv.org/pdf/2607.26500v1"
+      "pdf_url": "https://arxiv.org/pdf/2607.26500v1",
+      "affiliation_checked": true
     },
     {
       "id": "2607.26429",
@@ -9286,7 +9369,8 @@
       "reason": "讨论偏差、鲁棒性或可信问题，适合补齐推荐系统治理视角。",
       "abstract": "Item cold-start recommendation is difficult when new items have sparse early interactions and appear in recommendation environments that keep changing over time. Static content, early feedback, and temporal-state evidence are all useful, but their reliability varies across the item lifecycle. This work proposes a framework--Neural Memory Kalman Fusion Recommender (NMKFR), which combines a Titans-based semantic encoder with time-aware Kalman state tracking. The semantic branch extracts memory-enhanced item observations from text, while the temporal branch estimates latent states under irregular interaction intervals. The NMKFR further uses posterior covariance as an uncertainty signal to calibrate semantic memory retrieval and adaptive static-temporal fusion. Experiments on Amazon Video Games and MovieLens-32M evaluate NMKFR under time-aware and item cold-start protocols using sampled candidate ranking. Across the reported comparisons, ablations, diagnostics, and robustness analyses, NMKFR achieves the strongest retained results and exhibits bounded uncertainty-related internal behavior. These findings provide empirical evidence for posterior-covariance-guided semantic-temporal fusion under the evaluated offline settings.",
       "url": "https://arxiv.org/abs/2607.26429",
-      "pdf_url": "https://arxiv.org/pdf/2607.26429v1"
+      "pdf_url": "https://arxiv.org/pdf/2607.26429v1",
+      "affiliation_checked": true
     },
     {
       "id": "2607.26380",
