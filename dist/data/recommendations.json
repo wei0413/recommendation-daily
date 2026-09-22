@@ -7087,15 +7087,18 @@
         "cs.IR"
       ],
       "topic": "公平、可信与安全",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "National Taiwan University, Taipei, Taiwan"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "海外学术界",
+      "primary_institution": "National Taiwan University, Taipei, Taiwan",
       "score": 73,
       "reason": "讨论偏差、鲁棒性或可信问题，适合补齐推荐系统治理视角。",
       "abstract": "Recent LLM-based recommenders integrate textual and collaborative signals by projecting collaborative embeddings into the embedding space of the LLM. However, this projection can introduce modality bias that distorts the underlying collaborative structure and limits the usefulness of projected embeddings. To address this issue, we propose a novel structure-preserving projection approach that maintains the relational geometry of collaborative embeddings through dedicated structure-preserving losses. Comprehensive experiments demonstrate that our approach consistently improves recommendation performance, providing a more reliable path for LLM-based recommendation.",
       "url": "https://arxiv.org/abs/2608.08583",
-      "pdf_url": "https://arxiv.org/pdf/2608.08583v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.08583v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.08417",
@@ -7112,15 +7115,19 @@
         "cs.IR"
       ],
       "topic": "LLM 与 Agent",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Chongqing University, Chongqing, China",
+        "The University of Queensland, Brisbane, Australia"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "国内学术界",
+      "primary_institution": "Chongqing University, Chongqing, China",
       "score": 68,
       "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
       "abstract": "Agentic recommender systems increasingly employ large language model-based UserAgents to evaluate candidate items through simulated feedback before recommendations are delivered. However, existing UserAgents typically reason in isolation based on limited personal histories, which may lead to perspective narrowing: the agent evaluates candidates from a local and incomplete view, overlooks relevant preference facets, and consequently produces inaccurate judgments. A natural way to alleviate this problem is to introduce other users as advisor agents, whose diverse histories provide complementary evidence that helps the target user reconsider overlooked preference signals. Nevertheless, a generic user-advisor communication process is insufficient, as different user decision states require different forms of external advice. Based on this insight, we propose AgentCom, a personalized communication skill framework for agentic recommender systems. AgentCom organizes reusable communication skills into a shared why--what--how--who skill bank: why identifies the decision deficiency that necessitates communication, what specifies the information task, how determines the advisor interaction protocol, and who retrieves advisors capable of executing that protocol. To make the shared skill bank personalized at use time and adaptive over time, AgentCom introduces two complementary mechanisms: personalized skill routing and failure-driven skill evolution. Personalized skill routing constructs a communication path by sequentially selecting suitable skills for each user and recommendation context. Failure-driven skill evolution learns from unsuccessful communication cases and enriches the shared bank with reusable skills that address previously uncovered communication needs. Experiments show that AgentCom consistently improves recommendation performance across traditional, social, and agentic recommenders.",
       "url": "https://arxiv.org/abs/2608.08417",
-      "pdf_url": "https://arxiv.org/pdf/2608.08417v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.08417v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.08627",
@@ -7143,15 +7150,24 @@
         "cs.AI"
       ],
       "topic": "其他",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Kuaishou Technology",
+        "Hohai University",
+        "Wuhan University",
+        "Independent Researcher",
+        "ByteDance, Douyin",
+        "The University of Hong Kong",
+        "Northeastern University"
+      ],
+      "institution_type": "产学合作",
+      "organization_sector": "产学合作",
+      "primary_institution": "Kuaishou Technology",
       "score": 62,
       "reason": "与推荐系统研究直接相关，适合快速浏览其问题设定和实验结论。",
       "abstract": "Sparse mixture-of-experts (MoE) layers expand recommendation capacity through conditional computation, yet a trained checkpoint still stores and routes over its full expert bank. We study a deployment problem: convert that checkpoint to a smaller standard MoE under an explicit expert budget, without adding a compression-specific online module. To address this, we introduce UniMoMo, a post-training compression framework formulated as a constrained graph coarsening problem. Rather than relying on parameter distance, UniMoMo groups experts based on their functional similarity, using an unlabeled calibration set to measure how similarly experts respond to shared recommendation states. To prevent performance degradation, we introduce a layer-adaptive protection mechanism that restricts the merging of high-traffic experts based on their routing exposure. Across Amazon Beauty, KuaiRec, and TenRec with 2, 4, and 6 MoE blocks, the final four-expert checkpoints obtain source-relative five-run mean NDCG@10 ratios of 99.92%--102.30% and measured A100 speedups of 1.28$\\times$--1.63$\\times$. An aggressive two-expert, top-1 operating point obtains ratios of 98.36%--104.24% and speedups of 1.47$\\times$--2.21$\\times$. These endpoint results evaluate the complete conversion-and-adaptation workflow and show that a trained recommendation MoE can be exported at multiple serving budgets.",
       "url": "https://arxiv.org/abs/2608.08627",
-      "pdf_url": "https://arxiv.org/pdf/2608.08627v2"
+      "pdf_url": "https://arxiv.org/pdf/2608.08627v2",
+      "affiliation_checked": true
     },
     {
       "id": "2608.08889",
@@ -7167,15 +7183,20 @@
         "cs.AI"
       ],
       "topic": "公平、可信与安全",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Duke University, Durham, USA",
+        "Netflix, Los Gatos, USA",
+        "Los Gatos, USA"
+      ],
+      "institution_type": "产学合作",
+      "organization_sector": "产学合作",
+      "primary_institution": "Duke University, Durham, USA",
       "score": 60,
       "reason": "讨论偏差、鲁棒性或可信问题，适合补齐推荐系统治理视角。",
       "abstract": "Recommendation systems thrive on personalization, where ''correctness'' is rarely a binary truth but a matter of subjective human preference. As Large Language Models (LLMs) are deployed as autonomous verifiers of safety and quality guidelines, they face a distinctive challenge: context-aware preference alignment. Recent gains in Reinforcement Learning with Verifiable Rewards (RLVR) are indexed mostly on objective, mathematical tasks. Through a large-scale study spanning both proprietary and open-source models on four real-world verification tasks from a production recommender platform, we ask whether explicit reasoning generalizes to subjective, human-centric industry rubrics. We expose a fundamental vulnerability: rigid, math-centric reasoning traces actively degrade verification, and applying standard RLVR triggers a phenomenon we term reasoning collapse, in which the policy abandons deliberation in favor of rapid heuristic guessing. We introduce a conditional length-penalized post-training algorithm that intertwines verification accuracy with bounded reasoning length, halting collapse and recovering performance. Finally, we show that a reasoning trace's efficacy is tightly coupled with its socio-linguistic framing: across 1500 synthesized personas, verification accuracy swings by nearly 0.38 macro-F1 depending solely on the adopted reasoning persona---evidence that much subjective-verification error is really reasoning-style mismatch. This observation motivates a mid-training architecture that routes reasoning through contextually aligned personas. This work offers both a scalable algorithmic patch and a long-term architectural blueprint for aligning reasoning models with real-world subjective constraints.",
       "url": "https://arxiv.org/abs/2608.08889",
-      "pdf_url": "https://arxiv.org/pdf/2608.08889v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.08889v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.08422",
@@ -7191,15 +7212,19 @@
         "stat.ML"
       ],
       "topic": "联邦与隐私推荐",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Center for Applied Mathematics, Fudan University",
+        "Shanghai, China"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "国内学术界",
+      "primary_institution": "Center for Applied Mathematics, Fudan University",
       "score": 60,
       "reason": "聚焦分布式协同、隐私保护与安全聚合，适合跟踪合规场景下的推荐方法。",
       "abstract": "Ranking data arise in scientific and machine learning applications, including recommendation systems, information retrieval, voting, marketing, and AI preference ranking from human feedback. Existing statistical work has primarily focused on inference tasks such as preference estimation, rank aggregation, and ranking prediction. However, generating realistic synthetic rankings from an observed population is important for privacy-preserving data sharing, benchmark construction, simulation, and uncertainty quantification. This task is challenging because rankings are high-dimensional combinatorial objects with non-Euclidean dependence structures, while ranking populations often exhibit substantial preference heterogeneity. We propose a framework for population-level generative modeling through a latent preference simplex embedding. It estimates a low-dimensional latent preference simplex through a likelihood-based ranking model, leverages flow matching to learn the population distribution of latent preferences, and generates new rankings through the fitted probabilistic ranking model. We show that ranking generation admits an oracle reduction to latent distribution learning and derive finite-sample generative guarantees that clarify how the number of items, ranking length, and latent dimension affect accuracy. Experiments on synthetic and real datasets demonstrate improved population-level fidelity and provide a statistically interpretable representation of preference heterogeneity.",
       "url": "https://arxiv.org/abs/2608.08422",
-      "pdf_url": "https://arxiv.org/pdf/2608.08422v2"
+      "pdf_url": "https://arxiv.org/pdf/2608.08422v2",
+      "affiliation_checked": true
     },
     {
       "id": "2608.08284",
@@ -7220,15 +7245,21 @@
         "cs.AI"
       ],
       "topic": "公平、可信与安全",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "University of Georgia",
+        "University of Southern California",
+        "Carnegie Mellon University",
+        "Michigan State University"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "海外学术界",
+      "primary_institution": "University of Georgia",
       "score": 68,
       "reason": "讨论偏差、鲁棒性或可信问题，适合补齐推荐系统治理视角。",
       "abstract": "Fairness audits for LLM-based recommenders have largely focused on observable outputs, implicitly assuming that stable recommendations reflect stable internal processing. We challenge this assumption with FairGap, the first benchmark to jointly evaluate recommendation fairness at two levels: observable output shift (OBS) and hidden representation shift (IBS), measured through controlled counterfactual identity probes across gender, age, and race. Their relationship is summarized via Representation-Output Alignment (ROA), with quadrant diagnostics for identifying user-level hidden-output mismatch. Applied to six open-weight LLM families across three domains, FairGap reveals pervasive hidden-output decoupling: ROA rarely exceeds 0.22, and a non-negligible user population shows stable outputs despite substantial internal shifts, a mode that output-only audits cannot detect by design. Further, activation steering that reduces IBS by up to 8x simultaneously worsens OBS, demonstrating a fundamental tension between internal and output-level fairness that existing frameworks are unequipped to diagnose.",
       "url": "https://arxiv.org/abs/2608.08284",
-      "pdf_url": "https://arxiv.org/pdf/2608.08284v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.08284v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.07998",
@@ -7244,15 +7275,19 @@
         "cs.IR"
       ],
       "topic": "公平、可信与安全",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "School of Computer Science and Engineering, Southeast University, Nanjing, Jiangsu, China",
+        "Department of Computer Science, Hong Kong Baptist University, Hong Kong, China"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "国内学术界",
+      "primary_institution": "School of Computer Science and Engineering, Southeast University, Nanjing, Jiangsu, China",
       "score": 65,
       "reason": "讨论偏差、鲁棒性或可信问题，适合补齐推荐系统治理视角。",
       "abstract": "Next point-of-interest (POI) recommendation predicts users' future destinations from historical mobility sequences and has become a key component of location-based services. However, mainstream models often concentrate exposure on a small set of popular POIs, leaving long-tail merchants systematically under-exposed. While provider fairness has recently attracted increasing attention, directly applying existing provider-fairness techniques to POI recommendation is problematic: (i) users face execution constraints; and (ii) POIs face resource supply constraints. To address this, we propose SPACE (Supply- and Physics-Aware Conditional Embedding generation), a model-agnostic framework that improves long-tail POI exposure via virtual user generation under explicit feasibility and supply control. SPACE consists of three stages: (1) community inference to capture heterogeneous user execution constraints; (2) unbalanced optimal-transport allocation to decide how many virtual users each tail POI should receive from which communities under POI-specific supply budgets; and (3) constraint-guided latent diffusion to generate POI-conditional, community-consistent virtual user embeddings. The generated user-POI pairs can be seamlessly used to train existing recommenders without modifying their architectures. Extensive experiments on three real-world datasets demonstrate that SPACE substantially improves provider fairness while maintaining and often improving recommendation accuracy across multiple backbone models. Our code is publicly available at https://github.com/Anniran1/SPACE-main.",
       "url": "https://arxiv.org/abs/2608.07998",
-      "pdf_url": "https://arxiv.org/pdf/2608.07998v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.07998v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.07989",
@@ -7276,15 +7311,18 @@
         "cs.IR"
       ],
       "topic": "生成式推荐",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Kuaishou Technology, Beijing, China"
+      ],
+      "institution_type": "工业界",
+      "organization_sector": "国内工业界",
+      "primary_institution": "Kuaishou Technology, Beijing, China",
       "score": 65,
       "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
       "abstract": "Push recommendation in KuaiShou proactively delivers personalized content to nearly one billion users to facilitate their engagement. Recently, generative recommendation has achieved end-to-end user personalization through semantic ID. However, their black- box characteristics make recommendation logics difficult to trace, hindering their deployment. OneRec-Thinking addresses this by incorporating CoT before generating SIDs, but this significantly increases inference cost. To support large-scale industrial applications, we propose PushDualGen, a lightweight generator, which first generates the SID and then produces a copy as a skippable explanation. PushDualGen has been deployed in Kuaishou's push recommendation system. Online A/B tests demonstrate the effectiveness of PushDualGen, delivering significant improvements in both user attraction and satisfaction. The effective play rate for videos recommended to users has relatively increased by 8.50%, while the dissatisfaction rate has relatively fallen by 37.70%. In the long term, PushDualGen optimises the content ecosystem, providing more exposure for long-tail videos.",
       "url": "https://arxiv.org/abs/2608.07989",
-      "pdf_url": "https://arxiv.org/pdf/2608.07989v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.07989v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.08069",
@@ -7332,15 +7370,19 @@
         "cs.LG"
       ],
       "topic": "生成式推荐",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Snap Inc., Bellevue, WA, USA",
+        "University of Michigan, Ann Arbor, MI, USA"
+      ],
+      "institution_type": "产学合作",
+      "organization_sector": "产学合作",
+      "primary_institution": "Snap Inc., Bellevue, WA, USA",
       "score": 65,
       "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
       "abstract": "Recent advances in generative recommendation (GR) leverage large language models (LLMs) as recommender backbones, enabling LLMs to directly generate recommendations conditioned on item-interaction histories. In these systems, items are often represented through semantic IDs (SIDs) added to the LLM vocabulary as special tokens. Ideally, SIDs imbue item token representations with semantic priors, thereby improving model generalization. However, standard vocabulary expansion typically initializes these tokens as random Gaussian vectors, discarding the SIDs' underlying continuous geometry and forcing the LLM to relearn token relationships from interaction data. To demonstrate the consequences of this design, we first show that training from this initialization tends to organize SID embeddings around item popularity rather than semantics. We further show that, despite partially reducing the reliance on popularity and improving cold item performance, the computationally expensive process of continual pretraining (CPT) fails to reliably recover the original semantic geometry. To address these findings, we propose a simple, parameter-free intervention that initializes SID token embeddings directly from their corresponding centroids in the semantic embedding space. Requiring only a few lines of code and no additional training or inference overhead, this drop-in approach improves pure-SFT Recall@5 by up to 16%, reaches peak performance with up to 40% fewer SFT steps, and improves cold-item Recall@5 by up to 60%. Moreover, on datasets that benefit from additional CPT, centroid initialization reaches comparable performance while requiring half as many CPT epochs. Together, our findings show that preserving SID geometry, beyond shared-prefix structure, provides a simple and effective semantic prior for LLM-based GR.",
       "url": "https://arxiv.org/abs/2608.07816",
-      "pdf_url": "https://arxiv.org/pdf/2608.07816v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.07816v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.07055",
@@ -7368,15 +7410,18 @@
         "cs.IR"
       ],
       "topic": "序列与会话推荐",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "ByteDance, {lixinchun.bu,zhengduoru,zhaowenlin,dinghaoran,zhouziyi.828,tanjingxuan,yanghuizhi,jiangyuchen.jyc,chenzhe.john, zhengyuchao.yc,chenlinlan,wangdongjian.msg,wangdongyue,lixiaosong.1,maohongyue,tanyaocheng}@bytedance.com"
+      ],
+      "institution_type": "工业界",
+      "organization_sector": "国内工业界",
+      "primary_institution": "ByteDance, {lixinchun.bu,zhengduoru,zhaowenlin,dinghaoran,zhouziyi.828,tanjingxuan,yanghuizhi,jiangyuchen.jyc,chenzhe.john, zhengyuchao.yc,chenlinlan,wangdongjian.msg,wangdongyue,lixiaosong.1,maohongyue,tanyaocheng}@bytedance.com",
       "score": 65,
       "reason": "聚焦用户行为序列与下一步偏好建模，和序列推荐主线直接相关。",
       "abstract": "Benefiting from ultra-long behavior sequence modeling, existing recommender systems bring users a better experience via simultaneously considering their long-term and short-term interests. Nevertheless, extended sequence lengths introduce substantial burdens on training efficiency and serving throughput. Prior approaches typically utilize search-based or cluster-based compression on ultra-long sequences at the cost of fine-grained information, or rely on various lightweight target attention structures incapable of sufficient sequential feature extraction. In this paper, we balance the effectiveness and efficiency for ultra-long sequence modeling via full transformer modeling accompanied with a two-stage knowledge distillation framework. First, both teacher and student models take the full attention mechanism rather than pure target-sequence attention for effective sequence scaling. For student models, we propose several simple yet well-motivated token merge approaches, significantly compressing the sequence length while maintaining an acceptable performance. Then, a one-time teacher is heavily trained with full sequence tokens, further boosting the performance of student models via knowledge distillation. The proposed paradigm named TM20K has been successfully deployed in ByteDance's e-commerce advertising recommender system that extends the e-commerce sequence length to 20K, delivering substantial improvements in key business metrics (e.g., ADSS +1.036\\%) while keeping the training and serving cost nearly the same as the online state-of-the-art model (e.g., serving latency only +5.6\\%).",
       "url": "https://arxiv.org/abs/2608.07055",
-      "pdf_url": "https://arxiv.org/pdf/2608.07055v2"
+      "pdf_url": "https://arxiv.org/pdf/2608.07055v2",
+      "affiliation_checked": true
     },
     {
       "id": "2609.01627",
@@ -7393,15 +7438,19 @@
         "cs.AI"
       ],
       "topic": "公平、可信与安全",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "University of ZurichZurichSwitzerland",
+        "Dublin City UniversityDublinIreland"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "海外学术界",
+      "primary_institution": "University of ZurichZurichSwitzerland",
       "score": 65,
       "reason": "讨论偏差、鲁棒性或可信问题，适合补齐推荐系统治理视角。",
       "abstract": "Explanations play a crucial role in creating trustworthy recommender systems (RS), yet choosing a good explanation method presents challenges. Many explanation methods exist, but little guidance exists on which is best for which setting. Existing explanation generation methods often produce abstract outputs that require further formatting to become user-friendly, with a seemingly endless pool of options. Running user-based evaluations of all possible options is usually unfeasible, while automated evaluation metrics often either assess only the explainer's abstract output or require comparison with a ground truth, which is generally unavailable. Recent studies have shown that large language models (LLMs) can serve as ``judges'' for explanation evaluation, but their reliability has not yet been thoroughly explored. This paper studies the utility of LLMs in selecting an effective explanation method for a given application. We first explore their ability to generate explanation prototypes given varying information about the RS and the user. Specifically, we generate 18 distinct explanation prototypes, which are subsequently evaluated by 14 LLMs of varying sizes across two temperature settings. We compare these against human ratings derived from a user study. Our results show that while LLMs exhibit human-like rating patterns and achieve moderate rank correlation with human raters, their absolute rating agreement is low and varies substantially by model size and evaluation construct. We derive four practical recommendations: keep explanation-generation prompts concise, prefer larger models for evaluation, pre-test evaluation constructs, and audit explanations for factual accuracy, as neither humans nor LLMs reliably detect non-factual content.",
       "url": "https://arxiv.org/abs/2609.01627",
-      "pdf_url": "https://arxiv.org/pdf/2609.01627v1"
+      "pdf_url": "https://arxiv.org/pdf/2609.01627v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.06928",
@@ -7426,7 +7475,8 @@
       "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
       "abstract": "Pretrained audio representation models learned from large-scale corpora have achieved strong performance in audio classification and understanding. However, most existing models are optimized for objectives such as masked prediction, contrastive learning, or audio-text alignment, which do not necessarily produce representation spaces well-suited to recommender systems. Unlike classification, music recommender systems must capture item relationships shaped by subjective and behavior-dependent listener preferences. Although pretrained audio embeddings have been explored in conventional recommender systems, their effectiveness in the rapidly emerging paradigm of generative recommender systems remains underexplored. To address this gap, we systematically evaluate six representative audio encoders across three types of music recommender systems: content-based, sequential, and Semantic-ID-based generative recommender systems. We further investigate how residual-quantization design, including codebook width, quantization depth, and retained Semantic-ID prefixes, affects the preservation of recommendation-relevant information. Experiments on two music recommendation datasets show that audio-text-aligned and music-domain representations are generally more effective when pretrained embedding geometry is used directly, whereas interaction-based sequential training substantially reduces performance differences among encoders. We also find that increasing Semantic-ID capacity does not consistently improve generative recommender systems and may introduce substantial instability. These findings provide practical guidance for selecting audio encoders and designing audio-derived Semantic IDs for modern music recommender systems.",
       "url": "https://arxiv.org/abs/2608.06928",
-      "pdf_url": "https://arxiv.org/pdf/2608.06928v2"
+      "pdf_url": "https://arxiv.org/pdf/2608.06928v2",
+      "affiliation_checked": true
     },
     {
       "id": "2608.06792",
@@ -7444,15 +7494,18 @@
         "cs.AI"
       ],
       "topic": "LLM 与 Agent",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "NAVER WEBTOON, Seongnam-si, Republic of Korea"
+      ],
+      "institution_type": "研究机构",
+      "organization_sector": "海外研究机构",
+      "primary_institution": "NAVER WEBTOON, Seongnam-si, Republic of Korea",
       "score": 65,
       "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
       "abstract": "Foundation model(FM) for recommendation has shown strong ability to model long-horizon sequential user behavior. In practice, a single pretrained foundation model is often adapted to diverse downstream serving surfaces through Supervised Fine-Tuning(SFT). However, optimizing task-specific objectives such as clicks or likes does not necessarily align the serving policy with the business metrics that determine recommendation quality. We propose a three-phase progressive post-training framework that explicitly separates downstream adaptation from business-metric alignment. The adaptation stage is decomposed into Linear Probing(LP) and Full Fine-Tuning(FFT): LP first stabilizes randomly initialized downstream heads within a frozen pretrained representation space, and FFT then jointly specializes the full model for the target task. On top of this stabilized policy, Reinforcement Fine-Tuning(RFT) aligns the model with practical business objectives using a learned reward model. Rather than directly optimizing the serving policy on sparse business targets, we train the policy on dense implicit feedback and use business-metric supervision only for reward modeling. Offline experiments show that the progressive LP-FFT-RFT framework outperforms single-phase alternatives, and that reward-based alignment yields a stronger serving policy than directly using the reward model itself for ranking. Large-scale online A/B tests further show that the proposed framework improves production recommendation quality over a conventional non-foundation baseline. A reference implementation is available at https://github.com/webtoon/rec-fm-progressive-alignment",
       "url": "https://arxiv.org/abs/2608.06792",
-      "pdf_url": "https://arxiv.org/pdf/2608.06792v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.06792v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.10008",
@@ -7467,15 +7520,18 @@
         "cs.LG"
       ],
       "topic": "公平、可信与安全",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Amazon.com LLC , Seattle , Washington , USA"
+      ],
+      "institution_type": "工业界",
+      "organization_sector": "海外工业界",
+      "primary_institution": "Amazon.com LLC , Seattle , Washington , USA",
       "score": 62,
       "reason": "讨论偏差、鲁棒性或可信问题，适合补齐推荐系统治理视角。",
       "abstract": "LLM recommenders for top-K item suggestion regularly emit titles outside the target catalog. Prior audits report a binary out-of-domain rate; none ask whether the model knew. We jointly audit hallucination rate (OOD@10) and verbalized-confidence calibration (ECE, Brier, reliability) for four zero-shot LLM recommenders from four independent vendors (Mistral Large, Llama-3.3-70B, GPT-OSS-120B, Claude Sonnet 4.6), not grounded or fine-tuned systems, across three catalogs (MovieLens-25M, Amazon Reviews 2023 Toys, Yelp Open Dataset), stratified by item popularity. Measuring catalog membership is itself the hard part: on identical outputs the reported rate moves by an order of magnitude with the string matcher used, and F1 cannot separate the candidates. We validate the instrument against 201 human judgments and select on net bias, where the adopted one is off by -0.040 against +0.144 for the common fuzzy rule. Hallucination is then strongly catalog-dependent (0.6-2.7% on MovieLens, 11.6-38.7% on Yelp, 49.3-61.0% on Amazon Toys). Each model holds a near-constant confidence level barely responsive to the catalog, while the catalog-hit rate swings 60 points, so the sign of the error is set by where a model's constant lands against a catalog's accuracy: 7 of the twelve cells are under-confident and 5 over-confident, all four under-confident on MovieLens, all four over-confident on Amazon Toys. We read this as an elicitation mismatch: \"Just Ask\" elicits a generic quality rating, not a catalog-membership probability. A conformal abstention threshold over verbalized confidence changes hallucination by at most 1.65 pp across four alpha levels, because the channel cannot separate correct items from hallucinations. We recommend that audits report calibration alongside OOD, validate the matcher producing the OOD number, and use catalog-anchored elicitation.",
       "url": "https://arxiv.org/abs/2608.10008",
-      "pdf_url": "https://arxiv.org/pdf/2608.10008v3"
+      "pdf_url": "https://arxiv.org/pdf/2608.10008v3",
+      "affiliation_checked": true
     },
     {
       "id": "2608.07069",
@@ -7489,15 +7545,18 @@
         "cs.CY"
       ],
       "topic": "评测、数据与复现",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Norly Research"
+      ],
+      "institution_type": "研究机构",
+      "organization_sector": "海外研究机构",
+      "primary_institution": "Norly Research",
       "score": 62,
       "reason": "提供评测、数据或综述视角，便于校准实验设计并定位研究空白。",
       "abstract": "AI assistants are becoming a primary interface for local discovery, yet almost nothing is known about which venues they surface -- especially in food and drink, where recommendations carry direct revenue consequences. We present the first census-denominated audit of AI venue recommendation: a complete enumeration of 4,776 cafes, restaurants, and bars across two bounded markets (Canggu and Ubud, Bali), against which we evaluate 2,208 search-grounded responses from four production AI systems (ChatGPT, Claude, Gemini, Perplexity) to 96 persona-conditioned queries, collected over seven days under a pre-registered protocol. Because we observe the full market, we can measure what sampled audits cannot: 85.6% of venues were never recommended by any system -- 72.6% even among established venues with fifty or more ratings. Visibility follows a two-margin structure. Entry into answers is associated with documentation: review volume (OR 1.64), an own website (OR 1.92), listed price information (OR 1.54), and third-party web mentions (OR 1.44) -- while star rating is null at this margin (OR 0.89). Rank within answers reverses the pattern: among recommended venues, rating significantly predicts first position (OR 1.17). Presence in an open POI dataset (Foursquare), a folk-theorized visibility factor, shows no positive effect at either margin. Outright fabrication is rare (0.08% of mentions), but systems recommended permanently closed venues 93 times -- staleness, not hallucination, is the practical failure mode. Cross-system agreement is low (top-20 Jaccard 0.33-0.54). A two-week test-retest shows cross-period answer similarity comparable to same-day rerun similarity: the churn is sampling stochasticity, not temporal drift. We release our protocol, registry construction method, and derived data.",
       "url": "https://arxiv.org/abs/2608.07069",
-      "pdf_url": "https://arxiv.org/pdf/2608.07069v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.07069v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.06997",
@@ -7521,15 +7580,18 @@
         "cs.IR"
       ],
       "topic": "生成式推荐",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "City University of Hong Kong, Kuaishou Technology"
+      ],
+      "institution_type": "产学合作",
+      "organization_sector": "产学合作",
+      "primary_institution": "City University of Hong Kong, Kuaishou Technology",
       "score": 62,
       "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
       "abstract": "Generative Recommendation (GenRec) represents a promising paradigm that achieves remarkable empirical success by encoding items as compact Semantic IDs (SIDs) and modeling user behavior via next-token prediction across diverse recommendation scenarios. Extending this paradigm to cross-domain recommendation is challenging because a unified model must accommodate heterogeneous item semantics and behavioral patterns across domains. Existing methods commonly rely on globally shared representations or lightweight domain adaptation, which may provide insufficient capacity for modeling heterogeneous patterns at different semantic granularities. To address these challenges, we propose HD-Rec, a unified generative framework for cross-domain recommendation. HD-Rec employs a hierarchical domain-aware quantizer that constructs semantic identifiers using globally shared coarse-level codebooks and adaptively routed fine-level codebooks. It further introduces a domain-adaptive sparse mixture-of-experts module that combines a continuously activated shared expert with a dynamically selected specialized expert. To improve the coherence of multi-token item representations, we develop a cross-granularity routing consistency objective that regularizes token-level routing decisions toward their item-level consensus. Experiments on three public cross-domain recommendation benchmarks show that HD-Rec consistently improves over competitive sequential, generative, and cross-domain recommendation baselines.",
       "url": "https://arxiv.org/abs/2608.06997",
-      "pdf_url": "https://arxiv.org/pdf/2608.06997v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.06997v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.07733",
@@ -7549,15 +7611,20 @@
         "cs.PF"
       ],
       "topic": "图与知识增强",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Technion Israel Institute of Technology, Haifa, Israel",
+        "Hewlett Packard Enterprise Labs, Fort Collins, CO, USA",
+        "Hewlett Packard Enterprise Labs, Milpitas, CA, USA"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "海外学术界",
+      "primary_institution": "Technion Israel Institute of Technology, Haifa, Israel",
       "score": 60,
       "reason": "利用图结构或知识图谱建模高阶关系，值得关注表示学习与传播机制。",
       "abstract": "Graph Neural Networks (GNNs) are widely used across domains such as natural sciences, social network analysis, chip design, and recommendation systems. However, as graph sizes grow, storing and processing them entirely on a single-node CPU-GPU system becomes increasingly impractical. A promising approach is to distribute the graph across multiple remote memory nodes, though this introduces a major bottleneck: inter-node network congestion during training. To address this, we propose LGNNIC, a novel inter-node system architecture that leverages SmartNICs co-located with remote memory nodes-a configuration already available in modern systems-to reduce communication overhead in distributed GNN training. LGNNIC offloads key preprocessing tasks to SmartNICs, reducing the volume of data transferred to computational (training) nodes and alleviating network congestion. We introduce two complementary techniques executed on the SmartNICs during the preprocessing phase: Neighbor Sampling, which performs mini-batch sampling, and Quantization of the sampled batches. To evaluate LGNNIC under different communication infrastructures, we designed both an optimized low-overhead DMA-based synchronization mechanism and a high-overhead socket-based alternative used as a benchmark. We evaluate the core SmartNIC offloading mechanisms across standard GNN workloads and sampling hyperparameters using a proof-of-concept (PoC) system comprising one remote-memory node with an NVIDIA BlueField-2 SmartNIC and one compute node with an A100 GPU. Both Neighbor Sampling and Quantization on the remote node demonstrated substantial training speedups in most configurations. Neighbor Sampling achieved up to 62.4x and 17.5x speedups with Sockets and DOCA-DMA, respectively, primarily due to reduced data transaction time. Quantization provided additional speedups of up to 3.6x and 1.3x, respectively, by reducing data transfer.",
       "url": "https://arxiv.org/abs/2608.07733",
-      "pdf_url": "https://arxiv.org/pdf/2608.07733v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.07733v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.06632",
@@ -7582,15 +7649,18 @@
         "cs.AI"
       ],
       "topic": "LLM 与 Agent",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Meta Platforms, Menlo Park, California, USA"
+      ],
+      "institution_type": "工业界",
+      "organization_sector": "海外工业界",
+      "primary_institution": "Meta Platforms, Menlo Park, California, USA",
       "score": 68,
       "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
       "abstract": "Industrial recommendation systems predominantly adopt a passive ranking paradigm that infers user preferences from implicit behavioral signals (e.g., clicks, dwell time) rather than explicit, natural language inputs. As a result, users experience a persistent discrepancy between their explicit interests and what passive behavioral algorithms deliver, limiting their ability to express nuanced preferences or steer their feed in real time. To address this growing gap between how recommendations are optimized and how users wish to articulate their interests, we present Shape Your Feed (SYF), an LLM-based agentic recommendation framework that enables real-time, multimodal co-curation of content. SYF employs a three-tier architecture: (i) a Perception Flow that captures fine-grained user intent from text prompts, voice commands, and UI interactions; (ii) a Serving Flow that performs real-time agentic re-ranking and pruning of candidate items, grounded in a persistent Semantic Profile encoding evolving user preferences; and (iii) a Self-Evolution Flow that aligns system behavior with human judgments via Direct Preference Optimization (DPO) and an LLM-as-a-Judge ensemble. Offline evaluations show that SYF's alignment scoring module achieves 98.85% accuracy, substantially improving over strong few-shot baselines. Large-scale online A/B experiments on production traffic further demonstrate that SYF improves feed relevance and user sentiment, indicating a practical and scalable path toward interactive, user-steerable recommendation in industrial settings.",
       "url": "https://arxiv.org/abs/2608.06632",
-      "pdf_url": "https://arxiv.org/pdf/2608.06632v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.06632v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.06213",
@@ -7611,15 +7681,18 @@
         "cs.IR"
       ],
       "topic": "序列与会话推荐",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Yandex, Moscow, Russia"
+      ],
+      "institution_type": "研究机构",
+      "organization_sector": "海外研究机构",
+      "primary_institution": "Yandex, Moscow, Russia",
       "score": 65,
       "reason": "聚焦用户行为序列与下一步偏好建模，和序列推荐主线直接相关。",
       "abstract": "Industrial recommender systems are commonly deployed as multi-stage cascades with separate candidate generators, pre-rankers, and final rankers. Although effective, these cascades require repeated user-history processing, complex feature pipelines, and multiple serving stages. Semantic-ID-based generative retrieval offers a path toward simpler end-to-end systems, but next-item prediction alone does not capture the fine-grained preferences encoded by production ranking objectives. We present Gryphon-v2, a unified generate-and-rank architecture for end-to-end recommendation. The model encodes a user history once, generates Semantic-ID candidates with an autoregressive decoder, resolves them to catalogue items, and ranks them with an item-level Ranking Module that reuses the shared encoder states. To transfer fine-grained production ranking preferences without adding an expensive second model to the serving path, we distill a high-capacity, training-only Teacher Ranker into the Ranking Module. Gryphon-v2 is trained with Rollout Distillation: teacher scores are the only ranking supervision, and they are collected over two complementary candidate distributions. Rollouts from the current decoder expose the Ranking Module to candidates produced by the same generation mechanism used at serving time, while logged impressions cover items users were actually shown. In an online A/B experiment on a large-scale recommendation surface at Yandex Music, a single Gryphon-v2 model replaces a production cascade comprising more than 15 candidate generators, pre-ranking, and final ranking. The deployment increases the number of active users by 1.41% at serving latency comparable to the production cascade. These results support the practical viability of a generative retriever with a Ranking Module distilled from the Teacher Ranker as an end-to-end alternative to a production cascade.",
       "url": "https://arxiv.org/abs/2608.06213",
-      "pdf_url": "https://arxiv.org/pdf/2608.06213v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.06213v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.05655",
@@ -7648,7 +7721,8 @@
       "reason": "融合文本、图像或其他模态信息，有助于理解内容语义与用户兴趣。",
       "abstract": "Per-user modality weighting is deployed at billion-user scale in multimodal recommenders, through user modality-strength vectors, attention gates, meta-weight hypernetworks, and low-rank guided weights, each claiming a ranking gain from user-specific modality preference. Yet, to our knowledge, prior evaluations do not isolate a genuinely user-specific signal from a global modality weight plus model capacity. We audit this family with a two-contrast audit principle, reducing six implementations onto one shared collaborative backbone and measuring a utility gap (real-GM) against a single global modality weight and an identifiability gap (real-shuf) against an eval-time permutation of the user-weight binding. Across three independent short-video corpora, a single global weight already delivers nearly all of the content gain (+1.9/+3.6/+3.5pp over a no-modality baseline, p < .001). Making the weight per-user adds no consistent utility: no implementation wins on all corpora and metrics, and the few positive gaps are small (<=0.9pp) and flip. The shuffle control is necessary but not sufficient, since real-shuf reaches +128% of the content gain for heads that simultaneously lose to the global weight. We trace this dissociation to gates reading the shared collaborative embedding: decoupling the gate input collapses the inflated real-shuf to near zero while the utility conclusion stands. A monotone signal-implant dose-response (capture AUROC rising from 0.57 to 0.89 and from 0.64 to 1.00) verifies the harness would detect user-specific structure if present, and every finding replicates on a fourth, cross-domain e-commerce corpus. We propose reporting real-GM alongside real-shuf as a minimum evidentiary standard for personalization claims.",
       "url": "https://arxiv.org/abs/2608.05655",
-      "pdf_url": "https://arxiv.org/pdf/2608.05655v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.05655v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.06510",
@@ -7673,7 +7747,8 @@
       "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
       "abstract": "Agentic AI promises systems that can act on users' behalf, from filtering content to negotiating prices to selecting services. Whether it will empower users is an open question, and one that depends on more than the technology. We conduct a comparative case analysis of four earlier, more mature domains in which similar forms of agency emerged: browser-based ad blockers, platform recommender systems, financial robo-advisors, and email spam filtering. Across the cases, questions about whose interests agents would serve were resolved through technical arrangements: API choices, protocol governance, industry standards, and default configurations. Beyond their technical form, these were political decisions. We identify this settling of contestable questions in a technical form as depoliticization, a concept from political theory, here at work in technological systems. Its most consequential effect is that individual outcomes and collective contestation capacity can move in opposite directions: spam inbox quality improved substantially while the organized capacity to contest spam governance collapsed. Where intermediary institutions sustained formal channels for challenge, user-aligned agency proved more durable; where proprietary infrastructure and closed standard-setting absorbed contestation, the material basis for user-aligned alternatives was dismantled, and the loss proved hard to reverse. Applying this lens to agentic AI, we find a similar pattern forming: governance is consolidating around the Model Context Protocol and the Agentic AI Foundation, an industry-governed venue already deciding what agents will be able to do. Unlike in the completed trajectories, these decisions have not yet hardened, and remain open to challenge by users and the public.",
       "url": "https://arxiv.org/abs/2608.06510",
-      "pdf_url": "https://arxiv.org/pdf/2608.06510v2"
+      "pdf_url": "https://arxiv.org/pdf/2608.06510v2",
+      "affiliation_checked": true
     },
     {
       "id": "2608.07593",
@@ -7688,15 +7763,18 @@
         "cs.IR"
       ],
       "topic": "LLM 与 Agent",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Independent Researcher"
+      ],
+      "institution_type": "研究机构",
+      "organization_sector": "海外研究机构",
+      "primary_institution": "Independent Researcher",
       "score": 68,
       "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
       "abstract": "Context-aware recommender systems have long recognized that factors such as location, time, and weather shape where and what people choose to eat. Existing weather-aware food and point-of-interest recommenders, however, typically treat weather generically -- mapping conditions to preferences through hand-crafted rules or specially trained context models -- and do not capture that the culturally appropriate response to weather is itself region-specific: a rainy evening calls for hot tea and fried snacks in one culinary culture and for very different comfort food in another. Encoding such weather-by-region-by-cuisine interactions as explicit rules or training data is brittle and does not scale. We present a weather- and location-aware agentic dining-recommendation system that takes a different approach: a large language model (LLM) orchestrates tools for location and weather retrieval and then reasons in natural language over the combined context, drawing on the cultural and culinary world knowledge already latent in the model to produce region-sensitive, weather-appropriate recommendations without per-region rule tables or specialized training. We describe the agent architecture, the tool-orchestration flow (Google location services and a weather service feeding an OpenAI LLM), and the reasoning mechanism, and we report on a working prototype that was implemented and briefly deployed end-to-end. We discuss design trade-offs -- cost, latency, ambiguity handling, and fallbacks -- and we are explicit about limitations, including the absence of a formal user study and the risk of cultural stereotyping in locality-based inference. The contribution is architectural: a simple, extensible pattern for incorporating environmental and cultural context into agentic recommendation through LLM reasoning rather than engineered rules.",
       "url": "https://arxiv.org/abs/2608.07593",
-      "pdf_url": "https://arxiv.org/pdf/2608.07593v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.07593v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.05402",
@@ -7715,15 +7793,23 @@
         "cs.IR"
       ],
       "topic": "公平、可信与安全",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Johannes Kepler University Linz, Linz, Austria",
+        "Jönköping University, Department of Computer Science and Informatics, Jönköping, Sweden",
+        "Know-Center GmbH, Graz, Austria",
+        "Know Center Research GmbH and University of Graz, Graz, Austria",
+        "Graz University of Technology, Graz, Austria",
+        "Johannes Kepler University Linz and Linz Institute of Technology , Linz, Austria"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "海外学术界",
+      "primary_institution": "Johannes Kepler University Linz, Linz, Austria",
       "score": 65,
       "reason": "讨论偏差、鲁棒性或可信问题，适合补齐推荐系统治理视角。",
       "abstract": "Popularity calibration in recommender systems has been studied both as a form of user-centered personalization and as an indicator of popularity bias. Most existing work evaluates calibration through offline metrics, often assuming that users prefer recommendation lists whose popularity distribution matches their historical consumption profile. However, user studies on calibration remain limited, and existing findings suggest that calibrated recommendations do not necessarily have a strong effect on user experience. Moreover, although prior work has shown that calibration metrics can correlate with users' perceptions of recommendation lists, the robustness of this relation remains unclear under different levels of item familiarity and incomplete user-history information. In this work, we study the perceived value and measurement reliability of popularity calibration in music recommendation. We construct personalized track lists from users' recent listening histories and use a controlled naive recommender to create lists with different popularity compositions: highpop-heavy, lowpop-heavy, and calibrated. We investigate whether users perceive differences between these lists, whether calibrated lists are preferred, how robust JSD-based popularity calibration is under different familiarity and history-availability conditions, and how computational popularity labels align with users' own popularity judgments. Our results show that users perceive differences in popularity composition, but do not clearly prefer calibrated lists. We further find that the relation between JSD and perceived popularity depends on item familiarity, list composition, and available user history, while computational and user-judged popularity labels only weakly align. These findings contribute to a more critical understanding of popularity calibration as both an offline metric and a user-facing construct.",
       "url": "https://arxiv.org/abs/2608.05402",
-      "pdf_url": "https://arxiv.org/pdf/2608.05402v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.05402v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.04807",
@@ -7737,15 +7823,18 @@
         "cs.IR"
       ],
       "topic": "评测、数据与复现",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Department of Artificial Intelligence, Yonsei University, Seoul, Republic of Korea"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "海外学术界",
+      "primary_institution": "Department of Artificial Intelligence, Yonsei University, Seoul, Republic of Korea",
       "score": 65,
       "reason": "提供评测、数据或综述视角，便于校准实验设计并定位研究空白。",
       "abstract": "Studying how video recommender systems shape user behavior requires online experiments that link playback behavior with the recommendation conditions that produced it. Existing user-study infrastructure provides one or the other, but not both within a single experimentation workflow. We present WatchLens, an open-source platform that fills this gap. WatchLens adopts a modular architecture in which user interfaces, content sources, and recommendation policies are independently configurable, with policies assignable separately to the feed and the watch page, while a standardized logging layer attaches the recommendation policy and ranking position to every event at recording time. This design enables researchers to analyze how recommendation policies and ranking positions shape downstream playback behavior, session continuation, and navigation between the feed and the watch page, with the linkage between policy and outcome available in each event rather than reconstructed afterwards. We demonstrate WatchLens with a short-form video case study that holds the interface, feed policy, and content pool constant while varying only the watch-page policy, showing how the platform supports session-level comparison of recommendation effects on real viewing behavior. WatchLens is released as a publicly available, single-server deployable system for reproducible online video recommendation research.",
       "url": "https://arxiv.org/abs/2608.04807",
-      "pdf_url": "https://arxiv.org/pdf/2608.04807v1"
+      "pdf_url": "https://arxiv.org/pdf/2608.04807v1",
+      "affiliation_checked": true
     },
     {
       "id": "2608.04809",
