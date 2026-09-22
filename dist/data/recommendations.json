@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-21T04:42:44Z",
+  "generated_at": "2026-09-22T03:45:32Z",
   "source": "arXiv",
   "papers": [
     {
@@ -26,18 +26,18 @@
       "reason": "聚焦用户行为序列与下一步偏好建模，和序列推荐主线直接相关。",
       "abstract": "Sequential recommendation aims to predict the next item a user will interact with based on their historical behavior. Advances in Transformers have significantly improved sequential recommendation but are still limited by cost efficiency. Although State Space Models (SSMs) have recently enabled efficient long-range modeling, most existing methods encode each item with a single static contextual role, overlooking the phenomenon of item polysemy. In fact, the same item often plays different semantic roles depending on user context, and existing methods are limited in capturing dynamic behavior across different temporal granularities. In this work, we propose DSRec, a novel dual-interest cross-SSM model that explicitly disentangles item roles across long-term and short-term semantic context. Sequential items are encoded into long-term interest embeddings that capture stable preferences via historical aggregation, and a short-term interest branch that emphasizes local session intent modulated by inter-click time intervals. These interest embeddings are processed through distinct SSM encoders: a full-sequence Mamba for long-term modeling, and a time-modulated SSM that dynamically adjusts state evolution based on temporal gaps. To enable effective cross-granularity alignment, we adopt a residual cross-fusion mechanism that exchanges contextual information between the two branches while preserving semantic independence. Experiments on public benchmarks demonstrate that DSRec outperforms other state-of-the-art methods.",
       "url": "https://arxiv.org/abs/2609.21548",
-      "pdf_url": "https://arxiv.org/pdf/2609.21548v1",
-      "affiliation_checked": true,
+      "pdf_url": "https://arxiv.org/pdf/2609.21548",
+      "focus_label": "双兴趣SSM推荐",
       "article_theme": "双兴趣多粒度状态空间模型的序列商品推荐",
       "research_question": "现有基于状态空间模型（SSM）的序列推荐方法为每个物品编码单一静态语义角色，忽略了物品在不同用户情境下的多义性（如同一件商品可能体现长期偏好或短期兴趣），也难以在不同时间粒度上捕捉动态行为。论文试图显式解耦物品的长期与短期语义角色，实现高效的多粒度兴趣建模。",
       "main_contribution": "提出DSRec，一种基于多粒度交叉残差SSM的双兴趣序列推荐模型。每个物品被编码为长期兴趣嵌入（经用户历史聚合刻画稳定偏好）和短期兴趣嵌入（由点击间隔时间调制的会话意图），分别送入非对称的双SSM编码器（全局Mamba和时间调制SSM），并通过残差交叉融合机制在保持语义独立的前提下实现跨分支信息交换。",
       "key_ideas": "🔸 长期兴趣建模：在基础物品嵌入上加入用户历史均值池化得到的上下文偏移量，抑制短期波动，再用标准全序列Mamba块（线性投影+1D卷积+SiLU门控+选择性SSM+残差连接）编码长程依赖。\n🔸 短期兴趣建模：将物品嵌入与时间间隔嵌入拼接，时间间隔经对数缩放和分位数分桶离散化；短序列由时间感知SSM处理，用sigmoid门控按时间间隔调节状态更新——间隔小则注入新信息，间隔大则保留历史状态。\n🔸 非对称双SSM设计：长期路径用全局Mamba，短期路径用时间调制SSM，避免两个相同Mamba编码器忽略不同粒度的时间模式。\n🔸 残差交叉融合：每条分支以另一分支的detach输出作为辅助输入，实现双向信息共享又防止梯度纠缠，融合后经FFN和层叠SSM块，最终拼接双分支末位输出做softmax预测，用交叉熵损失优化。\n🔸 动机源于物品多义性：同一物品（如《沙丘》）既可能出现在科幻片序列中体现长期偏好，也可能跟在漫画后体现短期兴趣。",
       "analysis_summary": "🔸 在MovieLens-1M、Amazon-Beauty和Amazon-Video-Games三个数据集上，DSRec在HR@10、NDCG@10、MRR@10多数指标上超越SASRec、BERT4Rec、Mamba4Rec、SIGMA等基线，如MovieLens-1M上HR@10较最佳基线提升2.58%、MRR@10较Mamba4Rec提升5.67%。\n🔸 消融实验显示移除残差交叉融合、双兴趣嵌入、短期SSM-S分支或融合编码器均导致性能下降；用两个相同Mamba的Dual Mamba变体在Amazon数据集上明显更差，验证非对称设计必要性。\n🔸 超参分析：块数B在Beauty和Games上分别取3和2最佳，继续加深反而退化且训练时间与显存稳步上升；最大序列长度在T=50达到峰值，从T=50到T=200训练时间约增加四倍。\n🔸 效率方面DSRec保持线性复杂度（因双分支在隐藏维度上成本翻倍），推理时间83ms、显存3.55G，接近Mamba4Rec（72ms、2.69G），远优于SASRec（123ms、7.58G）；训练收敛更快。\n🔸 鲁棒性实验按历史长度0-5、5-20、20+分组，DSRec在各组（含冷启动用户）均优于Mamba4Rec；作者亦指出当前多义建模较基础，需引入外部知识、可学习融合门等改进。",
       "personal_view": "基于全文分析，本文的创新点在于将物品多义性显式引入SSM序列推荐，通过长期/短期双嵌入与非对称双编码器实现语义解耦，这一视角区别于以往用户侧多兴趣建模，具有一定新意。残差交叉融合以detach方式防止梯度纠缠，设计简洁实用，且效率实验证明其保持了SSM的线性复杂度优势，工程落地价值较高。局限方面：双嵌入仍基于同一物品ID投影，语义解耦的深度有限；时间调制SSM的门控设计相对朴素；主要评测集中在三个公开数据集，缺少跨域或真实线上验证；论文在实验设置部分表述前后不完全一致（如数据集数量），部分提升幅度在稀疏数据集上仍有波动空间。",
-      "focus_label": "双兴趣SSM推荐",
       "note_model": "glm-4.5-air",
       "note_basis": "full_text_pdf",
-      "full_text_pages": 11
+      "full_text_pages": 11,
+      "affiliation_checked": true
     },
     {
       "id": "2609.21547",
@@ -67,18 +67,18 @@
       "reason": "强调规模、效率或线上部署，对工程落地和系统设计更有参考价值。",
       "abstract": "Research on explainability in recommender systems largely centers on end users, overlooking the perspectives of those who build and maintain these systems and their potential use cases such as model debugging. In this study, we examine how news engineers and related technical stakeholders perceive and implement personalization and explainability in practice. We conducted 15 semi-structured interviews across nine news organizations, spanning diverse regions in both public and private sectors, to investigate the challenges and motivations shaping their approaches. Our findings reveal that personalization is not always a straightforward or desirable choice for news organizations, as concerns around user tracking, editorial control, and resource constraints often limit its adoption. Even among organizations implementing personalized news recommender systems in production, explainability is rarely prioritized, with day-to-day operational demands frequently taking precedence over longer-term transparency goals. Definitions of explainability vary widely across organizations, though some demonstrate promising internal practices and visualization tools that facilitate communication between engineering teams and newsrooms. Based on our analysis, we provide actionable and practical guidelines for news engineers and researchers on how to adopt explainability methods within a news personalization pipeline.",
       "url": "https://arxiv.org/abs/2609.21547",
-      "pdf_url": "https://arxiv.org/pdf/2609.21547v1",
-      "affiliation_checked": true,
+      "pdf_url": "https://arxiv.org/pdf/2609.21547",
+      "focus_label": "新闻推荐访谈研究",
       "article_theme": "新闻工程师如何看待个性化与可解释性的实践",
       "research_question": "论文探讨可解释性方法能否解决工程师在构建新闻推荐系统时面临的挑战，考察个性化与可解释性在不同新闻机构中的实际采纳状况。难点在于学界研究偏重算法性能与面向用户的解释，而真实机构中的工程约束、编辑控制与资源限制很少被定性研究刻画。",
       "main_contribution": "论文通过对九家新闻机构15位工程师与产品负责人的半结构化访谈和主题分析，刻画了个性化与可解释性采纳的跨组织图景。研究发现个性化并非普遍可行或可取，且没有组织显式使用算法可解释性工具，解释实践主要面向内部调试与编辑沟通。作者据此提出了面向研究者与实践者的可操作指南。",
       "key_ideas": "🔸 采访对象覆盖公共广播、报刊、媒体集团与新闻聚合器四类机构，访谈按个性化现状、挑战、调试实践、可解释性需求四阶段展开，并进行双人编码的主题分析。\n🔸 九家机构中七家采用某种个性化，但多为内容推荐、协同过滤与非个性化方法混合的形态，且普遍叠加由编辑价值驱动的业务规则。\n🔸 挑战归纳为四类：数据/后端/基础设施（几乎所有组织都提及）、资源与人员、与编辑团队的沟通、推荐系统本身的问题（冷启动、多样性、跨产品规则冲突等）。\n🔸 可解释性实践分为五类：面向新闻编辑室的内部分析看板、手动调试手段、无外部解释、对外部解释持怀疑态度、未来愿意尝试对外解释；无一家使用正式可解释性算法。\n🔸 基于发现提出建议：优先做面向编辑沟通的内部看板、用更系统的调试取代临时手动检查、将解释需求与业务规则结合实现可追溯。",
       "analysis_summary": "🔸 跨组织对比显示公共广播机构个性化程度总体偏低，主要受用户数据获取和隐私理念限制，而私有机构内部差异反而较大。\n🔸 组织普遍重视多样性，它既是挑战也是评估标准和业务规则，过度集中的负面新闻还可能导致用户新闻疲劳、访问下降。\n🔸 工程师对算法级可解释工具（如特征归因）并不热衷，谈到解释时更多联想到Netflix、Facebook式的面向用户解释，说明工具研究与实际需求存在错位。\n🔸 LLM采纳作为范围外发现：多家机构用LLM生成文章、元数据或作为内部工具，但也出现编辑价值对齐和岗位替代的担忧。\n🔸 局限包括样本集中于欧美机构、主要捕捉技术视角，作者也承认基础设施、资金和人力等组织性障碍无法单靠可解释性解决。",
       "personal_view": "基于全文来看，这篇访谈研究的价值在于把可解释性讨论从'面向最终用户'转向'面向构建与维护系统的工程师及编辑室'，并通过跨组织视角论证了BBC个案中的解释性落差是系统性的。研究方法规范，编码一致性较高，引用的从业者原话使结论有说服力。创新性主要体现在问题框架而非技术本身；实用性体现在为研究者指明应设计轻量、可嵌入生产流程的解释工具。局限在于样本地域与角色覆盖有限，访谈自报数据可能受社会期许影响，且定性结论难以量化各因素的实际权重。",
-      "focus_label": "新闻推荐访谈研究",
       "note_model": "glm-4.5-air",
       "note_basis": "full_text_pdf",
-      "full_text_pages": 10
+      "full_text_pages": 10,
+      "affiliation_checked": true
     },
     {
       "id": "2609.21346",
@@ -103,18 +103,18 @@
       "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
       "abstract": "Mixture-of-Experts (MoE) scales capacity, but existing designs cannot set three quantities independently. For a single token, participation is how many experts contribute knowledge to its output, execution is how many are actually computed (compute cost), and materialization is how many expert-sized parameter sets must be built and stored (memory cost). Sparse routing keeps execution and materialization low, but shrinks participation: for each token, only a few experts contribute. Dense output-mixing restores full participation, but its execution grows with the number of experts. Parameter-merging keeps execution at one expert, but its materialization grows with the number of routing decisions. We propose IntBMoE, a block-conditioned MoE that decouples all three by pairing dense expert composition with sparse block execution. Its blocks come from a small learned codebook, one per entry. At each internal layer, a lightweight hypernetwork merges all expert bases in that layer's pool into one composed expert. Participation is full, because every composed expert draws on the entire pool. Execution stays sparse, because a router sends each token to only a few blocks. Materialization is bounded, because the codebook, not the input, fixes how many blocks exist. Dual-Path Residual Gating (DPRG) further couples two independently composed paths through multiplicative gating. Experiments on image classification show consistent gains over representative sparse and dense MoE baselines. Additional experiments on language modeling and sequential recommendation validate its generalization beyond vision. IntBMoE is fully deployed in AMap's generative recommendation system, serving hundreds of millions of users under a 60ms latency budget, with a 2.4% relative UVCTR gain in online A/B testing. Our code is available at https://github.com/AMAP-ML/DreamX-Rec/.",
       "url": "https://arxiv.org/abs/2609.21346",
-      "pdf_url": "https://arxiv.org/pdf/2609.21346v1",
-      "affiliation_checked": true,
+      "pdf_url": "https://arxiv.org/pdf/2609.21346",
+      "focus_label": "MoE专家组合",
       "article_theme": "IntBMoE：块级条件化实现全参与稀疏执行MoE",
       "research_question": "::现有MoE设计无法同时独立控制专家的参与度、执行成本与参数物化成本：稀疏路由限制参与、稠密混合推高执行、参数合并导致物化膨胀。论文研究如何让每个token都受益于完整专家池，同时保持稀疏执行和有界的参数物化。",
       "main_contribution": "::提出IntBMoE，将专家变换的构造与执行解耦：由小型码本嵌入经共享超网络，将各层专家基底融合为K个可复用的多层块，路由器仅为每个token选择Top-k个块执行。引入双路径残差门控（DPRG）提升组合表达能力，并证明参数物化规模由码本而非路由决策数决定，可在推理时缓存组合块。",
       "key_ideas": "::🔸每模块维护K个可学习码本嵌入，超网络据此生成值路径与门路径的组合系数，将每层E个专家基底以方差保持因子1/√E线性融合为L层块，系数不受softmax约束，允许负值组合\n::🔸token级路由器对每个token打分选Top-k块，块内先做块条件化特征过滤（token与码本嵌入拼接生成软掩码），再逐层通过DPRG：值路径与RMSNorm后的门路径相乘调制\n::🔸被选块输出按路由概率加权聚合，并叠加始终激活的共享SwiGLU专家；组合成本O(KED)与token无关，执行成本O(TkD)\n::🔸推理时所有组合块可预计算并缓存，请求时计算不随专家池规模E增长，适合低延迟服务\n::🔸将Transformer的FFN子层替换为IntBMoE模块，保持与基线方法的总参数量对齐以公平比较",
       "analysis_summary": "::🔸ImageNet-1K上达到73.76% Top-1、91.48% Top-5，超过最强基线SMEAR 1.98个Top-1百分点；缓存后每图FLOPs从4.063G降至3.457G\n::🔸消融显示移除门路径跌幅最大（Top-1降至68.04%），其次为单层块；固定λ、softmax归一化系数、去掉共享专家或特征过滤均带来一致下降\n::🔸移除任意专家基底均降低准确率（最小0.26点），且块路由呈现类条件、深度依赖的分配模式，深层组合系数相似度趋近于零，说明码本学到了差异化的组合配方\n::🔸泛化实验上MiniPile语言建模PPL降至14.5878（较最强基线降低2.9%），IntTravel序列推荐HR@1、HR@5、NDCG@5均为最优\n::🔸在AMap生成式推荐系统中全量部署，平均延迟19ms、P99为38ms，满足60ms预算，一周在线A/B实现2.4%相对UVCTR提升",
       "personal_view": "::基于全文分析，这篇论文的核心创新在于用参与度、执行、物化三个维度解构已有MoE设计，并以码本条件化的超网络组合实现三者解耦，思路清晰且叙事完整。块参数与输入无关从而可缓存，是其能落地低延迟推荐服务的关键，工业部署与在线A/B结果为方法实用性提供了有力证据。局限方面：主要视觉实验基于较小规模DeiT-Tiny骨架，K、E扩大后收益边际递减，超大规模语言模型上的可扩展性尚未验证；方法激活参数较高（23.1M），显存占用依赖缓存策略；摘要中亦提及DPRG引入常数级额外开销。此外组合是线性的，表达能力依赖DPRG的非线性耦合，能否替代更深的专家结构仍需进一步研究。",
-      "focus_label": "MoE专家组合",
       "note_model": "glm-4.5-air",
       "note_basis": "full_text_pdf",
-      "full_text_pages": 18
+      "full_text_pages": 18,
+      "affiliation_checked": true
     },
     {
       "id": "2609.21863",

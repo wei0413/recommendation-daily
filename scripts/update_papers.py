@@ -15,7 +15,8 @@ import subprocess
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 from urllib.error import HTTPError, URLError
 
@@ -86,6 +87,17 @@ AFFILIATION_KEYS = (
 
 def clean(text: str | None) -> str:
     return re.sub(r"\s+", " ", text or "").strip()
+
+
+def matches_query_scope(title: str, abstract: str) -> bool:
+    title_l = title.lower()
+    haystack = f"{title} {abstract}".lower()
+    return (
+        "recommendation" in title_l
+        or "recommender" in title_l
+        or "recommender system" in haystack
+        or "recommendation system" in haystack
+    )
 
 
 def classify(title: str, abstract: str) -> str:
@@ -230,24 +242,7 @@ def download_feed(url: str) -> bytes:
     )
 
 
-def fetch_entries() -> list[dict]:
-    max_results = int(os.environ.get("ARXIV_MAX_RESULTS", "300"))
-    params = urllib.parse.urlencode({
-        "search_query": QUERY,
-        "start": 0,
-        "max_results": max_results,
-        "sortBy": "submittedDate",
-        "sortOrder": "descending",
-    })
-    local_feed = os.environ.get("ARXIV_XML_PATH", "").strip()
-    if local_feed:
-        root = ET.fromstring(Path(local_feed).read_bytes())
-    else:
-        try:
-            root = ET.fromstring(download_feed(f"{API}?{params}"))
-        except ET.ParseError as exc:
-            raise RuntimeError(f"arXiv returned invalid Atom XML: {exc}") from exc
-
+def parse_atom_root(root: ET.Element) -> list[dict]:
     papers = []
     for entry in root.findall("atom:entry", NAMESPACE):
         title = clean(entry.findtext("atom:title", namespaces=NAMESPACE))
@@ -291,6 +286,117 @@ def fetch_entries() -> list[dict]:
     return papers
 
 
+def parse_xml_feed(url: str) -> ET.Element:
+    try:
+        return ET.fromstring(download_feed(url))
+    except ET.ParseError as exc:
+        raise RuntimeError(f"arXiv returned invalid XML from {url}: {exc}") from exc
+
+
+def rss_published_date(paper_id: str, rss_date: str) -> str:
+    fallback = ""
+    try:
+        fallback = parsedate_to_datetime(rss_date).date().isoformat()
+    except (TypeError, ValueError, OverflowError):
+        pass
+    try:
+        page = download_feed(f"https://arxiv.org/abs/{paper_id}").decode("utf-8", errors="replace")
+    except RuntimeError as exc:
+        print(f"::warning::Could not read citation date for {paper_id}: {exc}")
+        return fallback
+    match = re.search(r'<meta[^>]+name=["\']citation_date["\'][^>]+content=["\'](\d{4}/\d{2}/\d{2})["\']', page, re.I)
+    return match.group(1).replace("/", "-") if match else fallback
+
+
+def fetch_entries_from_rss() -> list[dict]:
+    categories = ("cs.IR", "cs.LG", "cs.AI", "cs.CL", "cs.CV", "stat.ML")
+    candidates: dict[str, dict] = {}
+    creator_tag = "{http://purl.org/dc/elements/1.1/}creator"
+    for category in categories:
+        root = parse_xml_feed(f"https://rss.arxiv.org/rss/{category}")
+        for item in root.findall("./channel/item"):
+            title = clean(item.findtext("title"))
+            description = clean(re.sub(r"<[^>]+>", " ", item.findtext("description") or ""))
+            abstract = clean(re.sub(r"^arXiv:.*?Abstract:\s*", "", description, flags=re.I | re.S))
+            announce_match = re.search(r"Announce Type:\s*([a-z]+)", description, re.I)
+            if not announce_match or announce_match.group(1).lower() not in {"new", "cross"}:
+                continue
+            if not matches_query_scope(title, abstract):
+                continue
+            link = clean(item.findtext("link"))
+            match = re.search(r"/abs/([^/?#]+)", link)
+            if not match:
+                continue
+            paper_id = re.sub(r"v\d+$", "", match.group(1))
+            if paper_id not in candidates:
+                candidates[paper_id] = {
+                    "title": title,
+                    "abstract": abstract,
+                    "authors": [clean(name) for name in clean(item.findtext(creator_tag)).split(",") if clean(name)],
+                    "categories": [clean(node.text) for node in item.findall("category") if clean(node.text)],
+                    "rss_date": clean(item.findtext("pubDate")),
+                }
+
+    print(f"RSS discovered {len(candidates)} recommendation candidates across {len(categories)} categories.")
+    lookback_days = max(1, int(os.environ.get("ARXIV_RSS_LOOKBACK_DAYS", "10")))
+    cutoff = datetime.now(timezone.utc).date() - timedelta(days=lookback_days)
+    papers: list[dict] = []
+    for paper_id, item in candidates.items():
+        title = item["title"]
+        abstract = item["abstract"]
+        published = rss_published_date(paper_id, item["rss_date"])
+        try:
+            published_date = datetime.fromisoformat(published).date()
+        except ValueError:
+            print(f"::warning::Skipping {paper_id}; no valid publication date was available.")
+            continue
+        if published_date < cutoff:
+            print(f"Skipping old RSS item {paper_id} published {published}.")
+            continue
+        topic = classify(title, abstract)
+        papers.append({
+            "id": paper_id,
+            "title": title,
+            "authors": item["authors"],
+            "published": published,
+            "categories": item["categories"],
+            "topic": topic,
+            "institutions": [],
+            "institution_type": "机构未公开",
+            "organization_sector": "机构未公开",
+            "primary_institution": "机构未公开",
+            "score": score_paper(title, abstract, published),
+            "reason": reason_for(topic, title),
+            "abstract": abstract,
+            "url": f"https://arxiv.org/abs/{paper_id}",
+            "pdf_url": f"https://arxiv.org/pdf/{paper_id}",
+        })
+    return papers
+
+
+def fetch_entries() -> list[dict]:
+    if os.environ.get("ARXIV_FORCE_RSS", "").strip() == "1":
+        return fetch_entries_from_rss()
+
+    max_results = int(os.environ.get("ARXIV_MAX_RESULTS", "300"))
+    params = urllib.parse.urlencode({
+        "search_query": QUERY,
+        "start": 0,
+        "max_results": max_results,
+        "sortBy": "submittedDate",
+        "sortOrder": "descending",
+    })
+    local_feed = os.environ.get("ARXIV_XML_PATH", "").strip()
+    if local_feed:
+        try:
+            root = ET.fromstring(Path(local_feed).read_bytes())
+        except ET.ParseError as exc:
+            raise RuntimeError(f"local arXiv XML is invalid: {exc}") from exc
+    else:
+        root = parse_xml_feed(f"{API}?{params}")
+    return parse_atom_root(root)
+
+
 def main() -> None:
     old_papers: list[dict] = []
     if OUTPUT.exists():
@@ -298,12 +404,19 @@ def main() -> None:
 
     try:
         fetched_papers = fetch_entries()
-    except RuntimeError as exc:
-        if old_papers:
-            print(f"::warning::{exc}")
-            print(f"Keeping {len(old_papers)} existing papers; the next run will retry arXiv.")
-            return
-        raise
+    except RuntimeError as primary_exc:
+        print(f"::warning::Primary arXiv query failed: {primary_exc}")
+        try:
+            fetched_papers = fetch_entries_from_rss()
+        except RuntimeError as fallback_exc:
+            if old_papers:
+                print(f"::warning::arXiv RSS fallback failed: {fallback_exc}")
+                print(f"Keeping {len(old_papers)} existing papers; the next run will retry arXiv.")
+                return
+            raise RuntimeError(
+                f"primary arXiv query failed ({primary_exc}); RSS fallback failed ({fallback_exc})"
+            ) from fallback_exc
+        print("Recovered with arXiv RSS discovery and batched Atom metadata lookup.")
 
     merged = {paper["id"]: paper for paper in old_papers}
     for paper in fetched_papers:
