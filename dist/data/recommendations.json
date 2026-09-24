@@ -1,7 +1,233 @@
 {
-  "generated_at": "2026-09-23T07:43:27Z",
+  "generated_at": "2026-09-24T07:34:31Z",
   "source": "arXiv",
   "papers": [
+    {
+      "id": "2609.27201",
+      "title": "A Systematic Benchmark of Explainable Methods for Temporal Attribution in Sequential Recommendation Systems",
+      "authors": [
+        "Akash Pandey",
+        "Kanisha Shah",
+        "Addrish Roy",
+        "Dwipam Katariya",
+        "Hongyangyang Shi",
+        "Amanda Ding",
+        "Kalanand Mishra",
+        "Pranab Mohanty"
+      ],
+      "published": "2026-09-23",
+      "categories": [
+        "cs.LG"
+      ],
+      "topic": "公平、可信与安全",
+      "institutions": [
+        "Capital One, AI Foundations, San Jose, CA, USA",
+        "Capital One, AI Foundations, New York, NY, USA",
+        "Capital One, AI Foundations, McLean, VA, USA",
+        "Capital One, AI Foundations, Seattle, WA, USA"
+      ],
+      "institution_type": "研究机构",
+      "organization_sector": "海外研究机构",
+      "primary_institution": "Capital One, AI Foundations, San Jose, CA, USA",
+      "score": 85,
+      "reason": "讨论偏差、鲁棒性或可信问题，适合补齐推荐系统治理视角。",
+      "abstract": "Sequential RecSys are central to modern personalization, exploiting user's historical interaction sequences to drive next-step decisions. Deep learning models, particularly CNN and Transformer-based architectures, have proven highly effective at capturing temporal dependencies in these histories. For transparency and trust, understanding which past interactions drive a given recommendation is increasingly important --- both for developers auditing model behavior and for users seeking a rationale. However, the non-linearities that give these models their predictive power also render them black boxes, making it difficult to attribute decisions to specific interactions. While gradient-based, perturbation-based, and attention-based explainability methods exist, a systematic benchmark of their faithfulness for sequential recommendation is missing. We address this gap by introducing a dual-model masking metric in which one model supplies per-timestep attribution scores and a separately trained, masking-robust probe measures the resulting change in predicted probability. Using this metric, we benchmark ten XAI methods across CNN, Transformer, SASRec, and BERT4Rec backbones on KuaiRand and MovieLens, complemented by analyses of temporal attribution patterns, item popularity confounding, and robustness to input corruption. Our key findings are: (1) gradient-based methods, particularly GradientSHAP and Integrated Gradients, yield the most faithful and robust attributions; (2) raw attention weights are unreliable, but gradient-weighted attention restores faithfulness on shorter sequences, with degradation on longer horizons as softmax attention probabilities converge toward uniform importance scores, diminishing the method's ability to identify informative interactions; and (3) temporal attribution patterns in faithful methods reflect genuine task structure rather than recency or popularity bias.",
+      "url": "https://arxiv.org/abs/2609.27201",
+      "pdf_url": "https://arxiv.org/pdf/2609.27201",
+      "affiliation_checked": true,
+      "article_theme": "序列推荐中十种可解释归因方法的系统性忠实度基准",
+      "research_question": "序列推荐模型常用梯度、扰动和注意力三类事后归因方法解释哪些历史交互驱动了推荐，但缺乏对其忠实度的系统评估。论文试图回答：这些XAI方法在序列推荐中的归因分数能否真实反映模型的决策过程，以及其鲁棒性与流行度/近期偏差如何？",
+      "main_contribution": "论文提出首个面向序列推荐时序归因的双模型忠实度度量：一个模型提供逐步归因分数，另一个结构相同、以随机交互掩码训练的探针模型衡量掩掉高归因交互后预测概率的变化，避免了朴素掩码的分布外问题和remove-and-retrain的高成本。基于该指标在CNN、Transformer、SASRec、BERT4Rec骨干上对十种XAI方法在KuaiRand-1k与MovieLens-1M进行系统基准测试，并分析时序归因模式、流行度混淆与噪声鲁棒性。",
+      "key_ideas": "🔸 双模型框架：模型A在完整序列上常规训练并生成归因分数；模型B（同架构）以每步以概率p=0.05随机掩码交互的方式训练，使评估时掩码输入保持在分布内。\n🔸 忠实度计算：将L个时间步按归因分数降序分组，逐组掩码后用模型B计算平均预测概率，以组均值归因与被掩概率之间的Pearson相关系数c_f度量，越接近-1越忠实。\n🔸 鲁棒性诊断：随机置零5%—25%的时间步，计算干净与损坏归因在未掩位置上的Pearson相关c_r(η)。\n🔸 流行度偏差：计算物品训练频率与其平均归因分数的相关c_p，与随机基线对比判断是否被全局频率混淆。\n🔸 十种被测方法包括Integrated Gradients、GradientSHAP、DeepLIFT系、Grad-CAM、LIME、KernelSHAP、Attention Tracing、Grad-SAM及内嵌可解释的TimeSliver。",
+      "analysis_summary": "🔸 忠实度上Integrated Gradients与Grad-SAM（SASRec/BERT4Rec）最可靠，c_f在所有设置下低于-0.9；GradientSHAP、DeepLIFT等在KuaiRand-1k上也低于-0.8；TimeSliver以最多约5倍更少的参数达到c_f<-0.8。\n🔸 注意力权重不可靠：Attention Tracing在Vanilla Transformer上甚至反向（c_f=+0.930）；Grad-SAM在长序列上退化明显（KuaiRand-1k-Long为-0.308），且L>300后随softmax注意力趋近均匀而下降。\n🔸 鲁棒性方面，所有受测方法在渐进噪声下退化不超过25%，Integrated Gradients、GradientSHAP、DeepLIFT-SHAP退化最小，DeepLift与Grad-SAM在MovieLens-1M的Transformer变体上最敏感。\n🔸 流行度偏差分析显示忠实方法的c_p均在[-0.146,+0.110]内，接近随机基线（0.007），未发现系统性流行度偏好。\n🔸 局限包括未做用户研究验证技术归因质量与实际可解释体验的关联，KuaiRand-1k实验从1000用户降采样至100用户。",
+      "personal_view": "基于全文分析，这篇论文的核心创新在于将归因生成与忠实度评估解耦的双模型探针设计，巧妙兼顾了分布一致性与评估成本，是对ROAR等昂贵评估方案在推荐场景的实用替代。系统覆盖十种方法、五种骨干与两种任务类型，结论（梯度法最优、注意力需谨慎、忠实方法无流行度/近期混淆）对工业界选型有直接指导意义。局限在于实验规模较小（KuaiRand仅100用户）、探针训练概率p为需重调的数据集相关超参数，且缺少人类主观解释质量验证；此外结论主要基于两个数据集，向更大规模或更复杂交互场景的外推仍待检验。",
+      "focus_label": "XAI时序归因基准",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 11
+    },
+    {
+      "id": "2609.27183",
+      "title": "When LLM-Based User Profiling Adds Value in Production Streaming Recommendation",
+      "authors": [
+        "Milad Sabouri",
+        "Neeraj Sharma",
+        "Sardar Hamidian",
+        "Shaghayegh Agah"
+      ],
+      "published": "2026-09-23",
+      "categories": [
+        "cs.IR"
+      ],
+      "topic": "LLM 与 Agent",
+      "institutions": [
+        "DePaul University / Comcast Technology AI, Chicago, IL, USA",
+        "Comcast Technology AI, Sunnyvale, CA, USA",
+        "Comcast Technology AI, Washington, DC, USA"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "海外学术界",
+      "primary_institution": "DePaul University / Comcast Technology AI, Chicago, IL, USA",
+      "score": 77,
+      "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
+      "abstract": "Personalized recommendation depends critically on how user representations are constructed from historical behavior. Two paradigms have emerged for constructing semantic user profiles in content-based recommendation. First, aggregate methods derive user representations as numerical aggregates of semantic item embeddings. Second, LLM-based methods generate natural-language summaries of user preferences and encode them through a text encoder. Each paradigm can be combined with temporal disentanglement of recent versus historical behavior. LLM-based profile generation is significantly more expensive than aggregate approaches, raising the question of when this additional cost is justified. We present a systematic comparison of four semantic user-profiling strategies, factorially crossed across representation type and temporal handling, evaluated on a real-world production dataset. The comparison reveals how these strategies differ across user behavior types, across both accuracy and beyond-accuracy dimensions of recommendation quality, and across the temporal-window setting that governs the disentanglement.",
+      "url": "https://arxiv.org/abs/2609.27183",
+      "pdf_url": "https://arxiv.org/pdf/2609.27183",
+      "affiliation_checked": true,
+      "article_theme": "生产级流媒体推荐中LLM用户画像何时真正带来收益",
+      "research_question": "论文试图回答：在真实生产流媒体推荐系统中，LLM生成的自然语言用户画像相比简单的嵌入聚合画像，其额外成本何时才值得付出。难点在于生产环境候选规模大、用户行为异质，且LLM画像计算与运维成本显著更高。",
+      "main_contribution": "论文在2×2设计（表示类型×时间处理）下系统比较了四种语义用户画像策略，并固定下游打分架构以隔离画像构建这一唯一变量。核心发现是LLM画像的收益是分段条件性的：习惯型用户上聚合方法占优，探索型用户上LLM画像带来准确率提升；同时LLM画像导致推荐集中于热门小集合，降低目录覆盖率与新奇性。",
+      "key_ideas": "🔸 四种策略构成2×2设计：Centroid（SBERT嵌入均值）、TemporalCentroid（短/长期质心注意力融合）、Narrative（LLM生成全历史偏好摘要再SBERT编码）、TemporalNarrative（LLM分别生成近期与长期摘要后注意力融合）。\n🔸 四种策略共享同一下游架构：用户画像向量与SBERT物品嵌入拼接后输入两层MLP打分，训练用BCE损失加负采样，仅画像构建不同，保证归因干净。\n🔸 用户按未来消费是否偏离过去分为Explorer（测试集物品未出现在训练历史）与Non-Explorer两段，分别报告指标，揭示分段条件效应。\n🔸 短期窗口参数PCT控制短期段占比，在{15%,20%,25%,30%}上扫描敏感性。\n🔸 基于分段条件性提出选择性路由设想：习惯型用户用低成本聚合画像，探索型用户路由到LLM画像管道。",
+      "analysis_summary": "🔸 全体与Non-Explorer段上，LLM策略Recall@10较Centroid低约22%–31%；Explorer段上Narrative和TemporalNarrative分别领先约19%和14%，K=100的Recall/NDCG差异最稳健显著（Wilcoxon检验，α=0.05）。\n🔸 超准确率维度上，LLM策略多样性提升约4%，但覆盖率下降约80%、新颖性下降约18%–20%，且该热门吸引子模式在所有段与PCT设置下均显著，作者归因于语言模型的流行度偏差。\n🔸 PCT敏感性：两时间策略在15%–25%稳定，PCT=30%时退化明显，TemporalNarrative在Explorer段降幅约19%；短期拆分对Explorer无额外收益。\n🔸 部署上，历史规模（r=−0.30）与历史内内容多样性（r=+0.11）与Explorer标签显著相关，提示可做推理时路由，但仅为初步观察；LLM画像约覆盖18%用户即可。\n🔸 局限：单一平台离线评估，未含在线实验，未解决探索者检测的预测问题，泛化性待验证。",
+      "personal_view": "基于全文来看，本文最有价值的不是提出新方法，而是用生产数据揭示了LLM画像收益的用户分段条件性，纠正了“LLM画像普遍更优”的预期，并附带发现其热门集中副作用，工程参考意义很强。2×2设计与固定下游架构的做法使归因干净，超准确率维度的分析也更贴近部署需求。局限在于：Explorer定义依赖测试集信息，推理时检测器尚未构建，路由方案仍停留在可行性论证；评估为单平台离线设置，且未量化具体成本收益比。总体而言，这是一项对LLM推荐落地具有现实校准作用的应用研究。",
+      "focus_label": "LLM用户画像",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 9
+    },
+    {
+      "id": "2609.27998",
+      "title": "A Flexible Recommendation System for Individuals and Groups",
+      "authors": [
+        "Yacine Mokhtari (Lab-STICC\\_MOTEL",
+        "Lab-STICC",
+        "IMT Atlantique - INFO)",
+        "Gr\\'egory Smits (IMT Atlantique - INFO",
+        "Lab-STICC",
+        "Lab-STICC\\_MOTEL)"
+      ],
+      "published": "2026-09-23",
+      "categories": [
+        "cs.IR"
+      ],
+      "topic": "其他",
+      "institutions": [],
+      "institution_type": "机构未公开",
+      "organization_sector": "机构未公开",
+      "primary_institution": "机构未公开",
+      "score": 77,
+      "reason": "与推荐系统研究直接相关，适合快速浏览其问题设定和实验结论。",
+      "abstract": "Group recommender systems typically rely on either aggregating individual preferences or treating groups as distinct meta-users. However, these methods often suffer from static aggregation strategies or data sparsity issues within group histories. This paper introduces a novel approach, that relies on a GNN-based architecture to learn a dual representation of each user's preferences, capturing their behavior as an independent individual from one side and as a member of a collective from the other side. By performing a differential analysis of these individual and group-oriented preferences, our system then determines the behavioral profile of each user when joining a group. Finally, specific preference aggregation strategies are defined to cope with the behavioral profiles of the users composing a group. Consequently, the system is equally capable of delivering precise recommendations to individuals and to arbitrary groups, effectively unifying the two traditional paradigms of recommendation. Experiments on synthetic data simulating diverse group settings and behaviors confirm the flexibility and relevance of the proposed approach compared to state-of-the-art methods.",
+      "url": "https://arxiv.org/abs/2609.27998",
+      "pdf_url": "https://arxiv.org/pdf/2609.27998",
+      "affiliation_checked": true,
+      "article_theme": "双表征建模用户适应性，统一个体与群体推荐",
+      "research_question": "现有群体推荐系统要么采用静态聚合策略（OGR），要么因群体历史数据稀疏而无法泛化到新群体（PGR），且普遍忽略用户加入群体后会调整自身偏好的行为特性。论文试图建模每个用户作为个体和作为群体成员的双重偏好表征，从而同时为个体、已见群体和未见群体提供精准推荐。",
+      "main_contribution": "提出一种基于知识图谱增强的图注意力网络（KG-GAT）架构，为每个用户学习个体与群体成员两种偏好表示；通过对比分析两种表示定义双态度和多样性程度，将用户划分为可适应、常量、双面三类行为画像；进而设计基于双极函数的分层聚合策略，优先保障不可适应成员的满意度并用可适应成员偏好对候选重排。该系统统一了个体与群体两种推荐范式。",
+      "key_ideas": "🔸用TransR初始化实体嵌入，为每个用户附加调制向量m_u，使其在group_inter关系下经非线性变换得到群体成员表征，与个体表征并行学习。\n🔸经L层GAT传播后分别输出个体匹配分与群体匹配分，用BPR损失结合KGE对比损失与L2正则联合优化。\n🔸定义双态度度α_u（个体与成员表征余弦距离）和多样性度β_u（群体交互项嵌入的平均两两不相似度），据阈值将用户分为AU、CU、DU三类。\n🔸按群体成员构成区分四种组合（G1-G4），采用bipolar(least(g),avg(g'))策略：先用不可适应成员的最小满意度筛出候选集，再用可适应成员的平均偏好重排。\n🔸非端到端的两阶段推荐流程便于解释推荐理由：优先保障不可适应成员，同时兼顾其余成员。",
+      "analysis_summary": "🔸在三个基于MovieLens-KG合成的数据集上，个体推荐HR@20和NDCG@20上该方法在多数设置下优于KGAT系列和KGAG。\n🔸已见群体推荐上，交互充足时KGAT-PGR略优，但该方法的用户画像加自适应聚合仍具竞争力（如genData_large上HR@20为0.785）。\n🔸未见群体上PGR方法无法给出推荐，该方法明显优于OGR基线，如genData_large上HR@20达0.883、NDCG@20达0.178。\n🔸局限：实验全部基于模拟数据，作者亦指出真实数据集实验和超参数鲁棒性、消融分析仍在进行中。",
+      "personal_view": "基于全文分析，我认为本文的核心创新在于显式建模用户加入群体后的偏好适应行为，将PGR与OGR的优势融合为按群体构成动态切换的聚合策略，这在群体推荐中是一个较新颖且贴合社会心理学视角的切入点。双极聚合带来的可解释性也具实用价值。但需要指出，评估完全依赖合成数据，用户行为画像的划分依赖人工阈值α、β的设定，其在真实噪声数据上的稳健性尚待验证；分层聚合策略在纯AU群体中退化为简单平均，对极端情境的覆盖也值得进一步检验。",
+      "focus_label": "群体推荐灵活性",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 9
+    },
+    {
+      "id": "2609.26975",
+      "title": "Calibrating Reproduced Claims in Recommender Systems",
+      "authors": [
+        "Alan Said"
+      ],
+      "published": "2026-09-22",
+      "categories": [
+        "cs.IR"
+      ],
+      "topic": "评测、数据与复现",
+      "institutions": [],
+      "institution_type": "机构未公开",
+      "organization_sector": "机构未公开",
+      "primary_institution": "机构未公开",
+      "score": 74,
+      "reason": "提供评测、数据或综述视角，便于校准实验设计并定位研究空白。",
+      "abstract": "Reproduction studies can produce mixed outcomes. Reported values may differ while the ordering of the compared methods remains the same, a result may hold only under some experimental conditions, or a released implementation may fail to reproduce a result that the model can still reach. The terms repeatability, reproducibility, and replicability describe how a follow-up study relates to the original experiment, but not which parts of the original claim are supported by the new results. We introduce \\emph{claim calibration} as a way of stating the strongest claim supported by a follow-up study, together with the conditions under which it holds and the parts that remain untested. We apply this perspective to five original--follow-up paper pairs from recommender-systems research. The cases show that agreement in numerical values, method rankings, statistical results, and overall conclusions does not always coincide, and that follow-up studies often support only part of the original claim. Based on these observations, we propose a Claim Evidence Profile for reporting the original claim, its scope, the reproduction target, the reported results, the calibrated claim, and the parts of the original claim that remain unresolved.",
+      "url": "https://arxiv.org/abs/2609.26975",
+      "pdf_url": "https://arxiv.org/pdf/2609.26975",
+      "affiliation_checked": true,
+      "article_theme": "用主张校准刻画推荐系统复现研究真正支持了什么",
+      "research_question": "复现研究通常只给出成功或失败的单一标签，但数值、方法排序、统计结果和整体结论可能并不一致，无法说明原论文结论的哪些部分被支持。论文试图提出一种方式，明确后续研究所支持的最强主张及其适用条件和未被检验的部分。",
+      "main_contribution": "论文提出“主张校准”视角，并设计了包含七个字段的Claim Evidence Profile报告框架，用于记录原始主张、范围、复现目标、报告结果、校准后主张和未决范围。作者将该框架应用于推荐系统领域五对原始—后续论文，展示数值一致、排序保持与结论支持之间如何分离，主张校准不取代可重复性术语，而是与之互补。",
+      "key_ideas": "🔸以“主张—证据对”为分析单元，不为每项复现研究贴单一成败标签，而是追问原主张的哪一部分被检验、结果支持什么。\n🔸分析五对论文，覆盖协同过滤、采样评估、对话推荐、准确性之外的评估和序列推荐，案例顺序在分析前固定，避免按结果选择。\n🔸分析程序包括记录原始主张及其条件、被保留或更改的实验部分、报告结果；无法直接比较的结果记为不可比较，未被检验的部分记为未测试，实验未重新运行。\n🔸Claim Evidence Profile含七个字段：原始主张、范围、研究关系、复现目标、报告结果、校准后主张、未决范围，受Model Cards等结构化文档启发，但记录的是主张与证据的关系。\n🔸跨案例发现：后续研究可通过引入更强基线检验原比较而无需重建全部实验；数值不同但排序可保持；默认实现可能无法复现而模型本身仍能达到报告性能。",
+      "analysis_summary": "🔸五案例显示NCF在原始设置下不优于调优后的MF基线；采样指标问题在序列推荐和流行度采样下得到支持，但原论文提出的修正方案未被测试。\n🔸KBRD优于DeepCRS得到支持，但新检索式系统评分高于两者，故不能支持KBRD整体最优的更广主张；BERT4Rec充分训练可达报告效果，但不始终优于SASRec。\n🔸框架明确区分“证据反对某主张”与“主张未被检验”，防止狭窄的复现尝试被读作对更广主张集合的判断。\n🔸局限明确：仅五个示例性案例、单一研究者编码、未重跑实验，校准主张带有解释性，边界划分可能因人而异。\n🔸作者承认为每条结果填profile不现实，框架更适合论文核心主张；未来需更多案例、多编码者及编码一致性评估。",
+      "personal_view": "基于全文分析，我认为本文的创新点在于把复现评估从论文级成败二元判断下沉到单条主张层面，Claim Evidence Profile提供了一个轻量、可检验的结构化报告格式，对作者、审稿人和读者都有直接实用价值，尤其适合推荐系统这类结果高度依赖基线、采样和评估协议的领域。其局限也较明显：五个案例数量少且为示例性选择，编码由单一研究者完成，主张边界的划分本身带有主观解释空间；框架不评估证据质量，校准主张仍可能被误读。未来若能在复现研究中推广使用并验证其实际效果，价值会更大。",
+      "focus_label": "复现主张校准",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 8
+    },
+    {
+      "id": "2609.26977",
+      "title": "Tie Handling Is Part of the Evaluation Protocol: An Order-Invariance Audit for Tie-Heavy Recommender Scores",
+      "authors": [
+        "Chengkun Guo",
+        "Han Chen",
+        "Yilin Zhu",
+        "Yingrui Li"
+      ],
+      "published": "2026-09-22",
+      "categories": [
+        "cs.IR"
+      ],
+      "topic": "评测、数据与复现",
+      "institutions": [],
+      "institution_type": "机构未公开",
+      "organization_sector": "机构未公开",
+      "primary_institution": "机构未公开",
+      "score": 74,
+      "reason": "提供评测、数据或综述视角，便于校准实验设计并定位研究空白。",
+      "abstract": "Offline top-k evaluation often ranks one held-out relevant item together with sampled negatives. When several candidates receive exactly the same score, the tie-breaking rule becomes part of the ranking. A common implementation stores the relevant item first and then applies a stable sort, which preserves input order among equal scores; the relevant item therefore wins every tie. We call an evaluator row-order invariant when permuting the input candidates without changing their identities, labels, or scores leaves the final ranking unchanged. We audit this property by holding candidates and scores fixed and changing only the tie-breaking rule. On 30,000 Amazon Beauty & Personal Care rows, NDCG@10 for a rating-weighted attribute-overlap score is 0.85 under input-order tie-breaking. A deterministic hash tie-break based on user and item IDs lowers it to 0.17. The exact expectation under uniform random tie-breaking closely matches the mean over 100 independent hash seeds, while a residualized attribute score with few exact ties is nearly unchanged. MovieLens Tag Genome shows the same pattern for an attribute-overlap score, whereas item popularity is nearly unchanged. We derive expected Hit Rate and NDCG at cutoff k when the relevant item is randomly ordered among candidates with the same score, and we provide a practical reporting checklist. The same issue can occur in sampled or full-catalog evaluation whenever exact ties affect top-k membership or rank.",
+      "url": "https://arxiv.org/abs/2609.26977",
+      "pdf_url": "https://arxiv.org/pdf/2609.26977",
+      "affiliation_checked": true,
+      "article_theme": "分数平分时输入顺序如何悄悄抬高推荐离线评测指标",
+      "research_question": "离线top-k评测中，当候选分数完全相等时，平分处理规则实际上成为排序的一部分。论文研究评测器是否具备“行序不变性”：仅改变候选输入顺序或平分规则，是否会导致指标大幅变化。",
+      "main_contribution": "论文形式化了行序不变性概念，推导出相关项在平分块内均匀随机分布时期望Hit Rate与NDCG的解析公式，并在Amazon与MovieLens两个数据集上对比输入顺序平分与确定性哈希平分。还提出涵盖候选集、平分规则、置换检验与敏感性分析等六部分报告清单。",
+      "key_ideas": "🔸 将“相关项固定放行首+稳定排序”识别为隐性偏差来源：全部分数并列时相关项总排名第一，输入顺序成为未声明的次级排序依据。\n🔸 定义行序不变性，并通过固定候选集与分数、只更换平分规则来隔离评测器行为的影响。\n🔸 提出四种平分处理方式：输入顺序、基于种子+用户ID+物品ID哈希的确定性平分、多次随机平分取均值、以及解析计算均匀随机平分下的精确期望（公式1、2）。\n🔸 审计设计：每行1个相关项+30个负采样，使用Amazon Beauty评分加权属性重叠分与MovieLens Tag Genome属性重叠分等，并加入几乎无平分的残差化分数和物品流行度作为对照。\n🔸 建议对整个候选行做与相关性无关的随机置换后再稳定排序，并给出可复现评测的报告清单。",
+      "analysis_summary": "🔸 Amazon加权属性重叠分NDCG@10从输入顺序的0.8474降至哈希平分的0.1702（差0.6772），Hit@10从0.9997降至0.3526；MovieLens标签属性重叠分也下降约0.60。\n🔸 100个独立哈希种子均值（0.1694±0.0012）与解析期望（0.1693）高度一致，验证理论推导；残差化分数仅变动0.0004，物品流行度几乎不变。\n🔸 Amazon审计行中100%含精确平分，99.94%的行平分跨越top-10边界，98.84%的行相关项处于平分中，说明偏差系统而普遍。\n🔸 局限：仅覆盖两个公开数据集、单相关项、30个负样本，未估计该问题在真实基准中的发生频率；MovieLens因未保留行级数组，只报告聚合结果。\n🔸 重建的Amazon行能精确复现原运行的84个聚合值（最大绝对差为零），增强可复现性。",
+      "personal_view": "基于全文分析，这篇方法论审计论文抓住了一个常被忽视但影响惊人的评测细节：稳定排序会把数据构造方式变成隐性排序特征。其创新性在于将问题形式化为可检验的行序不变性，并用解析期望与多种平分策略交叉验证，NDCG@10近0.68的落差极具冲击力。实用价值在于六部分报告清单和置换检验可直接落地。局限在于实验仅限离散属性类重尾平分分数，未覆盖全目录评测和连续打分器的量化情形，结论外推需谨慎；且审计用的是属性代理分数而非完整推荐算法，机制的真实普遍性仍待更大规模调查。",
+      "focus_label": "平分与评测协议",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 8
+    },
+    {
+      "id": "2609.27155",
+      "title": "The Like Trap: Multi-Stage Poisoning against Agents in Similarity-based Recommendation Systems",
+      "authors": [
+        "Yue Xing",
+        "Pengfei He",
+        "Zitao Li"
+      ],
+      "published": "2026-09-22",
+      "categories": [
+        "cs.CR",
+        "cs.AI",
+        "cs.LG",
+        "stat.ML"
+      ],
+      "topic": "公平、可信与安全",
+      "institutions": [
+        "Michigan State University"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "海外学术界",
+      "primary_institution": "Michigan State University",
+      "score": 74,
+      "reason": "讨论偏差、鲁棒性或可信问题，适合补齐推荐系统治理视角。",
+      "abstract": "With recent advancements in large language models (LLMs) and LLM-based agents, these agents are becoming increasingly autonomous and gaining broader access to act on users' behalf on the internet. However, the vulnerability of automated agents deployed on social media platforms (e.g., for managing a user's personal account) remains underexplored. Existing studies on agent poisoning typically assume that the adversary can expose poisoned content to the agent. Although such an attack is direct and effective, it is more easily detected and mitigated. In the context of social media platforms, this leaves open whether the recommendation system itself would surface such content to the agent in a more subtle manner. Through theoretical analysis, we show that the like-score mechanism used in OASIS can be exploited, and we characterize the conditions under which a multi-stage chain of poisoned posts can steer the agent's feed. Based on these insights, we further develop an algorithm that crafts realistic poisoned posts. Experiments support our theoretical findings and demonstrate the effectiveness of the proposed algorithm. Notably, by exploiting the like-score feedback loop, the attack causes the recommendation system to select poisoned posts even when their user-post similarity falls below the retrieval threshold.",
+      "url": "https://arxiv.org/abs/2609.27155",
+      "pdf_url": "https://arxiv.org/pdf/2609.27155",
+      "affiliation_checked": true,
+      "article_theme": "多阶段投毒链如何劫持智能体推荐信息流",
+      "research_question": "在用户是LLM智能体的相似度推荐系统中，攻击者能否通过一次注入的多阶段投毒帖子，逐步将推荐信息流导向攻击者控制的内容？难点在于投毒内容需要先经推荐系统自然曝光，且推荐策略与智能体偏好都随时间演化。",
+      "main_contribution": "论文从理论上刻画了利用OASIS式like-score反馈回路的充分条件，包括阶段间相似度约束与最小阶段数下界，并据此提出多阶段投毒链生成算法。该算法用LLM生成候选帖、通过修复与内聚筛选精确控制每阶段的用户-帖子相似度，并融合五种参与度偏置触发智能体点赞，实验证明即使相似度低于检索阈值的投毒帖最终也能占据信息流。",
+      "key_ideas": "🔸 以高相似度锚点为起点，构建M个相似度严格递减的投毒阶段链，第一阶段诱导点赞后，like-score形成自我强化回路，逐步拉入更低相似度的投毒帖。\n🔸 理论证明需满足：首阶段相似度高于top-k边界、相邻阶段帖子足够相似、末阶段相似度不低于σ*=σ⋆/(2−σ⋆²)，并给出高斯假设下最小阶段数下界。\n🔸 生成管线用LLM按(anchor, 偏置, 目标相似度, 上一阶段胜者)生成候选，通过profile前缀注入或稀释修复相似度（ϵ=0.015），再做内聚筛选保证链的连通性。\n🔸 设计五种参与度偏置：位置偏置、冗长性、流行度、可信度与语言风格，利用LLM推荐偏差提高点赞概率。\n🔸 攻击者只需知道目标用户档案、一次性注入帖子，无需知晓平台帖子总数或受害者模型。",
+      "analysis_summary": "🔸 在六种受害者模型上，第5阶段填满10帖信息流中5帖的首轮（Rnd⁵₅/₁₀）在179至248轮之间，均远小于总400轮；200条投毒帖中有48–69条经like-score进入候选集，其中32–57条被点赞。\n🔸 消融显示阶段数M=1时仅40/50用户可见末阶段帖，M>1时趋于饱和，验证阶段数必要性；增大like权重w使后期阶段出现更早，like历史长度影响非单调。\n🔸 起止相似度配置(δ₁,δ₅)=(0.03,0.12)整体最优，扩大范围虽增加低相似度候选，但阶段5的点赞数反而下降。\n🔸 OpenClaw真实智能体实验同样显示投毒帖占据信息流大部分；攻击在不用LLM生成器与不同嵌入模型间具备迁移性。\n🔸 局限：仅针对基于相似度+like-score的推荐机制，图方法与序列推荐等机制下的攻击面不同；实验为单用户、无热度与时序因素干扰的简化环境。",
+      "personal_view": "基于全文分析，这篇论文的核心创新在于打通了投毒研究与推荐系统攻击研究之间的空白：不假设投毒内容已直达受害者，而是利用推荐系统自身的like-score正反馈作为放大器，理论刻画（阶段间相似度条件、最小阶段数下界）与实用的相似度控制生成管线结合得较为完整。攻击设定贴近现实——攻击者知识需求少、一次性注入、可跨模型与嵌入迁移，并在OpenClaw上验证，警示了'智能体作为用户'这一新威胁面，实用价值较高。局限在于攻击依赖于已知的相似度+点赞历史评分机制，实验环境简化掉热度与时序、且为单智能体设定；理论的最小阶段数下界在实验中并非紧致；论文也仅提出攻击，防御方案留待后续。",
+      "focus_label": "推荐投毒攻击",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 18
+    },
     {
       "id": "2609.24430",
       "title": "What Makes a Good Semantic ID for Generative Recommendation? A Reproducibility Study",
@@ -68,22 +294,22 @@
       "institution_type": "工业界",
       "organization_sector": "海外工业界",
       "primary_institution": "Google LLC, Mountain View, CA, USA",
-      "score": 74,
+      "score": 73,
       "reason": "关注知识迁移与稀疏反馈，适合研究新用户、新物品和跨场景泛化。",
       "abstract": "Modern production-scale recommender systems rely on complex, multi-task ranking models. Introducing new prediction tasks into these massive systems often causes bottlenecks - it risks negative task conflicts with existing tasks, and can lead to long development and experimentation cycles due to the expensive retraining of backbone models and downstream models or tuning of reward combination formulas. To address the critical challenge of slow experimentation velocity, we introduce the Lightweight Ranking Heads (Light Heads) framework. Designed for continuous online learning environments, Light Heads enable the dynamic injection of new tasks into existing multi-task ranking models, effectively obviating the need for model cold-starting and retraining of backbone models. By utilizing stop-gradients and stateless daily training, this design strictly isolates new tasks, mitigating the risk of adverse task conflicts. Crucially, this framework uses a centralized configuration that allows Light Heads to be added to multiple models simultaneously, unblocking faster training data generation and co-training of downstream models. Successfully deployed at YouTube scale, this approach reduces the iteration cycle for multi-task experimentation from several weeks to days. In this paper, we detail the system architecture, analyze the training dynamics of stateless cold-started heads, compare their performance to full heads, and demonstrate how Light Heads have enabled the rapid A/B experimentation and deployment of new ranking tasks that yield measurable production value.",
       "url": "https://arxiv.org/abs/2609.25433",
-      "pdf_url": "https://arxiv.org/pdf/2609.25433v1",
-      "affiliation_checked": true,
+      "pdf_url": "https://arxiv.org/pdf/2609.25433",
+      "focus_label": "轻量排序头框架",
       "article_theme": "YouTube轻量排序头：让多任务排序实验从数周缩短到数天",
       "research_question": "在持续在线学习的大规模多任务排序系统中，如何在不重训骨干模型、不引发任务冲突的前提下快速引入新预测任务？难点在于任务冲突、下游模型需等上游新预测空间积累数据、以及数十个实验模型同步升级的漫长追赶周期。",
       "main_contribution": "论文提出Lightweight Ranking Heads（Light Heads）框架，通过集中式配置定义轻量头，并动态注入到现有持续训练的排序模型中，无需冷启动骨干模型。采用stop-gradients与每次训练运行开始时重置的无状态训练，严格隔离新任务、避免负迁移，并保证所有模型输出统一预测空间。该框架已在YouTube部署，将多任务实验周期从数周缩短到数天。",
       "key_ideas": "🔸 框架由集中配置（定义标签、损失、激活、监控指标等，独立于任何模型代码）+ 模型端集成代码两部分组成，可将新头同时注入一个阶段的所有排序模型，统一预测空间从而加速下游模型训练数据积累。\n🔸 轻量头为浅层塔（少量隐藏层），注入在主头相同层上，底部使用stop-gradients，反向传播只更新头自身隐藏层，隔离任务冲突并保护共享塔稳定，理念类似LoRA/Adapter的参数高效迁移方式。\n🔸 轻量头checkpoint不持久化，每次训练运行开始重置、无状态冷启动，凭借浅层结构在单次运行内收敛；这保证跨模型预测一致性，指标在运行开始骤降后几步内恢复。\n🔸 框架支持灵活性：可绑定自定义数据生成任务的新标签，也可对极稀疏头禁用重置、用checkpoint热启动以延长训练。\n🔸 生产保障包括：配置在训练运行开始读取并冻结、聚合质量监控看板、导出前自动评估阈值、以及缺失头时的fallback默认值。",
       "analysis_summary": "🔸 在YouTube Home与Watch Next排序模型上：稠密分类任务（如P(CTR) AUC 0.772 vs 0.781）略低于全头，稀疏任务（E(Positive Sentiment) 0.9553 vs 0.9557）接近持平；回归头E(Engagement) RMSE 0.9675 vs 0.9673基本相当。\n🔸 消融stop-gradients会使全头指标变差（如P(CTR) AUC从0.7767降到0.7704），部分轻量头自身也随之变差，证实任务冲突与隔离机制的价值。\n🔸 消融重置后轻量头略优（如E(Engagement) RMSE 0.9864 vs 0.9884），尤其对数据少的头有益，因此框架允许按头禁用重置。\n🔸 生产影响显著：排序+下游联合实验总时长从24天降到11天，联合实验启动时间从17天降到5天；全头上线需2-3个月而轻量头只需数天。\n🔸 线上收益包括长程奖励头带来+0.03%总参与度提升和低质曝光减少0.40%（p<0.05），Primetime订阅用户头带来+13.83%专项参与度提升；局限在于依赖持续训练基础设施、多阶段系统，且稠密任务有轻微质量损失。",
       "personal_view": "基于全文分析，这篇论文的核心创新不在单一算法，而在于面向工业级系统试验速度的工程化设计：将stop-gradients、无状态重置与集中配置组合起来，同时解决任务隔离、跨模型预测一致性和下游数据碎片化三个相互纠缠的问题，思路务实且与LoRA等参数高效迁移理念呼应。实验部分较为坦诚，明确指出稠密任务存在轻微指标损失，并将其定位为成本-质量的帕累托权衡。局限方面：所有实验均在YouTube单一系统中进行，结论对中小规模、批式训练或多阶段结构不同的系统的适用性受限；消融实验在不同时间点的线上系统上进行，基线绝对值有波动，虽经作者说明，仍削弱了跨表可比性。总体而言，这是很有参考价值的工业系统论文。",
-      "focus_label": "轻量排序头框架",
       "note_model": "glm-4.5-air",
       "note_basis": "full_text_pdf",
-      "full_text_pages": 8
+      "full_text_pages": 8,
+      "affiliation_checked": true
     },
     {
       "id": "2609.23849",
@@ -10231,15 +10457,19 @@
         "cs.AI"
       ],
       "topic": "LLM 与 Agent",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Georgia Institute of Technology Atlanta, Georgia, USA jtian83@gatech.edu",
+        "The University of Texas at Austin Austin, Texas, USA kay.zhenkai.wang@utexas.edu"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "海外学术界",
+      "primary_institution": "Georgia Institute of Technology Atlanta, Georgia, USA jtian83@gatech.edu",
       "score": 65,
       "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
       "abstract": "Large language models (LLMs) are increasingly used in recommender systems, but it is often unclear how much performance can be obtained from strong pre-trained backbones alone when they are placed inside a structured recommendation pipeline. In this paper, we present MARS, a modular multi-agent re-ranking framework for repeat-order food delivery recommendation. MARS serves as a controlled hybrid framework for studying how far pre-trained LLMs can go in this setting when combined with lightweight collaborative retrieval and contextual filtering. MARS performs coarse-to-fine recommendation in two stages: cuisine prediction followed by vendor ranking. The framework combines LightGCN-based global preference signals, Swing-based local peer evidence, geospatial filtering, and prompt-driven LLM reasoning over behavioral, temporal, and geographic context. We evaluate MARS on two real-world Delivery Hero benchmarks, DHRD-SE and DHRD-SG, and compare it against heuristic, sequential, graph-based, and food-delivery-specific baselines. We also provide detailed implementation and evaluation protocols, including prompting and decoding. Our study makes three contributions. First, it presents a modular multi-agent framework for repeat-order food delivery recommendation that integrates collaborative signals and LLM-based re-ranking in a transparent pipeline. Second, it shows that strong pre-trained backbones can already be competitive in repeat-order recommendation when paired with lightweight collaborative retrieval. Third, it establishes a reproducible evaluation setting for hybrid LLM recommenders in food delivery.",
       "url": "https://arxiv.org/abs/2607.25420",
-      "pdf_url": "https://arxiv.org/pdf/2607.25420v1"
+      "pdf_url": "https://arxiv.org/pdf/2607.25420v1",
+      "affiliation_checked": true
     },
     {
       "id": "2607.25339",
@@ -10259,15 +10489,18 @@
         "cs.IR"
       ],
       "topic": "生成式推荐",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Alibaba Group, Beijing, China"
+      ],
+      "institution_type": "工业界",
+      "organization_sector": "国内工业界",
+      "primary_institution": "Alibaba Group, Beijing, China",
       "score": 65,
       "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
       "abstract": "Generative recommendation tokenizes items as discrete Semantic IDs (SIDs) and autoregressively generates target items from users' historical SID sequences. Although existing SIDs incorporate multimodal and structured information, they are typically statically assigned and independent of the current interaction context. In industrial scenarios, each behavior also contains heterogeneous attributes, such as category, brand, price, behavior type, and timestamp. Fully expanding these features greatly increases the input length, while directly compressing them into a single representation may prematurely discard context-relevant information. We propose \\textbf{SPARC}, \\uline{\\textbf{S}}equence-aware \\uline{\\textbf{P}}rogressive \\uline{\\textbf{A}}ttribute \\uline{\\textbf{R}}outing and \\uline{\\textbf{C}}ompression Framework for Generative recommendation. SPARC first models the sequential dependencies of each field type to obtain context-aware field representations. It then routes the original, contextual, and identity representations of different fields into multiple slots to preserve complementary information under a fixed capacity. Finally, lightweight cross-item interaction integrates the intermediate tokens and compresses each historical item into a single token. Following the principle of contextualizing before compression, SPARC enriches user-history representations without increasing the input length of the generative backbone. Experiments on industrial Taobao and public Amazon datasets demonstrate that SPARC outperforms strong conventional and generative baselines. Further comparisons with static compression variants show that the improvement of SPARC comes from context-conditioned information retention rather than merely increasing the expressiveness of the compression module.",
       "url": "https://arxiv.org/abs/2607.25339",
-      "pdf_url": "https://arxiv.org/pdf/2607.25339v2"
+      "pdf_url": "https://arxiv.org/pdf/2607.25339v2",
+      "affiliation_checked": true
     },
     {
       "id": "2607.25823",
@@ -10295,15 +10528,18 @@
         "cs.IR"
       ],
       "topic": "LLM 与 Agent",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Spotify, UK, US, Netherlands, Spain, France"
+      ],
+      "institution_type": "工业界",
+      "organization_sector": "海外工业界",
+      "primary_institution": "Spotify, UK, US, Netherlands, Spain, France",
       "score": 62,
       "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
       "abstract": "Modern recommendation interfaces organise content into shelves: themed rows such as \"More of What You Like\" or \"New Releases for You.\" In production systems, these shelves are typically defined through hand-crafted templates coupled with dedicated retrieval logic. While effective for broad recommendation intents, this approach does not scale to the long tail of individual taste. We present a content-hypothesis-driven shelf generation system for Spotify Home that replaces fixed templates with natural-language hypotheses describing what a personalised shelf should contain. The system has four stages hypothesis generation, catalogue fulfilment, shelf alignment, and offline serving. This decomposition decouples shelf planning from catalogue fulfilment, supports independent optimisation of planning and retrieval, and enables both constrained generative retrieval over catalogue entities and distillation of frontier LLM behaviour into compact models. Our production pipeline combines hypothesis generation, generative retrieval, candidate selection and shelf alignment, offline LLM-as-a-judge evaluation, and precomputed serving. We describe the end-to-end architecture and evaluate it through offline analyses and an early online evaluation under uniform random exposure on Spotify Home. Results show that hypothesis-driven shelves substantially expand personalised recommendation supply with engagement that varies by content type and is competitive with strong existing shelves in some settings.",
       "url": "https://arxiv.org/abs/2607.25823",
-      "pdf_url": "https://arxiv.org/pdf/2607.25823v1"
+      "pdf_url": "https://arxiv.org/pdf/2607.25823v1",
+      "affiliation_checked": true
     },
     {
       "id": "2607.25640",
@@ -10320,15 +10556,21 @@
         "cs.IR"
       ],
       "topic": "LLM 与 Agent",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "KAIST, South Korea",
+        "Deezer Research, France",
+        "SiriusXM, United States",
+        "Idiap Research Institute, Switzerland"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "海外学术界",
+      "primary_institution": "KAIST, South Korea",
       "score": 62,
       "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
       "abstract": "Conversational Recommendation Systems (CRS) aim to achieve two primary objectives: recommending relevant items and generating natural language responses. While recommendation accuracy is effectively measured by established ranking metrics, the evaluation of response generation poses a more fundamental challenge. Although human evaluation remains the gold standard, its cost and scalability constraints have motivated the adoption of LLM-as-a-judge as a promising proxy, whose alignment with human judgment in the context of CRS remains an open question. In this paper, we present the first user study to empirically assess the reliability of LLM-as-a-judge for evaluating CRS responses. We sample 20 multi-turn music recommendation sessions and generate candidate system responses using four instruction-tuned LLMs, inducing variance in response quality across model scales. We collect $n{=}400$ ratings from 20 domain-expert annotators, who evaluate each response across two dimensions: Personalization Quality and Explanation Quality. Through bootstrapped correlation analysis, we find that LLM-based judges exhibit moderate positive alignment with human assessments and outperform all reference-based baselines. Furthermore, we analyze how judge performance varies according to model scale and conditioning information, providing practical guidance for deploying LLM-as-a-judge.",
       "url": "https://arxiv.org/abs/2607.25640",
-      "pdf_url": "https://arxiv.org/pdf/2607.25640v1"
+      "pdf_url": "https://arxiv.org/pdf/2607.25640v1",
+      "affiliation_checked": true
     },
     {
       "id": "2607.25471",
@@ -10343,15 +10585,21 @@
         "cs.MM"
       ],
       "topic": "LLM 与 Agent",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "The University of Sydney",
+        "Camperdown, NSW, 2006, Australia",
+        "Nankai University",
+        "Tianjing, China"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "国内学术界",
+      "primary_institution": "The University of Sydney",
       "score": 62,
       "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
       "abstract": "Graph Neural Networks (GNNs) and Large Language Models (LLMs) have each advanced recommendation systems by modeling structural and semantic signals, respectively. However, integrating their complementary strengths remains challenging, particularly in sparse settings where maintaining semantic precision is critical. We propose TRWH (Text-driven Random Walk Heterogeneous Graph Neural Network), a novel framework that fuses LLM-generated textual profiles with heterogeneous graph structures through strategic random walk augmentation. TRWH consists of three core components: (1) Embedding Creation, which produces user and item representations using both Word2Vec and LLM-based profiling; (2) a Heterogeneous Graph Neural Network (HeteroGNN) that propagates information across multi-relational edges; and (3) Random Walk-based Path Construction, which enriches sparse graphs with second-order user-user and item-item links. Experiments on the Amazon-2023 Fashion (2M users, 825K items) and Beauty (631K users, 112K items) datasets demonstrate that TRWH achieves substantial performance gains over state-of-the-art methods, including 80.0% RMSE and 52.6% MAE reductions on Fashion, and 25.7% and 10.8% improvements on Beauty. Notably, while random walks improve performance with traditional embeddings, they can dilute the nuanced representations learned by LLMs, underscoring the importance of adaptive integration strategies.",
       "url": "https://arxiv.org/abs/2607.25471",
-      "pdf_url": "https://arxiv.org/pdf/2607.25471v1"
+      "pdf_url": "https://arxiv.org/pdf/2607.25471v1",
+      "affiliation_checked": true
     },
     {
       "id": "2607.25344",
@@ -10377,15 +10625,18 @@
         "cs.IR"
       ],
       "topic": "生成式推荐",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "1Institute of Information Engineering, Chinese Academy of Sciences, Beijing, China 2School of Cyber Security, University of Chinese Academy of Sciences, Beijing, China 3Kuaishou Technology, Beijing, China 4Peking University, Beijing, China, {yangruochen, shengjiawei, liutingwen}@iie.ac.cn, {huangyusheng, zhengyoufeng, wenshuang, chenliangliang03, xupengbo03, zhangxiaoyu, wangshijun03, yangshuang08, zhaotianxing, hulantao, luocheng10}@kuaishou.com"
+      ],
+      "institution_type": "产学合作",
+      "organization_sector": "产学合作",
+      "primary_institution": "1Institute of Information Engineering, Chinese Academy of Sciences, Beijing, China 2School of Cyber Security, University of Chinese Academy of Sciences, Beijing, China 3Kuaishou Technology, Beijing, China 4Peking University, Beijing, China, {yangruochen, shengjiawei, liutingwen}@iie.ac.cn, {huangyusheng, zhengyoufeng, wenshuang, chenliangliang03, xupengbo03, zhangxiaoyu, wangshijun03, yangshuang08, zhaotianxing, hulantao, luocheng10}@kuaishou.com",
       "score": 62,
       "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
       "abstract": "Generative recommendation formulates recommendation task into an SID sequence autoregressive generation paradigm, but the decoding process is often dominated by generation likelihood. This may conflict with real-world business objectives, where high-value candidates can receive low generation probability and be pruned early during beam search. Existing reranking or training-time alignment methods either intervene too late or require costly model retraining when business preferences change. To this end, we propose \\textbf{R}eward \\textbf{G}uided \\textbf{D}ecoding, named \\textbf{RGD}, a controllable decoding framework for industrial value-oriented generative recommendation. We formulate value-guided decoding as a KL-regularized reward maximization problem, deriving a closed-form reward guided decoding distribution that principledly combines generation probability with reward signals. RGD treats the base generator as a reference policy and introduces a reward model as a test-time controller, injecting reward into each decoding step to reshape the search trajectory without retraining the generator. Extensive offline and online experiments demonstrate the effectiveness of our approach for aligning personalization and business value. RGD has been deployed on the Kuaishou platform, bringing consistent improvements in real-world recommendation scenarios.",
       "url": "https://arxiv.org/abs/2607.25344",
-      "pdf_url": "https://arxiv.org/pdf/2607.25344v1"
+      "pdf_url": "https://arxiv.org/pdf/2607.25344v1",
+      "affiliation_checked": true
     },
     {
       "id": "2607.25346",
@@ -10417,15 +10668,18 @@
         "cs.IR"
       ],
       "topic": "生成式推荐",
-      "institutions": [],
-      "institution_type": "机构未公开",
-      "organization_sector": "机构未公开",
-      "primary_institution": "机构未公开",
+      "institutions": [
+        "Meta"
+      ],
+      "institution_type": "研究机构",
+      "organization_sector": "海外研究机构",
+      "primary_institution": "Meta",
       "score": 60,
       "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
       "abstract": "Large Language Models (LLMs) have emerged as powerful assets for recommender systems. However, deploying them as generative recommenders or zero-shot rankers at web-scale remains bottlenecked by prohibitive computational overhead and grounding challenges. In this paper, we revitalize the classic, highly efficient two-tower retrieval architecture by adapting LLMs as semantic representation backbones rather than generative engines. We introduce an LLM-native two-tower framework engineered for high-throughput, large-scale retrieval. Our architecture introduces several key innovations: a shared LLM encoder for joint user-item modeling, End-Of-Sentence (EOS) token pooling for compact sequence embedding, cross-dataset transfer learning, knowledge distillation from powerful cross-encoder teachers, and latent reasoning within the user tower. Extensive evaluation across three public benchmarks demonstrates that cross-encoder architecture outperforms current state-of-the-art (SoTA) models, while the efficient two-tower student achieves SoTA-comparable retrieval performance. Furthermore, experiments on internal large-scale production systems yield substantial topline retrieval improvements along with high resilience to model staleness and superior data scaling. Our findings demonstrate that when augmented with modern representation learning, the traditional two-tower paradigm remains an exceptionally competitive and practical solution for industrial retrieval systems.",
       "url": "https://arxiv.org/abs/2607.25346",
-      "pdf_url": "https://arxiv.org/pdf/2607.25346v2"
+      "pdf_url": "https://arxiv.org/pdf/2607.25346v2",
+      "affiliation_checked": true
     },
     {
       "id": "2607.24822",
