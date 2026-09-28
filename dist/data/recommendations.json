@@ -1,7 +1,300 @@
 {
-  "generated_at": "2026-09-25T07:44:29Z",
+  "generated_at": "2026-09-28T08:40:04Z",
   "source": "arXiv",
   "papers": [
+    {
+      "id": "2609.31253",
+      "title": "Enriching Sequential Recommendation with Graph Laplacian Positional Embeddings",
+      "authors": [
+        "Ekaterina Trushkova",
+        "Artur Gimranov",
+        "Anton Lysenko"
+      ],
+      "published": "2026-09-25",
+      "categories": [
+        "cs.IR"
+      ],
+      "topic": "序列与会话推荐",
+      "institutions": [
+        "HSE University, Moscow, Russian Federation"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "海外学术界",
+      "primary_institution": "HSE University, Moscow, Russian Federation",
+      "score": 84,
+      "reason": "聚焦用户行为序列与下一步偏好建模，和序列推荐主线直接相关。",
+      "abstract": "Sequential recommenders typically rely on learnable positional embeddings to encode the order of user interactions. In this work, we ask whether this ordinal signal can be replaced by a structural one derived from the item space. We propose to use Laplacian positional embeddings in SASRec: we build an item co-occurrence graph from training interactions, compute eigenvectors of its symmetric normalized Laplacian, and use them as frozen graph-derived positional embeddings. The backbone architecture and training objective remain unchanged. Experiments on four public sequential-recommendation benchmarks show that this simple replacement improves SASRec performance on most ranking metrics and remains competitive with strong positional and temporal encoding baselines. These findings indicate that item-item graph structure can be an effective substitute for standard ordinal positional embeddings in sequential recommendation.",
+      "url": "https://arxiv.org/abs/2609.31253",
+      "pdf_url": "https://arxiv.org/pdf/2609.31253",
+      "affiliation_checked": true,
+      "article_theme": "用物品图拉普拉斯谱嵌入替代序列推荐中的可学习位置编码",
+      "research_question": "序列推荐模型（如SASRec）通常依赖可学习位置编码来刻画交互顺序，论文探究这一序数信号能否被源自物品共现图的结构信号所替代，并如何在不改动骨干架构与训练目标的前提下实现注入。",
+      "main_contribution": "论文提出SASRec-LapPE：从训练交互构建物品共现图，计算其对称归一化拉普拉斯算子的最小非平凡特征向量作为冻结的图位置嵌入，仅替换输入层的位置编码槽位，配合可学习标量α控制贡献。该设计轻量且训练/推理路径不变，在四个基准上优于原SASRec并与RoPE、TiSASRec等强基线竞争。",
+      "key_ideas": "🔸由训练集交互矩阵构建A=R^T R的加权物品共现图（对角置零），边权为同时消费两物品的用户数，仅用训练数据避免信息泄露。\n🔸计算对称归一化拉普拉斯L=I−D^{-1/2}AD^{-1/2}的特征分解，取k=d个最小非零特征值对应的特征向量作为物品的结构坐标，低频分量刻画全局社区结构。\n🔸将LPE以h_t=E[i_t]+α·LPE[i_t]形式加到输入嵌入层，冻结谱表、仅训练标量α；k≠d时用可学习线性投影，另有经两层MLP的LapPE-MLP变体。\n🔸序列顺序信息仍由有序序列与因果掩码保留，不再需要显式的序数位置嵌入或时间戳，避免了注意力内部的逐位置计算。\n🔸谱分解仅训练前离线执行一次，采用迭代Lanczos求解器，复杂度约O(k|E|+Nk²)。",
+      "analysis_summary": "🔸在Beauty、Clothing、Sports、Yelp2018四基准上，SASRec-LapPE在多数排序指标上优于SASRec，Clothing上NDCG@10从0.89升至1.11、Recall@100从6.37升至8.22，Yelp2018上NDCG@100从4.98升至5.93。\n🔸相对NoPE基线，LapPE在四个数据集的@100指标及三个数据集的@10指标上更优，说明收益不只来自删除位置嵌入；@100指标上全面超越TiSASRec并在四分之三数据集上超过RoPE。\n🔸覆盖率方面，LapPE始终优于TiSASRec，在Beauty和Yelp2018上超过SASRec；但Clothing上精度提升伴随覆盖率下降，提示低频谱分量可能使推荐集中于物品社区。\n🔸效率上，离线谱分解仅2.52秒（Beauty）至95.86秒（Yelp2018），训练时间与SASRec相当、推理略快，显著优于训练推理均更慢的TiSASRec。\n🔸局限在于谱频率选择缺乏系统方法，论文建议未来开展基于验证集的频带搜索或可学习谱滤波。",
+      "personal_view": "基于全文分析，本文的创新点在于将图Transformer中的拉普拉斯位置编码思想巧妙迁移到序列推荐的位置编码槽位，以“离线一次计算、训练全程冻结”的方式实现图结构与序列建模的极简融合，避免了混合模型中额外分支与融合模块的复杂度，工程实用价值突出，且实验包含NoPE这一关键对照，论证较为严谨。其局限也较明显：方法仅在SASRec单一骨干上验证，结果依赖归一化拉普拉斯对流行度的抑制假设； Clothing上覆盖率下降暴露了谱频段选择的问题，作者也坦承需系统性频率选择方案。此外，谱嵌入对动态演化的物品空间缺乏更新机制，冷启动物品的处理在文中未充分讨论，均是后续值得探索的方向。",
+      "focus_label": "图拉普拉斯位置编码",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 6
+    },
+    {
+      "id": "2609.30717",
+      "title": "RecToolBench: Benchmarking Recommendation-Specific Tool Orchestration under Fuzzy User Intent",
+      "authors": [
+        "Xiao Chen",
+        "Yicheng Zhao",
+        "Yingying Wu",
+        "Zhendong Chu",
+        "Changyi Ma",
+        "Qingsong Wen",
+        "Xuan Song"
+      ],
+      "published": "2026-09-25",
+      "categories": [
+        "cs.IR"
+      ],
+      "topic": "LLM 与 Agent",
+      "institutions": [
+        "Jilin University",
+        "Squirrel AI Learning",
+        "The Hong Kong Polytechnic University"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "国内学术界",
+      "primary_institution": "Jilin University",
+      "score": 79,
+      "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
+      "abstract": "Recent advances in agentic recommender systems are shifting recommender systems from passive filtering engines to instruction-following agents that use external tools to resolve user intent. However, existing benchmarks often assume explicit user intent, simplified tool environments, or isolated function calls, leaving realistic tool orchestration for recommendation underexplored. To bridge this gap, we propose RecToolBench, a Model Context Protocol (MCP)-based benchmark for evaluating tool-using recommender agents under fuzzy user instructions. RecToolBench contains more than 1,200 executable tasks across three recommendation domains, 13 MCP servers, and 32 tools, spanning single-tool calls, parallel tool calls, sequential tool chains, and hybrid tool orchestration. We construct RecToolBench with a scalable synthesize--fuzzify--judge pipeline that generates executable fuzzy recommendation tasks, and evaluates agent trajectories using rule-based execution checks and rubric-based LLM evaluation. Experiments on representative LLMs show that syntactically valid tool calls do not guarantee successful recommendations. Models struggle with semantic parameter grounding, multi-step evidence integration, and grounded final recommendations, especially as orchestration complexity increases. Our results identify tool orchestration under fuzzy user intent as a major bottleneck for agentic recommender systems. Our data and code are available at https://github.com/ShawnChenn/RecToolBench.",
+      "url": "https://arxiv.org/abs/2609.30717",
+      "pdf_url": "https://arxiv.org/pdf/2609.30717",
+      "affiliation_checked": true,
+      "article_theme": "模糊意图下推荐工具编排的首个MCP基准测试",
+      "research_question": "现有基准通常假设用户指令明确、工具环境简化或仅涉及孤立函数调用，难以评估推荐智能体在真实模糊指令下的工具编排能力。论文试图构建一个面向模糊用户意图、可执行且分级难度的推荐工具编排基准，并系统诊断模型瓶颈。",
+      "main_contribution": "论文提出RecToolBench，首个基于MCP协议、面向模糊推荐指令的工具编排基准，包含1288个可执行任务、3个推荐领域、13个MCP服务器和32个工具，覆盖单工具调用到混合编排的四级难度。其可扩展的synthesize–fuzzify–judge任务合成流水线生成真实的模糊任务，并通过规则校验与基于量规的LLM评审双轨评估智能体轨迹。",
+      "key_ideas": "🔸 将任务形式化为工具增强的POMDP，动作空间涵盖规划、工具调用与最终推荐，真实用户交互序列（Amazon、Yelp、Foursquare）作为任务生成基础。\n🔸 AmbiFlow合成流水线：先由GLM-5.1生成显式指令与真值工具集，再经五类歧义类型（欠规约、软矛盾、模糊量词、偏好不确定、隐式约束）受控模糊化，最后经可解性、结构与歧义合理性质量过滤及人工校验（Cohen's κ=0.78）。\n🔸 四级递进难度：L1单工具调用、L2并行多工具、L3串行依赖链（DAG）、L4混合编排，逐步增加意图模糊度与组合依赖深度。\n🔸 评估采用多轮规划-执行循环，维护规划状态、Candidate Bus与完整轨迹，并结合规则指标（Schema合规、执行成功、工具选择F1、Hit Ratio等）与LLM-as-a-Judge量规评分（DeepSeek-V3.2独立评审、提示词洗牌降低偏差）。",
+      "analysis_summary": "🔸 L1中SLM格式合规高但语义正确性差：如Gemma-3-4B工具名有效率达99%但工具选择准确率仅49%，Qwen-2.5-3B执行成功率95%而参数准确率仅10%；专有模型工具选择准确率达100%。\n🔸 L2所有模型规则式参数准确率低于24%，参数落地是模糊意图下的核心瓶颈；参考无关PA评分与Pacc排序高度一致（Spearman ρ=0.88）。\n🔸 L3中Qwen-2.5-7B工具选择F1最高（60.18%）但Hit Ratio仅52.76%，远低于GPT-5.4（96.67%）与Claude-Sonnet-4.5（95.00%）；L4任务完成度骤降，最佳专有模型Hit Ratio仅54.05%，SLM停留在20%–28%。\n🔸 效率分析显示Llama类模型存在严重冗余重复调用（L4中Llama-3.1-8B平均68.2次调用），SLM倾向串行逐轮调用；GPT-5.4的L4错误分析显示依赖推理失败（54.1%）与目标检索缺失（53.6%）为主导失败模式。\n🔸 局限：受控MCP环境未反映真实系统的噪声与时延，覆盖的推荐场景、工具生态与智能体设计有限。",
+      "personal_view": "基于全文来看，这篇论文的创新性在于将模糊意图解析与组合式工具编排结合，提出推荐原生的MCP基准，其分级难度设计和规则+LLM双轨评估有效揭示了\"语法正确≠语义正确\"的评测盲区，对诊断SLM与专有模型的差距很有价值。实用方面，AmbiFlow流水线可复用于其他领域的任务构建。但需注意：任务由LLM合成，模糊化后的真值工作流是否唯一合理存在争议；LLM-as-a-Judge依赖DeepSeek-V3.2，虽做了提示洗牌与人评对齐（1.37提升至1.52/2），评审偏差仍难以完全消除；受控环境与真实工业系统的差距也限制了结论的外推性。",
+      "focus_label": "Agent工具编排评测",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 26
+    },
+    {
+      "id": "2609.30656",
+      "title": "Component Benchmark: Hierarchical Model Profiling for Large-scale Recommendation Systems",
+      "authors": [
+        "Dharak Kharod",
+        "Yuzhen Huang",
+        "Zhou Wang",
+        "Jackie Xu",
+        "Fuzail Khan",
+        "Jacky Zhou",
+        "Hao Yan",
+        "Lidong Zhao",
+        "Xizhou Feng",
+        "Yvonne Liu",
+        "Karthik Jayaraman",
+        "Praveen Ramachandran",
+        "Vishwa Karia",
+        "Yashasvi Makin"
+      ],
+      "published": "2026-09-25",
+      "categories": [
+        "cs.IR"
+      ],
+      "topic": "评测、数据与复现",
+      "institutions": [
+        "Meta Platforms Inc, Sunnyvale, California, USA {dharakk, yuzhenhuang, zhouwang, jackiexu0313, fuzailkhan, junqingz, haoyan17, lidong, fengx}@meta.com {yvliu, karthikjay, pramacha, vishwakaria, yashasvi}@meta.com"
+      ],
+      "institution_type": "工业界",
+      "organization_sector": "海外工业界",
+      "primary_institution": "Meta Platforms Inc, Sunnyvale, California, USA {dharakk, yuzhenhuang, zhouwang, jackiexu0313, fuzailkhan, junqingz, haoyan17, lidong, fengx}@meta.com {yvliu, karthikjay, pramacha, vishwakaria, yashasvi}@meta.com",
+      "score": 76,
+      "reason": "提供评测、数据或综述视角，便于校准实验设计并定位研究空白。",
+      "abstract": "Large-scale recommendation models pose distinct, under-explored profiling challenges. Most recommendation model architectures are structurally heterogeneous, intermixing memory-bandwidth-bound operations, small compute-bound dense layers, dynamic shapes from jagged categorical features, and low-arithmetic-intensity operations. Recommendation models evolve rapidly as modeling engineers experiment with compositions, often written without visibility into hardware execution characteristics. Standard profiling tools offer either end-to-end throughput or operator-level traces, but cannot attribute performance to the submodules that practitioners reason about. We present Component Benchmark (CB), a profiling system that independently characterizes each submodule performance in a hierarchical manner, providing a tree-structured, interactive visualization that brings performance clarity to ML practitioners. At its core, CB provides a simple yet extensible, submodule-based benchmarking framework with a plugin architecture that enables hierarchical performance analysis. These large-scale recommendation models are TB-scale, run on thousands of GPUs and ingest 100B examples per day. We demonstrate CB's effectiveness on common open sourced models and discuss how CB has been leveraged to accelerate modern recommendation model performance analysis and optimization.",
+      "url": "https://arxiv.org/abs/2609.30656",
+      "pdf_url": "https://arxiv.org/pdf/2609.30656",
+      "affiliation_checked": true,
+      "article_theme": "Component Benchmark：推荐系统子模块级性能剖析系统",
+      "research_question": "现有性能剖析工具只能提供端到端吞吐量或底层算子trace，无法将性能归因到ML从业者实际关心的模型子模块层面，导致大规模推荐模型（TB级、数千GPU、日摄入约10^11样本）的性能瓶颈难以定位。如何以子模块为单位独立、层级化地刻画每个组件的性能？",
+      "main_contribution": "论文提出Component Benchmark（CB），一个轻量、可扩展的子模块级剖析系统，核心仅约1000行代码。它利用PyTorch hook在选定组件边界捕获子模块及其运行时输入，独立剖析每个组件，重建树状性能视图，并通过插件架构（Component Provider、Preprocessor、Profiler、Result四类扩展点）与Icicle交互式可视化，将延迟、显存、FLOPs、MFU、带宽等指标按模型层级呈现，弥合端到端指标与算子trace之间的粒度鸿沟。",
+      "key_ideas": "🔸基于PyTorch forward hook捕获每个子模块的运行时输入，在各组件边界独立剖析，避免PyTorch 2编译器抹除模块边界导致算子-模块映射失效的问题。\n🔸按广度优先递归遍历模型子模块并按深度排序剖析；若父模块过大无法装入单GPU则跳过，用子模块结果聚合估计父模块行为。\n🔸插件架构四层扩展：Component Provider适配异构训练栈提取模型与数据，Preprocessor做batch size缩放/复制与混合精度调整，Profiler Plugin收集trace、显存快照、FLOPs，Result Plugin生成报告与Icicle可视化。\n🔸为降低本地剖析的显存压力，先缩小batch size捕获代表性子模块输入，再在Preprocessor中复制张量恢复原始batch大小；对推荐模型可缩减embedding哈希表以适配单GPU。\n🔸剖析结果以层级表格和可交互Icicle树呈现，按MFU%等指标红绿着色，用户可点击任意模块下钻到trace、显存快照、Perfetto等链接。",
+      "analysis_summary": "🔸在H100 GPU上对开源DeepFM版DLRM和NanoGPT做演示：DLRM的sparse arch几乎完全受内存带宽限制，inter arch下deep fm为计算受限（MFU 27.06%）而fm带宽受限（MFU 0.06%）；dense arch中Linear层MFU 25.91%与20.74%的差异被归因于矩阵形状（1024x4096 vs 4096x512）。\n🔸NanoGPT上无需修改即可运行：12个同构transformer块占绝大部分运行时间，lm head为唯一高MFU绿色节点；attn块MFU约10%为MLP块（20%）的一半，提示注意力kernel可能欠优。\n🔸实际案例：改写GEMM/GEMV为elementwise kernel换取更大PT2融合区域带来3%训练/推理吞吐提升；PT2编译机会评估将83ms降至50ms并最终带来34% QPS提升；归因生成式推荐模型2.8倍内存与39% FLOPs回归，恢复基线维度后回收10% QPS与22%内存；定向压缩两个低性能子模块基本消除计算停顿。\n🔸局限：实验为开源模型上的演示性观察；某些高层模块需跳过并靠子模块聚合估计；单GPU本地剖析需缩放embedding与batch，非完整生产环境的端到端测量。",
+      "personal_view": "基于全文来看，CB的创新点在于剖析粒度的重新定义：以PyTorch模块为可执行、可行动的度量单元，通过hook捕获输入后离线独立剖析，绕开编译器优化对模块边界的破坏，这在工业推荐场景中确实补上了端到端指标与算子trace之间的空白。约1000行核心加四类插件的设计务实，Icicle可视化显著降低性能分析门槛，四个生产案例（3%吞吐、34% QPS、22%内存等）也佐证了实用价值。不过需要指出，本文的实验更多是演示性质，缺少与PyTorch Profiler with_modules等基线在归因准确性与开销上的系统对比；单GPU独立剖析隔离了跨模块效应（如kernel重叠、缓存热度），这可能使其测量结果与真实整体执行的偏差缺乏定量讨论，且hook捕获输入本身对超大模型也有额外成本。",
+      "focus_label": "层级模型性能剖析",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 9
+    },
+    {
+      "id": "2609.30711",
+      "title": "Recommendation World Models for Future-State Control",
+      "authors": [
+        "Jinfeng Xu",
+        "Zheyu Chen",
+        "Ziyue Peng",
+        "Jianheng Tang",
+        "Zheng Lin",
+        "Jing Yang",
+        "Puzhen Wu",
+        "Zheng Xing",
+        "Victor C. M. Leung"
+      ],
+      "published": "2026-09-25",
+      "categories": [
+        "cs.IR"
+      ],
+      "topic": "序列与会话推荐",
+      "institutions": [
+        "The University of British Columbia, Canada;",
+        "The Hong Kong Polytechnic University, Hong Kong;",
+        "The Hong Kong University of Science and Technology, Hong Kong;",
+        "Peking University, China;",
+        "University of Luxemburg, Luxemburg;",
+        "University Malaya, Malaysia;",
+        "The University of Hong Kong, Hong Kong;",
+        "Shenzhen University, China;"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "国内学术界",
+      "primary_institution": "The University of British Columbia, Canada;",
+      "score": 76,
+      "reason": "聚焦用户行为序列与下一步偏好建模，和序列推荐主线直接相关。",
+      "abstract": "Sequential recommendation optimizes which items to rank, while each displayed slate also shapes subsequent feedback and user state. We study how a trained ranker can support decisions about these future consequences. We introduce UA-TWM, a utility-anchored world-model interface that constructs nearby slate actions, estimates their target-relevant consequences, and selects an alternative subject to utility constraints. The reference slate serves as a fallback when no alternative qualifies. A logged-replay instantiation combines utility and target-gain estimates with calibrated failure-risk prediction; a closed-loop instantiation uses one-step state-action prediction and updates its decisions after observed feedback. We evaluate transfer across twelve sequential backbones on MovieLens-25M and KuaiRand-Pure, and repeated target-directed interaction in KuaiSim. Attaching the interface improves Recall@20, NDCG@20, and future-state alignment for every matched logged backbone. Selection ablations reveal the utility and risk costs of aggressive target pursuit, while closed-loop diagnostics isolate the contribution of action-conditioned prediction. Local consequence modeling thus enables target-aware selection around a trained sequential ranker.",
+      "url": "https://arxiv.org/abs/2609.30711",
+      "pdf_url": "https://arxiv.org/pdf/2609.30711",
+      "affiliation_checked": true,
+      "article_theme": "在训练好的序列推荐器外挂世界模型实现未来状态控制",
+      "research_question": "序列推荐器只按下一项相关性排序，但不同推荐列表（slate）即使效用相近，也会诱导不同的未来用户状态（如类别分布、重复曝光）。论文研究如何让已训练的排序模型支持对候选列表未来后果的推理与选择，同时不损失推荐效用。",
+      "main_contribution": "提出UA-TWM，一个以效用为锚的推荐世界模型接口：冻结的序列推荐器提供锚定列表，局部后果层在其附近构造候选列表并预测效用增益、未来状态增益与失败风险，再在效用约束下选择性替换或回退到锚。论文将其形式化为锚定相对的效用安全控制问题，并在日志回放和闭环交互两种证据模式下进行跨骨干迁移与消融评估。",
+      "key_ideas": "🔸候选支持构造：在冻结推荐器的top-M池内，通过锚局部编辑和基于类型/标签的目标导向打分（β加权）生成候选slate，不引入锚支持之外的物品。\n🔸日志回放后果头：用前缀统计预测目标边际ĝZ与效用边际ĝU，并用校准数据训练L2正则逻辑回归风险头预测失败（目标不达标或效用跌破下限）。\n🔸三门限选择：候选需同时通过效用、目标增益和风险阈值，方可在可行集中选预测目标增益最大者；否则回退锚列表，回退不计入声明。\n🔸闭环控制：训练岭回归状态-动作模型做一步预测（P=1），预测重复曝光、标签熵等分量，每步执行一个slate后用观测反馈更新状态，重复十步（H=10）。\n🔸声明有效性协议：非锚选择即发出目标控制声明，事后按未来统计改善加效用保持判定有效性，覆盖率与失效率联合报告。",
+      "analysis_summary": "🔸日志回放在两个数据集、十二个骨干上全部匹配改进：MovieLens-25M上Recall@20增益0.0119–0.0144，KuaiRand-Pure上0.0054–0.0068，状态损失均下降。\n🔸排序效用与未来状态排序存在低一致性，说明高效用slate未必是好的控制动作，这是分离后果层的实证依据。\n🔸消融显示：去掉效用门偏向激进目标移动且排序受损，去掉状态头削弱目标改善，去掉风险门增加不安全声明；激进策略在KuaiRand ADRec上甚至出现负的排序增益。\n🔸闭环KuaiSim上UA-TWM取得click 42.936、目标L1 2.581，4个有效声明、0个无效声明、3次回退，状态-动作相比仅状态消融有0.173的配对目标增益。\n🔸局限包括：候选支持仅限锚附近、全局可达性未知，岭回归预测的好处依赖于预测器选择（随机森林在held-out策略上反而变差），部署涉及行为引导需治理审查。",
+      "personal_view": "基于全文分析，这篇论文的创新点在于把世界模型思想以轻量接口形式嫁接到任意已训练的序列推荐器上，而非重新训练策略：冻结骨干加局部后果层的解耦设计兼顾了工程实用性与可归因性，效用下限、风险门和锚回退共同保证了保守可靠的目标控制。跨十二个骨干的一致改进和覆盖率—失效率联合报告体现了较严谨的评估协议。局限在于候选空间被锚定列表限定，目标不可达时只能回退；风险头特征依赖前缀统计，日志回放中未展示slate的转移分布本质不可辨识；闭环验证仅在KuaiSim模拟器上进行，真实线上反馈回路的效果仍有待检验。",
+      "focus_label": "推荐世界模型",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 21
+    },
+    {
+      "id": "2609.31164",
+      "title": "SPADE: Escaping the Popularity-Similarity Frontier to Measure Serendipitous Recommendations",
+      "authors": [
+        "Tobias Vente",
+        "Maarten Peirsman",
+        "Noah Dani\\\"els",
+        "Hannu Toivonen",
+        "Bart Goethals"
+      ],
+      "published": "2026-09-25",
+      "categories": [
+        "cs.IR",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "topic": "评测、数据与复现",
+      "institutions": [],
+      "institution_type": "机构未公开",
+      "organization_sector": "机构未公开",
+      "primary_institution": "机构未公开",
+      "score": 76,
+      "reason": "提供评测、数据或综述视角，便于校准实验设计并定位研究空白。",
+      "abstract": "Recommender systems engineer serendipity to foster active exploration and break predictable consumption cycles. The problem with existing offline beyond-accuracy metrics is that they often either isolate historical similarity or global popularity. We aim to design an evaluation metric that examines similarity, popularity, and actual user relevance. To achieve this, we introduce SPADE (Serendipitous Pareto Distance Evaluation). SPADE maps all items into a two-dimensional space to directly calculate a user-specific Pareto frontier of maximally popular and historically similar items. The final serendipity score is then computed by averaging the minimum Euclidean distance from this boundary strictly for the correctly recommended test-set items. Evaluating SPADE across five datasets and five baseline algorithms confirms its effectiveness; our results show that the metric successfully prevents algorithms from exploiting beyond-accuracy measures with irrelevant or non-personalized recommendations, reliably isolating serendipitous discoveries.",
+      "url": "https://arxiv.org/abs/2609.31164",
+      "pdf_url": "https://arxiv.org/pdf/2609.31164",
+      "affiliation_checked": true,
+      "article_theme": "SPADE：用帕累托前沿联合度量相似度与流行度的意外性推荐评测",
+      "research_question": "现有离线意外性指标只孤立地衡量历史相似度或全局流行度，容易被不相关或非个性化的推荐钻空子，从而虚高意外性得分。论文试图设计一个同时考察相似度、流行度和真实用户相关性的统一评测指标。",
+      "main_contribution": "提出SPADE（Serendipitous Pareto Distance Evaluation），将所有物品映射到由全局流行度与用户历史相似度构成的二维空间，为每个用户构建帕累托前沿，并以正确预测的测试集物品到前沿的最小欧氏距离作为意外性得分。该指标在五个数据集和五个基线算法上验证了能有效惩罚利用无关或非个性化推荐刷分的伪意外行为。",
+      "key_ideas": "🔸 将候选物品映射到流行度（归一化交互频率）×相似度（未归一化PPMI，经经验贝叶斯平滑α=1）的二维空间，两个维度呈反向相关，保证帕累托前沿不坍缩成单点；\n🔸 对每个用户构建帕累托前沿：前沿上的物品在“至少同等相似时最流行、至少同等流行时最相似”意义上不被支配，前沿代表最不意外的物品；\n🔸 对用户各自做Min-Max归一化使两轴都落在[0,1]，SPADE得分为正确预测的测试集物品到前沿的最小欧氏距离，越高越意外；\n🔸 只对测试集中被正确推荐的物品计分，从结构上强制纳入相关性约束；\n🔸 与Novelty、Co-Occurrence、Primitivity三类现有指标在五个数据集上进行对比分析。",
+      "analysis_summary": "🔸 随机推荐在MIND上NDCG仅0.0006，却获得极高Primitivity（5.4989）和Co-Occurrence（0.281789），而SPADE给出低分0.0036，说明传统指标可被无关推荐刷高而SPADE能识别；\n🔸 Random和Popularity基线在所有数据集上SPADE得分最低（如MIND上0.0036、Netflix上Popularity为0.0294），通过非个性化基线的合理性检验；\n🔸 案例研究（User 1874的Retroactive、User 2186的The Way of the Gun）定性验证了远离帕累托前沿且仍被真实交互的物品获得最高意外性分；\n🔸 实验覆盖CiteULike、MIND、ML-1M、ML-20M、Netflix五个数据集与EASE、SLIM、ItemKNN、Popularity、Random五种算法，代码开源以保证可复现；\n🔸 局限：指标完全基于离线数据，未与用户真实主观惊喜感对齐验证，且三个数据集因硬件限制被下采样至一万用户。",
+      "personal_view": "基于全文分析，这篇论文的创新点在于将帕累托前沿从多目标优化工具转为事后评测指标，用“相似度-流行度”二维空间的结构化距离同时惩罚两类传统指标的假阳性，思路清晰且与在线评测中“意外且相关”的直觉吻合，实用价值在于为意外性研究提供了可复现、免于刷分的离线度量。但其可靠性依赖PPMI相似度与流行度负相关这一假设，且“离前沿越远越意外”仅是结构代理，尚未与用户问卷或在线A/B实验交叉验证；欧氏距离对坐标尺度的敏感性也值得进一步讨论。",
+      "focus_label": "Serendipity评测指标",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 11
+    },
+    {
+      "id": "2609.31166",
+      "title": "AgentRecommender: LLM Agents Enable Customizable Recommender Systems on the User Side",
+      "authors": [
+        "Ryoma Sato"
+      ],
+      "published": "2026-09-25",
+      "categories": [
+        "cs.IR",
+        "cs.AI",
+        "cs.DB",
+        "cs.DL"
+      ],
+      "topic": "LLM 与 Agent",
+      "institutions": [
+        "National Institute of Informatics"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "海外学术界",
+      "primary_institution": "National Institute of Informatics",
+      "score": 73,
+      "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
+      "abstract": "Recommender systems have traditionally been developed for platforms. However, this has given rise to many phenomena that may be advantageous for platform lock-in but are a nuisance to users, such as clickbait, filter bubbles, and the spread of fake news. Recently, user-side recommender systems have been proposed as a new paradigm for solving this problem. If users deploy their own recommender systems, they are no longer at the mercy of the platform's interests. However, building a user-side recommender system is not trivial; in particular, customizing one for oneself requires additional data. We propose AgentRecommender, a method that leverages the investigation capability and internal knowledge of LLM agents to flexibly build user-side recommender systems without additional data. AgentRecommender allows users to easily create recommender systems tailored to their own preferences.",
+      "url": "https://arxiv.org/abs/2609.31166",
+      "pdf_url": "https://arxiv.org/pdf/2609.31166",
+      "affiliation_checked": true,
+      "article_theme": "用LLM Agent零标注构建用户侧定制推荐系统",
+      "research_question": "用户侧推荐系统此前依赖物品标签来实现用户期望的功能，但平台往往不提供标签，普通用户自行训练分类器负担很重。论文研究如何在仅有服务方推荐结果黑盒访问、物品属性不可观测的条件下，零标注地构建满足用户自定义约束的推荐系统。",
+      "main_contribution": "提出AgentRecommender，利用LLM Agent的内部世界知识与搜索等工具，主动探索服务方的item-to-item推荐网络，逐步扩充候选池，最终构造满足用户自然语言指定约束（如类别均衡、覆盖率）的推荐列表。它是首个无需标签且能发现服务方列表之外新物品的用户侧推荐方法。",
+      "key_ideas": "🔸 问题设定：用户仅有官方推荐P_prov的黑盒访问、自然语言描述的属性空间A与约束、以及每轮最多B次查询的预算；物品属性在构建时不可见，仅在评估时使用。\n🔸 推荐流程：从当前物品页的官方推荐列表出发，重复B次让LLM根据需求从列表中挑选一个未展开的物品进行扩展，获取其官方推荐并加入候选池；最后让LLM从候选池中选出K个最终物品。\n🔸 属性估计零标注：LLM仅凭物品名称即借助内部知识估计属性（如电影年代、价格），必要时调用搜索等工具；标题中的年份等信息被刻意移除以检验真正的世界知识。\n🔸 相关性保障：候选物品距起点至多B跳，与原始推荐高度相关；最终选择时可在提示中要求只保留与原物品充分相关的物品。\n🔸 工程优化：可用浏览器localStorage缓存用户日常使用中积累的推荐结果，避免在线发查询，降低延迟与对服务的负担。",
+      "analysis_summary": "🔸 在MovieLens 1M、LastFM、Amazon Home and Kitchens三个数据集上，AgentRecommender显著优于服务方推荐与仅重排序的iAgent：ML-1M年代均衡成功率0.68（基线为0），体裁覆盖8.94 vs 5.51，LastFM体裁覆盖4.34 vs 2.50，Amazon价格均衡成功率0.64 vs 0.16。\n🔸 预算敏感性实验显示B=1时已大幅超越基线，随预算增至16性能总体提升，说明方法在小预算下即实用。\n🔸 Amazon上性能在约0.6处趋于平台，原因是仅凭商品名估计价格困难，说明属性估计难度是性能瓶颈。\n🔸 局限：每次推荐可能需B次额外查询带来延迟与服务负担（可用缓存缓解）；依赖LLM世界知识对难估计属性（如价格）的可靠性有限。",
+      "personal_view": "基于全文的分析来看，本文的创新性在于把用户侧推荐系统的标签假设彻底去掉，让LLM的世界知识充当零成本的属性估计器，并从被动重排序升级为对推荐网络的主动探索，这在概念上是一个清晰的进步。实用价值方面，方法完全运行在用户权限内，无需平台配合，且缓存机制使其实际可部署；对追求多样性、平衡性的用户确实有吸引力。局限也较明显：性能强依赖LLM对属性的零样本估计能力，价格等难以从名称推断的属性上成功率明显受限；此外预算B带来的额外查询、LLM调用的成本与隐私问题（把用户需求发往第三方API）文中讨论较少；实验仅覆盖item-to-item场景和少数均衡类约束，泛化性有待验证。",
+      "focus_label": "用户侧推荐Agent",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 12
+    },
+    {
+      "id": "2609.30576",
+      "title": "T-RoPE: Time-Aware Rotary Position Embedding for Sequential Recommendation",
+      "authors": [
+        "Yang Liu",
+        "Noel Loo",
+        "Ali Khanafer",
+        "Shuying Sun",
+        "Akshay Soni",
+        "Zhong Wu",
+        "Linjun Yang"
+      ],
+      "published": "2026-09-24",
+      "categories": [
+        "cs.AI",
+        "cs.IR",
+        "cs.LG"
+      ],
+      "topic": "生成式推荐",
+      "institutions": [
+        "Shopify",
+        "Massachusetts Institute of Technology",
+        "Liquid AI"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "海外学术界",
+      "primary_institution": "Shopify",
+      "score": 84,
+      "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
+      "abstract": "Large-scale recommenders increasingly adopt the sequential generative recipe behind large language models, bringing the Transformer into recommendation along with design choices made for text, including Rotary Position Embedding (RoPE). In language models, RoPE encodes token indices for relative position reasoning, but in recommendation, an interaction index records only event order, saying nothing about elapsed time, behavioral cycles across scales, or calendar phase. We revisit this choice and propose T-RoPE, a time-aware RoPE for sequential generative recommendation that replaces index-only rotation with timestamp-based angles, learnable temporal coefficients, multiscale frequency banks, shifted query alignment, and non-stationary key rotation. We prove that standard RoPE, even on timestamps, remains time-translation invariant and cannot distinguish seasonal contexts, and that T-RoPE breaks this invariance while preserving the RoPE interface. Across five public benchmarks, T-RoPE achieves the best result on every metric on every dataset, improving over the strongest baseline by 78--130\\% in HR@10 on the sparse PixelRec data and 8--12\\% across metrics on Amazon Books. On an industrial-scale e-commerce dataset with more than 6B interactions, it improves every metric over the HSTU + Time RAB backbone by 13--82\\%, with ablations attributing the largest gains to multiscale frequencies ($+56\\%$ NDCG@50) and non-stationary keys ($+4\\%$). An online A/B test in the Shop app yields positive lifts in conversion rate ($+0.33\\%$) and order count ($+0.63\\%$). We also provide forward and backward algorithms whose added cost is linear in sequence length and head dimension, keeping time-aware RoPE practical for large generative recommenders.",
+      "url": "https://arxiv.org/abs/2609.30576",
+      "pdf_url": "https://arxiv.org/pdf/2609.30576",
+      "affiliation_checked": true,
+      "article_theme": "用时间戳驱动旋转位置编码改进序列推荐",
+      "research_question": "生成式推荐借用了语言模型的RoPE，但交互序号只记录事件顺序，丢失了真实时间间隔、多尺度周期性和日历相位三类时间信号。论文研究如何在保持RoPE接口的前提下，让旋转位置编码具备绝对时间感知能力以建模季节性偏好。",
+      "main_contribution": "提出T-RoPE，用时间戳角度、可学习时间系数、多尺度频率组、移位查询对齐和非平稳键旋转替换纯序号旋转，并从理论上证明标准RoPE即使作用在时间戳上仍保持时间平移不变性，而T-RoPE的非平稳键可打破该不变性。在五个公开基准、超60亿交互的工业数据集和Shop线上A/B测试中均取得一致提升，且前后向算法开销关于序列长度和头维度是线性的。",
+      "key_ideas": "🔸 将整数序号替换为绝对Unix时间戳作为旋转角度，使注意力相位反映真实时间间隔，密集突发事件在旋转圆上聚集、休眠间隔自然展开；\n🔸 为每个旋转平面引入查询/键独立可学习系数，让不同维度、不同层自主选择关注的时间尺度（如小时、周、月、年）；\n🔸 采用几何间隔的对数多尺度频率组（默认10^2到10^8秒），配合可学习系数形成对周期行为的多分辨率共振；\n🔸 查询旋转对齐到下一事件时间（训练时移位一步，推理时注入当前会话时间），使同一历史可在不同预测季节下评估；\n🔸 对键应用旋转矩阵的转置实现非平稳编码，使注意力相位变为时间戳之和而非之差，从而打破时间平移不变性并理论上支持任意周期的正弦季节性表示。",
+      "analysis_summary": "🔸 在五个公开基准上所有指标均最优：PixelRec稀疏数据上HR@10较TO-RoPE提升78–130%，Amazon Books各指标提升8–12%，ML-20M等时间结构弱的数据提升较小，说明收益与数据时间异质性正相关；\n🔸 在约1.5亿用户、超60亿交互的Shop数据集上，相比HSTU+Time RAB基线各指标提升13–82%，消融显示多尺度频率组贡献最大（去掉后NDCG@50降约36–42%），移位查询与非平稳键次之；\n🔸 线上A/B测试中CVR提升+0.33%（p=0.037），订单量提升+0.63%（p=0.094）为方向性证据；\n🔸 额外参数仅每层D个（实验中256个），FLOP与延迟开销为线性，吞吐量与TO-RoPE相当；去掉Time RAB会使MRR大幅下降27%，说明RAB与T-RoPE互补；\n🔸 局限：若训练收敛到α_q+α_k=0的退化情形会失去绝对时间敏感性，且时间戳梯度过大需裁剪或缩放以稳定训练。",
+      "personal_view": "基于全文来看，这篇论文的创新点在于把RoPE的旋转语义从“文本序号”重新定义为“绝对时间坐标”，并用一个简洁的转置键旋转打破了时间平移不变性，理论证明清晰、机制设计环环相扣，工程实现成本近乎免费，实用价值突出，尤其是线上A/B验证增强了说服力。可能的局限在于：收益高度依赖数据的时间异质性，在时间结构弱的场景（如ML-20M）提升有限；多尺度频率上下界为超参数，跨域迁移需重新调优；时间戳梯度裁剪等训练稳定性细节也可能增加工程复杂度。整体上是对生成式推荐位置编码的一条扎实且可落地的改进路线。",
+      "focus_label": "时间感知RoPE",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 17
+    },
     {
       "id": "2609.29815",
       "title": "LSF-SR: Latent Semantic Fusion for Sequential Recommendation via Flow-based Conditional Variational Autoencoders",
@@ -260,6 +553,41 @@
       "full_text_pages": 20
     },
     {
+      "id": "2609.30568",
+      "title": "Nearest but Not Dearest: Shared Curator-Feedback Infrastructure for Content-Only Search and Recommendation",
+      "authors": [
+        "Matt Sandler"
+      ],
+      "published": "2026-09-24",
+      "categories": [
+        "cs.IR",
+        "cs.SD"
+      ],
+      "topic": "工业系统与效率",
+      "institutions": [
+        "Feed.fm, San Francisco, California, USA"
+      ],
+      "institution_type": "研究机构",
+      "organization_sector": "海外研究机构",
+      "primary_institution": "Feed.fm, San Francisco, California, USA",
+      "score": 73,
+      "reason": "强调规模、效率或线上部署，对工程落地和系统设计更有参考价值。",
+      "abstract": "A deployed B2B music-discovery platform serves both query-driven search (text prompts, vibe tags) and seed-driven recommendation (seed-track and artist stations) over one licensed catalog, one LAION-CLAP joint audio-text embedding space, one candidate-generation filter, and one ranking head -- and neither path consumes end-listener behavioral signal. In this content-only regime, curator judgment is the principal feedback signal available, and offline cosine similarity predicts it poorly: 38% of cosine-nearest neighbors are rejected by curators. The rejections reveal a clean partition: a majority (55%) are sound failures the encoder could address (style, tempo, mood mismatch), and a substantial minority (37%) are context failures orthogonal to the waveform (wrong language, holiday content, devotional content, rights and lyric flags). We deploy this sound-vs-context decomposition as feedback infrastructure, routing each failure mode to the layer that can absorb it: context failures to a constraint filter at candidate generation, sound failures to an embedding reweighting head at the representation layer -- both below the search/recommendation split, so a single curator loop maintains both experiences. On 1,200 curator judgments collected over two production rounds one month apart, the combined intervention reduces rejection rate from 38.17% to 28.83% (-24.5% relative, McNemar chi-squared = 22.4, p = 2.2e-6). An accounting decomposition attributes 4.08 pp of the drop to filter-eligible categories and 5.25 pp to the rest; the deployment was unblinded and compound, so this is a production accounting bound, not a causal estimate. We present this as an industrial case study rather than a validated general method, and close with lessons for content-only discovery: the failure partition is orthogonal to the paradigm partition, and corrections land in layers shared by both paradigms.",
+      "url": "https://arxiv.org/abs/2609.30568",
+      "pdf_url": "https://arxiv.org/pdf/2609.30568",
+      "affiliation_checked": true,
+      "article_theme": "纯内容音乐检索的声音与上下文失败分解与策展反馈闭环",
+      "research_question": "在没有用户行为信号的纯内容检索场景下，如何利用策展人反馈维持同时服务搜索与推荐的共享技术栈？论文发现余弦最近邻与策展人判断严重错位，需要搞清哪些失败能被编码器修复、哪些需要其他机制。",
+      "main_contribution": "提出并部署了声音与上下文失败分解作为反馈基础设施：上下文类失败路由到候选生成层的约束过滤器，声音类失败路由到表示层的嵌入重加权头。两层都位于搜索/推荐分流点之下，单一策展循环即可维护所有入口，组合干预将拒收率从38.17%降到28.83%。",
+      "key_ideas": "🔸 对458条策展人点踩按失败码划分：Csound（节奏、风格、情绪，占55.2%）由编码器可修复，Cctx（语言、节日、宗教等，占36.9%）与波形正交，需元数据过滤。\n🔸 上下文失败由SQL谓词约束过滤器处理，规则更新当天上线，成本为天的目录工作；声音失败由冻结CLAP嵌入上的恒等正则化线性重加权头处理，用三元组边距损失训练，成本为周的建模工作。\n🔸 两个机制都部署在共享层：过滤在候选生成、重加权在表示层，任何入口的查询向量都能受益，反馈收集一次即全栈摊销。\n🔸 余弦相似度对称拒类别的区分能力弱（AUC仅0.644），编码器本身无法分辨两类失败，这正是按失败模式路由的必要性所在。\n🔸 四人策展小组每人负责约100个种子，每轮产生1200条判断，配合结构化拒绝接口记录失败码。",
+      "analysis_summary": "🔸 第二轮部署后拒收率从38.17%降至28.83%（相对下降24.5%，McNemar χ²=22.37，p=2.2×10⁻⁶），269个配对种子中76改善对27恶化。\n🔸 会计分解显示过滤器类贡献4.08个百分点、非过滤类贡献5.25个百分点，两者贡献相近但过滤器成本远低，成本效率明显偏向约束过滤。\n🔸 部署未盲且为复合干预，分解是算术界限而非因果估计；过滤器为确定性谓词，可用反事实重放精确解耦。\n🔸 策展人间一致性中等（Cohen's κ=0.451），且分歧75%集中在声音类，说明上下文信号更稳定可靠。\n🔸 局限包括单一系统单一目录、策展人proxy未经听众验证、跨入口迁移只是结构性推论尚未实测。",
+      "personal_view": "基于全文的分析：这篇工业案例研究的真正创新点不在机制本身——SQL谓词和线性投影都是教科书级组件——而在于把失败分解用作路由准则，明确了哪类反馈该流向哪个工程杠杆。这对缺乏行为信号的冷启动、企业音频等场景有直接实用价值，尤其是成本不对称的发现（廉价过滤器贡献与昂贵重加权头相当）对资源有限的团队极具指导意义。但需注意其证据强度有限：未盲化的复合部署、训练与评估共用同一工作负载、策展人proxy与听众满意度之间缺少闭环验证，跨搜索路径的迁移也只是架构推论。论文对自身边界的坦率陈述值得肯定，使其结论虽窄却可信。",
+      "focus_label": "策展人反馈路由",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 8
+    },
+    {
       "id": "2609.29180",
       "title": "X-Rec Technical Report",
       "authors": [
@@ -343,6 +671,55 @@
       "note_model": "glm-4.5-air",
       "note_basis": "full_text_pdf",
       "full_text_pages": 26
+    },
+    {
+      "id": "2609.30601",
+      "title": "Embedding Subspace Partitioning for Dynamic Multi-Objective Retrieval",
+      "authors": [
+        "Shaobo Zhang",
+        "Alice Leung",
+        "Yunxiang Ren",
+        "Ping Liu",
+        "Yuchin Juan",
+        "Qianqi Shen",
+        "Benjamin Le",
+        "Jianqiang Shen",
+        "Chengming Jiang",
+        "Ko-Cheng Wang",
+        "Vidya Krishnamurthy",
+        "Caleb Johnson",
+        "Fedor Borisyuk",
+        "Luke Simon",
+        "Jingwei Wu",
+        "Wenjing Zhang"
+      ],
+      "published": "2026-09-24",
+      "categories": [
+        "cs.IR"
+      ],
+      "topic": "评测、数据与复现",
+      "institutions": [
+        "LinkedIn, Mountain View, CA, USA"
+      ],
+      "institution_type": "研究机构",
+      "organization_sector": "海外研究机构",
+      "primary_institution": "LinkedIn, Mountain View, CA, USA",
+      "score": 68,
+      "reason": "提供评测、数据或综述视角，便于校准实验设计并定位研究空白。",
+      "abstract": "Modern industrial recommender systems must optimize across competing objectives, balancing semantic relevance with business metrics such as engagement and revenue. While bi-encoders dominate large-scale retrieval due to their efficiency, they collapse these heterogeneous signals into a single static embedding space. This design creates a fundamental limitation: once trained, the retriever cannot adapt to shifting objective priorities at serving time without retraining. Moreover, joint optimization with multi-objective losses often induces interference between objectives, leading to suboptimal trade-offs. We propose Embedding Subspace Partitioning (ESP), a retrieval framework that decomposes the embedding into task-aware subspaces and replaces the single dot product with a weighted sum of per-subspace similarities, whose weights are tunable at serving time. For Transformer bi-encoders, ESP uses the model's native end-of-sequence token as a segment delimiter, with segment-aware attention masking and position encoding resets to guarantee subspace isolation in a single forward pass. Serving is performed via GPU-accelerated exhaustive kNN over one concatenated index, eliminating the need for per-objective Approximate Nearest Neighbor (ANN) infrastructure required by multi-head approaches. We evaluate ESP on an open-source benchmark built from MS MARCO. A single ESP model traces a broad Pareto frontier, consistently outperforming strong multi-task baselines across diverse operating points. In LinkedIn's job matching platform (70M+ weekly users), ESP enabled dynamic retrieval reconfiguration and delivered significant key business metric lifts.",
+      "url": "https://arxiv.org/abs/2609.30601",
+      "pdf_url": "https://arxiv.org/pdf/2609.30601",
+      "affiliation_checked": true,
+      "article_theme": "嵌入式子空间划分实现检索时动态多目标权衡",
+      "research_question": "大规模双塔检索器将语义相关性与业务指标等多个冲突目标压缩进单一静态嵌入空间，训练后无法在服务时调整目标优先级（no-knob问题），且多目标损失会引发几何干扰。论文试图从架构层面解决：一个模型如何在服务时可调地兼顾多个冲突检索目标？",
+      "main_contribution": "提出ESP框架，将嵌入划分为各目标专属的子空间，用子空间点积加权和替代单一相似度，权重作为服务时可调旋钮。理论上证明共享嵌入的有效秩随目标冲突度增长而退化，而划分架构可饱和该下界；工程上借助GPU全量KNN在单个拼接索引上服务，避免了多头方法按目标建索引的线性开销。",
+      "key_ideas": "🔸 Transformer版本复用模型原生EOS token作为段分隔符，配合实体前置排序、段感知注意力掩码与位置ID重置，在单次前向中实现子空间隔离且零新增参数；DNN版本用共享主干上的每目标投影头实现。\n🔸 各子空间独立训练（InfoNCE、MSE、BCE可自由组合），每条损失只更新自己的子空间，输出层面无梯度妥协方向。\n🔸 推理分数为S=Σw_i·⟨e_i,e'_i⟩，权重在请求侧施加，单一模型可通过调节权重扫描完整Pareto前沿，无需重训练。\n🔸 基于子空间冲突度ε推导容量下界d≥r(1+(k−1)ε)，并证明正交划分在ε→1最坏情况下达到该界；维度按有效秩比例分配。\n🔸 用Kendall τ作为冲突度的实用代理指标，指导判断是否需要划分及维度配比。",
+      "analysis_summary": "🔸 MS MARCO多目标基准上，ESP在w_e=0.8时达.900语义NDCG与.999实体召回，在匹配召回点比最优MTSH高+2.5pp（p<0.001）；PCGrad只能缓解（−4.6pp）不能消除干扰，验证瓶颈是几何性的。\n🔸 单模型通过权重扫描追踪平滑Pareto前沿，而MTSH每个操作点需单独重训练；语义NDCG在w_e∈[0.3,0.8]保持稳定平台，仅极端权重下坍缩至.583。\n🔸 实体匹配仅需32维（约3%），验证低分辨率目标可分配紧凑子空间；k=3时增加长度目标仅付出−1.8pp语义、−2.8pp实体的可预测代价。\n🔸 LinkedIn生产部署（70M+周活）7天A/B测试显示调权重即可获得+4.0%收入、+3.95%求职申请、−8.95%不匹配率，且生产规模下MTSH召回损失28.24%而ESP仅0.54%。\n🔸 局限：加权点积与IVFPQ等分区式ANN索引不兼容，依赖GPU全量KNN；高分辨率多冲突目标场景（如语义vs多样性）尚未验证。",
+      "personal_view": "基于全文来看，本文的创新在于把多目标检索的干扰问题定位为架构而非优化问题，并用简洁的容量下界给予理论支撑，实验链条从开源基准到7天线上A/B相当完整，工程细节（EOS分段、RoPE位置重置、SDPA掩码）也极具复用价值。实用价值突出：服务时权重旋钮直接转化为业务杠杆，单一模型覆盖多操作点省去重训练。但局限同样明显：其一，方案强依赖GPU全量KNN这一基础设施前提，对仍用IVFPQ类ANN索引的团队迁移成本高；其二，开源实验中实体目标是低分辨率信号，理论优势在多个高分辨率冲突目标下的表现仍待检验，作者也坦承此点；其三，Kendall τ只是冲突度的方向性代理，实践中据此做维度分配的可靠性需谨慎评估。",
+      "focus_label": "多目标检索架构",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 10
     },
     {
       "id": "2609.27201",
