@@ -7,24 +7,38 @@ on:
     - cron: "47 2 * * 1-5"
     - cron: "17 3 * * 1-5"
   workflow_dispatch:
+    inputs:
+      backfill_days:
+        description: "How many recent days to re-check (10 for normal; use 30+ after an outage)"
+        required: false
+        default: "30"
+      max_results:
+        description: "Maximum arXiv API results to inspect"
+        required: false
+        default: "1000"
 
 permissions:
   contents: write
   pages: write
   id-token: write
 
-concurrency:
-  group: pages
-  cancel-in-progress: false
-
 jobs:
-  update-and-deploy:
+  update:
+    name: Update paper data
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    timeout-minutes: 60
+    concurrency:
+      group: recommendation-daily-update
+      cancel-in-progress: false
+    outputs:
+      should_deploy: ${{ steps.publish.outputs.should_deploy }}
     steps:
       - uses: actions/checkout@v5
+        with:
+          # A queued fallback must see the data committed by the earlier run,
+          # rather than the stale SHA captured when that fallback was scheduled.
+          ref: main
+          fetch-depth: 0
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
@@ -62,43 +76,70 @@ jobs:
         run: echo "${{ steps.freshness.outputs.reason }}; skipping duplicate fetch, AI notes, and deployment."
       - name: Fetch recent arXiv papers
         if: ${{ steps.freshness.outputs.should_run == 'true' }}
+        env:
+          ARXIV_LOOKBACK_DAYS: ${{ github.event.inputs.backfill_days || '10' }}
+          ARXIV_MAX_RESULTS: ${{ github.event.inputs.max_results || '300' }}
         run: python scripts/update_papers.py
       - name: Read public author affiliations
         if: ${{ steps.freshness.outputs.should_run == 'true' }}
+        continue-on-error: true
         env:
-          AFFILIATION_LIMIT: "24"
+          AFFILIATION_LIMIT: "60"
         run: python scripts/enrich_affiliations.py
       - name: Install full-text PDF reader
         if: ${{ steps.freshness.outputs.should_run == 'true' }}
         run: python -m pip install --disable-pip-version-check --no-input pypdf==6.19.0
       - name: Generate Chinese reading notes
         if: ${{ steps.freshness.outputs.should_run == 'true' }}
+        continue-on-error: true
         env:
           ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
           ANTHROPIC_BASE_URL: ${{ vars.ANTHROPIC_BASE_URL }}
           ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL }}
-          ENRICH_LIMIT: "30"
+          ENRICH_LIMIT: "60"
           ENRICH_START_DATE: "2026-09-10"
           FULL_TEXT_DIRECT_LIMIT: "120000"
           FULL_TEXT_CHUNK_CHARS: "45000"
         run: python scripts/enrich_papers.py
       - name: Save refreshed data
+        id: publish
         if: ${{ always() && steps.freshness.outputs.should_run == 'true' }}
+        shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add dist/data/recommendations.json
-          git diff --cached --quiet || git commit -m "data: refresh daily papers"
-          git push
+          if git diff --cached --quiet; then
+            echo "No data changes to commit."
+          else
+            git commit -m "data: refresh daily papers"
+            git push
+          fi
+          echo "should_deploy=true" >> "$GITHUB_OUTPUT"
       - name: Configure GitHub Pages
-        if: ${{ success() && steps.freshness.outputs.should_run == 'true' }}
+        if: ${{ steps.publish.outputs.should_deploy == 'true' }}
         uses: actions/configure-pages@v6
       - name: Upload GitHub Pages artifact
-        if: ${{ success() && steps.freshness.outputs.should_run == 'true' }}
+        if: ${{ steps.publish.outputs.should_deploy == 'true' }}
         uses: actions/upload-pages-artifact@v5
         with:
           path: dist
+
+  deploy:
+    name: Deploy GitHub Pages
+    needs: update
+    if: ${{ needs.update.outputs.should_deploy == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: pages
+      # If Pages ever waits indefinitely again, the next successful data update
+      # replaces it instead of blocking every future paper refresh.
+      cancel-in-progress: true
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Deploy to GitHub Pages
-        if: ${{ success() && steps.freshness.outputs.should_run == 'true' }}
         id: deployment
         uses: actions/deploy-pages@v5

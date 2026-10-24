@@ -100,6 +100,20 @@ def matches_query_scope(title: str, abstract: str) -> bool:
     )
 
 
+def is_within_lookback(published: str) -> bool:
+    """Keep fetched metadata inside the requested recovery window.
+
+    Existing papers are preserved during the merge.  This filter only prevents a
+    large manual API result from importing unrelated historical backlog.
+    """
+    lookback_days = max(1, int(os.environ.get("ARXIV_LOOKBACK_DAYS", "10")))
+    cutoff = datetime.now(timezone.utc).date() - timedelta(days=lookback_days)
+    try:
+        return datetime.fromisoformat(published).date() >= cutoff
+    except ValueError:
+        return False
+
+
 def classify(title: str, abstract: str) -> str:
     haystack = f" {title} {abstract}".lower()
     for topic, terms in TOPICS:
@@ -254,6 +268,8 @@ def parse_atom_root(root: ET.Element) -> list[dict]:
         raw_id = clean(entry.findtext("atom:id", namespaces=NAMESPACE)).rsplit("/", 1)[-1]
         paper_id = re.sub(r"v\d+$", "", raw_id)
         published = clean(entry.findtext("atom:published", namespaces=NAMESPACE))[:10]
+        if not is_within_lookback(published):
+            continue
         author_nodes = entry.findall("atom:author", NAMESPACE)
         authors = [clean(author.findtext("atom:name", namespaces=NAMESPACE)) for author in author_nodes]
         institutions = []
@@ -338,8 +354,6 @@ def fetch_entries_from_rss() -> list[dict]:
                 }
 
     print(f"RSS discovered {len(candidates)} recommendation candidates across {len(categories)} categories.")
-    lookback_days = max(1, int(os.environ.get("ARXIV_RSS_LOOKBACK_DAYS", "10")))
-    cutoff = datetime.now(timezone.utc).date() - timedelta(days=lookback_days)
     papers: list[dict] = []
     for paper_id, item in candidates.items():
         title = item["title"]
@@ -350,7 +364,7 @@ def fetch_entries_from_rss() -> list[dict]:
         except ValueError:
             print(f"::warning::Skipping {paper_id}; no valid publication date was available.")
             continue
-        if published_date < cutoff:
+        if not is_within_lookback(published):
             print(f"Skipping old RSS item {paper_id} published {published}.")
             continue
         topic = classify(title, abstract)
