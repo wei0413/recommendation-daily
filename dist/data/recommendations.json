@@ -1,7 +1,588 @@
 {
-  "generated_at": "2026-10-27T07:46:56Z",
+  "generated_at": "2026-10-28T08:24:35Z",
   "source": "arXiv",
   "papers": [
+    {
+      "id": "2610.37005",
+      "title": "Compote: Collapse-Resistant Multiple Hypothesis Learning For Sequential Recommendation",
+      "authors": [
+        "Louis Castres Saint Martin",
+        "Clement Calauzenes",
+        "Alain Rakotomamonjy",
+        "Patrick Gallinari"
+      ],
+      "published": "2026-10-27",
+      "categories": [
+        "cs.LG",
+        "cs.IR"
+      ],
+      "topic": "序列与会话推荐",
+      "institutions": [
+        "Criteo AI Lab, Paris, France",
+        "Sorbonne Université, CNRS, ISIR, 75005 Paris, France"
+      ],
+      "institution_type": "研究机构",
+      "organization_sector": "海外研究机构",
+      "primary_institution": "Criteo AI Lab, Paris, France",
+      "score": 85,
+      "reason": "聚焦用户行为序列与下一步偏好建模，和序列推荐主线直接相关。",
+      "abstract": "Next-item prediction is inherently ambiguous: a single interaction history often admits multiple plausible continuations across distinct catalogue regions. Standard sequential recommenders compress these alternatives into a single prediction, conflating user intents. We introduce COllapse-resistant Multiple hyPOThesis lEarning (COMPOTE), a multi-hypothesis transformer trained with an annealed objective that transitions from uniform supervision to a winner-takes-all assignment. This mechanism forces hypotheses to specialize into distinct catalogue regions, while inference relies on an efficient, normalizer-free max-similarity rule. Theoretically, we show that in the population case, the optimal solutions partition the conditional next-item distribution according to a max-entropy quantization principle, while pooled scores preserve the Bayes-optimal ranking. We also prove a generalization bound scaling logarithmically with the number of hypotheses. Across three Amazon Reviews 2023 benchmarks, COMPOTE outperforms strong ID-based, generative, and multi-interest baselines using item IDs alone. Matched-capacity ablations confirm that performance gains stem directly from the annealed objective, preventing the head collapse observed in conventional multi-head architectures, rather than added capacity, ensembling, or routing.",
+      "url": "https://arxiv.org/abs/2610.37005",
+      "pdf_url": "https://arxiv.org/pdf/2610.37005",
+      "affiliation_checked": true,
+      "article_theme": "退火多假设学习让序列推荐摆脱头部坍缩",
+      "research_question": "序列推荐中用户历史往往对应多个合理的下一个物品，单查询模型会把多模态意图平均化。如何在不引入容量、集成或路由收益的情况下，让多个假设真正特化到不同目录区域并防止头部坍缩？",
+      "main_contribution": "提出COMPOTE，将退火多选择学习引入序列推荐：共享因果Transformer接M个预测头，训练时从均匀监督退火到赢家通吃，推理用无需归一化的最大相似度聚合。理论上刻画最优假设按最大熵划分条件分布、池化分数保持贝叶斯排序，并给出随M对数增长的泛化界；实验上在三个Amazon 2023基准上超越ID、生成式和多兴趣基线。",
+      "key_ideas": "🔸 共享Transformer编码器接M个MLP假设头，各头对目录输出独立分布，用退火损失ℓτ训练：温度τ高时各头均匀更新，τ趋零时收敛为纯赢家通吃损失。\n🔸 推理聚合ω取各头分数的逐物品最大值（max-pooling），其交叉熵恰为ℓτ；理论证明最优假设将目录按最大熵原则划分为不相交单元，池化分数保持贝叶斯最优排序（除饱和平局）。\n🔸 推理可用max-similarity规则直接对余弦相似度取max，免去目录级softmax与归一化项，实证各头归一化子几乎相同，排序无损且兼容向量数据库。\n🔸 理论证明泛化界仅以O(√(lnM/n))随假设数增长，多加假设不会线性放大过拟合风险。\n🔸 辅助的置信度打分头通过二分类交叉熵回归获胜头，仅起稳定训练作用（最佳权重α=0.1），并非性能主要来源。",
+      "analysis_summary": "🔸 在Instrument、Scientific、Game三个数据集上，COMPOTE在12个指标列中11个最优；对最强基线TIGER，N@5在Scientific提升9.7%、Game提升9.6%，仅Instrument H@10略低于HSTU与TIGER。\n🔸 等容量消融显示多假设目标本身是增益来源：单头更深网络、集成交叉熵和路由变体在所有指标上均落后；后两者的头部平均余弦相似度达1.00（完全坍缩），COMPOTE仅0.58—0.64。\n🔸 Oracle头选择使COMPOTE的N@5提升53%—94%，说明各头携带互补排序信号，而坍缩模型的oracle增益为零。\n🔸 假设数M从1增至3明显改善，之后性能平台期不退化；M过大理论上增加饱和平局风险，实验支持选适中M。\n🔸 实验局限于中小规模Amazon数据集（约2.5万物品），静态目录划分与物品嵌入几何的关系尚未解释，与语义标识符结合留待未来。",
+      "personal_view": "基于全文来看，这篇论文的创新点在于把退火多选择学习作为独立目标而非架构附属重新引入序列推荐，并以完整的理论刻画（最大熵划分、贝叶斯排序保持、对数泛化界）说明为何多假设能自然特化而不坍缩。消融设计严谨，将收益从容量、集成、路由中剥离出来，说服力强；无归一化检索规则也具实用部署价值。局限在于实验规模偏小、仅ID特征未用内容信息，理论上最优单元随查询变化而实证呈静态划分的解释仍是开放问题，跨场景泛化性有待验证。",
+      "focus_label": "多假设序列推荐",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 26
+    },
+    {
+      "id": "2610.37228",
+      "title": "AutoRSE: Evaluating LLM Agents as Recommendation Engineers for Self-Evolving Recommender Systems",
+      "authors": [
+        "Rui Tian",
+        "Yi Fang",
+        "Yejin Hua",
+        "Du Wang",
+        "Yuzhe Wang",
+        "Minxuan Shan",
+        "Zirui Ren",
+        "Xinyu Lin",
+        "Chongming Gao",
+        "Wenjie Wang",
+        "Fuli Feng"
+      ],
+      "published": "2026-10-27",
+      "categories": [
+        "cs.IR"
+      ],
+      "topic": "LLM 与 Agent",
+      "institutions": [
+        "["
+      ],
+      "institution_type": "研究机构",
+      "organization_sector": "海外研究机构",
+      "primary_institution": "[",
+      "score": 82,
+      "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
+      "abstract": "Recommender Systems Engineer Agents (RSE-Agents), which use LLM-based agents to autonomously improve recommendation algorithms, are emerging as a promising paradigm. However, their capabilities and limitations remain poorly understood due to the lack of a unified, standardized evaluation framework and systematic trajectory-level analysis. To address this gap, we introduce AutoRSE, an evaluation framework spanning six representative industrial-grade recommendation tasks, and conduct a large-scale empirical study of three frontier LLMs across three widely used agent harnesses. Our results show that RSE-Agents consistently enhance the performance of backbones on five of the six tasks, with an average relative improvement of 16.1%, indicating that they can already autonomously improve recommendation performance. However, trajectory-level analysis also reveals that current RSE-Agents function primarily as engineering optimizers rather than algorithmic improvers: their gains are largely driven by hyperparameter tuning, training strategies, and model ensembling, while genuine algorithmic innovations are rare. Since the largest gains in recommender systems often stem from algorithmic advances, this behavior underscores a fundamental limitation of current RSE-Agents. To probe this limitation, we perform idea-injection experiments and show that agents equipped with innovative ideas from frontier research or human experts achieve substantially larger improvements than those relying on self-generated ideas. These results suggest that idea generation is a central bottleneck of current RSE-Agents, highlights a key direction for the future recommendation system research. Our implementation is publicly available on GitHub: https://github.com/Ray-Tiann/AutoRSE.",
+      "url": "https://arxiv.org/abs/2610.37228",
+      "pdf_url": "https://arxiv.org/pdf/2610.37228",
+      "affiliation_checked": true,
+      "article_theme": "AutoRSE：用统一基准评估LLM智能体自主改进推荐算法的能力",
+      "research_question": "如何统一、真实地评估基于LLM的推荐系统工程智能体（RSE-Agents），并弄清它们改进推荐系统的能力边界与关键瓶颈。难点在于现有系统均依赖各自专有工业管线，缺乏可比的标准化评测与轨迹层面的归因分析。",
+      "main_contribution": "论文构建了AutoRSE评测框架，覆盖六项工业级推荐任务（生成式推荐与CTR预估），对三个前沿LLM与三个Agent harness的七种组合进行大规模实证研究，并提出轨迹级分析管线，将智能体改进分解为六类优化策略和0–4级新颖度评分。进一步通过想法注入实验证明：高质量外部研究想法能大幅提升性能，想法生成才是当前RSE-Agents的核心瓶颈。",
+      "key_ideas": "🔸 每个RSE任务形式化为(I, π₀, D, B)四元组：任务描述、忠实复现的SOTA基线代码、训练/验证数据与12小时算力预算，测试标签全程隐藏以防数据泄露。\n🔸 智能体在沙盒单H200 GPU环境中通过“探索—构思—实现—实验—分析”五阶段迭代循环修改代码库，结束后由任务验证器对最终提交与隐藏测试集评分，报告绝对分数与相对提升。\n🔸 轨迹级分析将完整智能体轨迹切分为独立实验片段，用LLM判官识别六类策略（参数调优、模型集成、训练策略、特征建模、模型架构、目标函数），前三类为工程优化，后三类为算法创新，并对最终方案做0–4级新颖度打分。\n🔸 想法注入实验设置标准、自生成想法（GenSelect生成8选2-3）和注入外部想法库（源自WWW/SIGIR/KDD论文与竞赛获胜方案）三种条件对比，检验想法质量对性能的影响。",
+      "analysis_summary": "🔸 42个评测设置中35个超过基线，六任务平均相对提升16.1%；生成式推荐平均提升29.2%，而CTR预估仅3.1%（如WuKong基线AUC已达0.9645，提升空间有限）；IntSR上七个组合中五个低于基线。\n🔸 性能强依赖LLM与harness匹配：Claude Code×Opus 4.8（+24.42%）和Codex×GPT-5.5（+24.24%）最强，第三方harness下明显退化；多数收益出现在前50%时间内，之后进入平台期，验证12小时预算的合理性，但不同运行间波动大。\n🔸 4425个分段实验中工程优化占91.7%（集成59.0%、调参26.2%），算法创新仅8.3%；平均新颖度2.42/4，且新颖度与相对提升强正相关（Pearson r=0.79）。\n🔸 想法注入相对标准设置平均提升14.23%、相对自生成想法提升13.35%，新颖度也分别提高0.76和0.58；而自生成想法甚至出现负增益（IntSR -8.08%），说明实现能力不是瓶颈，想法生成才是。\n🔸 局限包括任务数量有限（因工业级基线复现难、算力成本高）、LLM判官标注可能存在偏差，以及注入想法的有效性还取决于是否针对基线的具体弱点，而非单纯方法新颖。",
+      "personal_view": "基于全文来看，本文的核心价值不在于提出新算法，而在于提供了首个系统化的RSE-Agents评测基准与“工程优化者vs算法改进者”的能力分层诊断，结论清晰且有洞察力：智能体擅长调参和集成，却难以产出真正的算法创新，这为后续研究指明了想法生成这一关键短板。想法注入实验设计巧妙，直接把瓶颈归因到ideation环节。局限方面，六任务规模偏小且以学术数据集为主，与真实线上环境仍有差距；新颖度评分依赖LLM判官，主观性难以完全消除；12小时固定预算也可能低估需要更长探索周期的算法级创新。总体而言，该工作兼具方法论贡献与社区基准价值，代码与轨迹的公开和在线排行榜将进一步放大其实用意义。",
+      "focus_label": "RSE智能体评测",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 12
+    },
+    {
+      "id": "2610.36836",
+      "title": "DuTri: Dual-Branch Modeling with Triadic Factorization for Multimodal Multi-Scenario Recommendation",
+      "authors": [
+        "Jintao Huang",
+        "Chaohua Yang",
+        "Kailiang Hao",
+        "Dugang Liu",
+        "Xing Tang",
+        "Zhong Ming"
+      ],
+      "published": "2026-10-27",
+      "categories": [
+        "cs.IR"
+      ],
+      "topic": "多模态推荐",
+      "institutions": [
+        "College of Computer Science and Software Engineering, Shenzhen University, Shenzhen, China",
+        "Shenzhen Technology University, Shenzhen, China"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "国内学术界",
+      "primary_institution": "College of Computer Science and Software Engineering, Shenzhen University, Shenzhen, China",
+      "score": 80,
+      "reason": "融合文本、图像或其他模态信息，有助于理解内容语义与用户兴趣。",
+      "abstract": "As recommendation scenarios become increasingly diverse and multimodal information grows more prevalent, effectively modeling cross-scenario user preferences and multimodal semantics has become a critical challenge in recommender systems. When incorporating multimodal information, existing multi-scenario recommendation (MSR) methods typically treat textual and visual representations as generic input features and directly feed them into their original parameter-sharing architectures. However, this extension may not fully accommodate the different modeling requirements of collaborative and multimodal information and may not be the best modeling paradigm. Our controlled experiments show that directly adopting these architectures is not the optimal modeling approach. To this end, we propose Dual-Branch Modeling with Triadic Factorization (DuTri), a framework for multimodal multi-scenario recommendation comprising a collaborative branch and a multimodal branch. Specifically, the collaborative branch learns structured collaborative preference representations through CANDECOMP/PARAFAC (CP) decomposition of user-scenario-item interactions and residual quantization, thereby capturing cross-scenario commonalities and scenario-specific differences. The multimodal branch leverages the learned user and scenario preferences to guide adaptive modality fusion; additionally, item-level contrastive learning aligns collaborative item preference representations with multimodal representations to facilitate effective collaboration between the two branches. Extensive experiments on two real-world datasets, AntM$^2$C and Amazon, demonstrate that DuTri outperforms existing multimodal and multi-scenario recommendation baselines in overall recommendation performance, validating the effectiveness of the proposed framework.",
+      "url": "https://arxiv.org/abs/2610.36836",
+      "pdf_url": "https://arxiv.org/pdf/2610.36836",
+      "affiliation_checked": true,
+      "article_theme": "DuTri：三分解协作偏好引导多模态多场景推荐",
+      "research_question": "在多场景推荐中引入多模态信息时，直接复用原有参数共享架构是否最优？论文通过受控实验发现，ID-only下有效的跨场景共享机制在多模态输入下未必保持优势，需要重新设计协作偏好学习与多模态融合的组织方式。",
+      "main_contribution": "论文提出DuTri双分支框架：协作分支通过CP分解建模用户-场景-物品三元交互并结合残差量化学习结构化偏好表示，捕捉跨场景共性与场景差异；多模态分支利用学到的用户与场景偏好引导ID、文本、视觉模态的自适应融合，并通过物品级对比学习对齐两分支表示。在AntM2C和Amazon两个数据集上取得优于多模态和多场景基线的整体性能。",
+      "key_ideas": "🔸 动机实验表明：多模态输入下，场景专属MLP的均值AUC超过STAR、HMoE、HierRec等MSR骨干，说明直接复用参数共享架构在多模态设定下可能次优。\n🔸 协作分支对用户-场景-物品交互做CP分解，用户与物品因子跨场景共享、场景因子调制交互，以辅助BCE损失监督连续因子。\n🔸 对三组偏好因子分别施加实体专属的残差量化（4级码本，直通估计器支持端到端训练），形成离散化瓶颈并正则化偏好表示。\n🔸 多模态分支将投影后的用户与场景偏好送入门控网络生成模态权重，对归一化后的ID、文本、视觉表示做加权融合，实现随用户和场景变化的模态贡献。\n🔸 通过物品级对比损失将协作物品偏好与各模态表示对齐，联合优化推荐、CP监督、量化与对齐目标；推理时丢弃辅助投影头。",
+      "analysis_summary": "🔸 在AntM2C和Amazon上，DuTri在所有场景均值AUC和加权WAUC上均超过所评估的多模态与多场景基线（含AMS与Scenario MLP），多数指标提升在配对t检验下显著（p<0.05）。\n🔸 消融实验显示移除对齐损失、CP监督、残差量化或门控融合均导致WAUC下降，移除多模态分支或其预测输入造成的降幅最大。\n🔸 替代策略比较中，量化输入直接作为特征并不优于直接输入，而共享式量化组织（Shared-Specific/Expert Quant）有所改善，DuTri整体最优。\n🔸 效率方面，DuTri推理时间与AMS相当，但参数量多于多数基线、训练时间高于AMS，体现性能与开销的权衡。\n🔸 超参分析表明模型对CP监督权重较稳定，而对齐权重与对比温度存在明显峰值，需谨慎选择；文中未做死码替换，量化器仅是前向瓶颈而非压缩表示。",
+      "personal_view": "基于全文来看，这篇论文最有价值的贡献是那组受控动机实验：它清楚地揭示了ID-only下有效的参数共享范式在多模态输入下会失效，这一观察对多场景推荐系统的设计具有普遍警示意义。方法上，CP三分解天然契合用户-场景-物品结构，残差量化与偏好引导的门控融合将协作信号注入多模态建模，思路清晰且消融充分。不过也存在一些局限：量化器并未真正用于索引压缩，其正则化收益的机理解释偏弱；实验仅在两个数据集上进行，Amazon场景由品类构造，与真实工业多场景的分布差异可能有别；此外偏好因子的额外参数开销在超大规模场景下的可扩展性仍有待验证。",
+      "focus_label": "多场景多模态推荐",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 12
+    },
+    {
+      "id": "2610.36763",
+      "title": "The Vocabulary Is Already Here: Adapting Pretrained Interpretable Features for Generative Recommendation",
+      "authors": [
+        "Ziluowen Luo",
+        "Ruochen Liu",
+        "Jun Yin",
+        "Hao Yan",
+        "Zhengxuan Hu",
+        "Xinze Shi",
+        "Chaozhuo Li",
+        "Chengqi Zhang",
+        "Senzhang Wang"
+      ],
+      "published": "2026-10-27",
+      "categories": [
+        "cs.IR",
+        "cs.AI"
+      ],
+      "topic": "生成式推荐",
+      "institutions": [
+        "Central South University, Changsha, Hunan, China",
+        "The Hong Kong University of Science and Technology (Guangzhou), Guangzhou, China",
+        "Hong Kong Polytechnic University, Hongkong, China",
+        "Central South University, ChangSha, Hunan, China",
+        "Queen Mary University of London, London, UK",
+        "Microsoft, China",
+        "Central South University, Changsha, China"
+      ],
+      "institution_type": "产学合作",
+      "organization_sector": "产学合作",
+      "primary_institution": "Central South University, Changsha, Hunan, China",
+      "score": 77,
+      "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
+      "abstract": "Generative recommendation (GR) predicts the next item through its semantic ID (SID). Existing methods commonly fit SID vocabularies to pretrained language model (PLM) representations of item descriptions, incurring additional training costs and making vocabulary coverage dependent on the fitting domains. We observe that pretrained sparse autoencoders expose PLM features with human-interpretable semantic annotations, allowing feature indices to serve as a reusable SID vocabulary. However, reusing this vocabulary requires preserving item distinctions under compact token budgets and learning to favor target items over candidates with shared dominant features. It also requires extending feature interpretability from item content to retrieval decisions. To address these challenges, we propose API, a framework that Adapts the Pretrained Interpretable vocabulary for effective and explainable GR without additional vocabulary learning. Within API, Pretrained Interpretable IDs (PIDs) retain selected feature indices and relative activation strengths for item discrimination. With PIDs as supervision, the Semantic Prediction Adapter (SPA) learns user preferences from interaction histories through joint feature-index and strength prediction. SPA combines both predictions to score candidate items, with item-level supervision encouraging the observed next item to outrank its alternatives. API further explains candidate score differences through feature contributions paired with their pretrained semantic annotations. Extensive experiments show that API achieves competitive performance across backbones and decoding schemes, while preserving item distinctions under compact token budgets and enabling explainable retrieval.",
+      "url": "https://arxiv.org/abs/2610.36763",
+      "pdf_url": "https://arxiv.org/pdf/2610.36763",
+      "affiliation_checked": true,
+      "article_theme": "复用预训练SAE可解释特征作生成式推荐词表",
+      "research_question": "生成式推荐通常需要针对推荐数据额外拟合语义ID词表，成本高且语义覆盖依赖拟合域。论文探究能否直接复用预训练稀疏自编码器（P-SAE）暴露的PLM可解释特征索引作为天然SID词表，并解决紧凑token预算下的条目区分性与检索可解释性两大挑战。",
+      "main_contribution": "提出API框架，在不学习新词表的情况下将预训练可解释词表适配到生成式推荐。核心机制包括：Pretrained Interpretable ID（PID）通过激活-IDF优先级选择特征并保留相对激活强度以区分相似条目；Semantic Prediction Adapter（SPA）通过联合预测特征索引与强度、结合偏好对齐进行监督。框架还将候选分数差分解到特征层面，配合预训练语义注释实现可解释检索。",
+      "key_ideas": "🔸PID构建：用冻结的PLM-SAE对条目描述编码，按log激活强度乘以流行度折扣的优先级选择K个特征索引，并保留归一化相对激活强度向量q和语义注释，组成三元组PID。\n🔸SPA历史编码：用候选池的特征-强度对编码历史条目，Transformer建模后预测下一条目的特征索引序列和强度向量。\n🔸条目级监督：得分由序列似然减去强度Hellinger距离惩罚构成，并引入候选集上的偏好对齐损失，促使目标条目超越共享主导特征的竞争者。\n🔸理论保证：两个命题分别界定同token序列下强度向量可区分的最大条目数，以及SPA对共享特征序列条目的排序间隔下界。\n🔸检索解释：将分数差分解为逐特征贡献项，配合预训练语义标注说明模型为何偏好某候选。",
+      "analysis_summary": "🔸整体性能：在Beauty、Sports、Toys三个Amazon数据集上，API在12个数据集-指标比较中的9个取得最优，T5-AR下Recall@5超出最强学习式词表基线2.5%–4.2%。\n🔸PID质量：K=4时平均碰撞率从原生选择的80.76%降至17.09%；但随机选择碰撞更低，说明需结合Overlap@20等内容对齐指标评估。\n🔸消融：偏好对齐使Recall@10提升9.4%–45.9%；强度建模仅在结合偏好对齐时才带来NDCG@10 4.0%–6.0%的提升。\n🔸效率与复用：无需词表拟合，三任务累计tokenization时间约为GPT-2编码的3.78×，远低于RVQ（407.69×）和UTGRec（674.99×）；跨域冻结复用时保持低碰撞和竞争性Recall@5。\n🔸可解释与局限：特征f4260语义标注与标题匹配率达98.7%（lift 7.91×），激活编辑可使目标特征exposure@10提升1.365个百分点；但部分PR设置下SPA增益有限，且可解释词表依赖外部自动生成的特征描述。",
+      "personal_view": "基于全文来看，本文的核心创新在于跳过推荐专属的词表学习，直接将机制可解释性领域的P-SAE特征字典转化为SID词表，兼具免拟合成本、跨域共享与语义可读三重价值，思路新颖且实用，尤其是分数差的特征级分解为部署中的检索解释提供了具体路径。实验覆盖多骨干、多解码方案，并诚实报告了直接PID不加SPA时可能不及学习式词表、随机选择碰撞更低等细节。局限方面，框架依赖高质量的PLM-SAE配对与外部特征描述，特征语义的可靠性未完全受控；强度建模单独使用时收益有限，说明适配机制仍较敏感；理论保证依赖较强假设。整体为可解释性技术落地推荐系统提供了有说服力的初步方案。",
+      "focus_label": "SAE词表复用",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 13
+    },
+    {
+      "id": "2610.36954",
+      "title": "When Diffusion Recommenders Stop Sampling: Preserving Generative Diversity",
+      "authors": [
+        "Louis Castres Saint Martin (ISIR",
+        "MLIA)",
+        "Alain Rakotomamonjy (ISIR",
+        "MLIA)",
+        "Patrick Gallinari (ISIR",
+        "MLIA)"
+      ],
+      "published": "2026-10-27",
+      "categories": [
+        "cs.IR"
+      ],
+      "topic": "生成式推荐",
+      "institutions": [],
+      "institution_type": "机构未公开",
+      "organization_sector": "机构未公开",
+      "primary_institution": "机构未公开",
+      "score": 77,
+      "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
+      "abstract": "A user history can admit multiple plausible next interactions, yet conventional sequential recommenders produce a single deterministic ranking. While diffusion models offer a natural way to sample alternative continuations, we show that existing target-item diffusion recommenders often suffer from severe sampling collapse, producing nearly identical outputs across independent draws. We identify two ubiquitous design choices that promote this collapse: joint learning of the latent space and denoiser, and in-trajectory supervision via discrete losses. To address these failure modes, we introduce DARTS (Diverse and Accurate Recommendation Through Sampling), a three-stage latent diffusion framework that explicitly decouples representation learning, generative modeling, and discrete ranking by learning and freezing the latent space before diffusion training and postponing ranking supervision to the final decoding stage. We further characterize sampling diversity using complementary measures of variation before and after decoding, and use posterior-predictive aggregation to exploit this diversity at inference. Across three Amazon Reviews 2023 categories, DARTS preserves substantially greater sampling diversity while outperforming strong sequential, generative-retrieval, and diffusion baselines by 7-12% on standard ranking metrics. Aggregating multiple samples further improves ranking accuracy at a fixed slate size.",
+      "url": "https://arxiv.org/abs/2610.36954",
+      "pdf_url": "https://arxiv.org/pdf/2610.36954",
+      "affiliation_checked": true,
+      "article_theme": "DARTS：三阶段潜在扩散推荐，兼顾采样多样性与排序精度",
+      "research_question": "现有目标物品扩散推荐器在重复采样时几乎产生完全相同的推荐列表，即严重的采样坍缩，使其生成性名存实亡。论文试图识别导致坍缩的设计因素，并构建一个能同时保持采样多样性和提升排序精度的生成式序列推荐模型。",
+      "main_contribution": "提出DARTS，一个三阶段潜在扩散推荐框架：先预训练并冻结序列自编码器潜在空间，再仅用潜空间回归损失训练去噪器，最后才微调解码器做排序监督。论文还提出采样坍缩诊断指标（Jaccard相异度、生成方差比R、参与比PR），并通过消融证明联合学习表示与去噪器、以及去噪过程中的目录级监督是坍缩的根源。",
+      "key_ideas": "🔸三阶段解耦：阶段1用掩码物品建模训练编码器-解码器并冻结潜在空间；阶段2在固定潜空间中训练条件去噪器，仅用潜变量RMSE回归损失；阶段3冻结编码器与去噪器，用带温度的BPR损失微调解码器，弥合预训练与推理时的分布偏移。\n🔸扩散目标不是静态物品嵌入，而是编码器对完整序列最后槽位的上下文化表示（带stop-gradient），条件前缀则来自掩码末位物品的编码，保证只用推理可得信息。\n🔸物品表示混合冻结的sentence-t5语义向量与可学习标识嵌入（权重0.5），并复用为解码器输出投影。\n🔸推理时从噪声出发执行T步反向扩散得到潜在样本，与固定前缀一起送入解码器对全目录打分排序。\n🔸通过事后预测聚合：对M次采样的物品分布取算术平均后再截断排序，在不扩大推荐板的前提下提升精度。",
+      "analysis_summary": "🔸在三个Amazon Reviews 2023类目上，DARTS在全部12个数据集-指标组合上最佳，较最强基线提升6.8%–12.0%；相对共享表示的SASRec+T5，NDCG@10提升11.9%–19.5%。\n🔸采样诊断显示DARTS在SCIENTIFIC上R=0.30、PR=4.7、J=0.30，而DiffuRec等基线接近确定性采样；消融表明仅混入0.1的交叉熵就使R减半以上，冻结表示被改为联合训练时R降至0.024、NDCG@5下降42%。\n🔸M=4次采样的分布聚合使NDCG@10提升约3.2%，但吞吐从2102降至629样本/秒（3.3倍代价）；M=1时DARTS仍比DiffuRec快3.6倍且更准，但比SASRec慢14.5倍。\n🔸对照实验表明对SASRec注入Gumbel噪声无法带来同类收益，聚合分布池化（UnionRecall）在同等展示预算下也不优于单次长列表。\n🔸局限：留一法评估只观察单一未来交互，无法验证替代样本是否为合理未来；多未来场景下的校准与可控多样性留待后续工作。",
+      "personal_view": "基于全文的分析，这篇论文最有价值的贡献是诊断层面：用方差比和参与比清晰地揭示现有扩散推荐器的采样坍缩现象，并把原因追溯到两个具体设计选择，消融证据链完整且有说服力。三阶段冻结策略借鉴了图像潜在扩散与ELF的思想，属于已有原理在推荐领域的迁移，但迁移得干净、验证充分，同时实现多样性提升与精度领先确实少见。实用角度需注意：相比单遍SASRec有约14.5倍的推理吞吐差距，多采样聚合还要线性增加成本，工业部署需权衡；此外实验仅覆盖三个中等规模Amazon数据集，留一法评估也难以证明采样的多样性对应真实的多未来。语义表示混合的收益分析（附录B）细致，增强了结论可信度。",
+      "focus_label": "扩散推荐多样性",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 22
+    },
+    {
+      "id": "2610.37280",
+      "title": "Modeling Preference Dependencies with Directed Acyclic Graphs for Narrative-Driven Recommendation",
+      "authors": [
+        "Mingzhe Lu",
+        "Jian Qin",
+        "Ruize Qin",
+        "Jinhao Liu",
+        "Yunpeng Li",
+        "Hang Su"
+      ],
+      "published": "2026-10-27",
+      "categories": [
+        "cs.IR",
+        "cs.CL"
+      ],
+      "topic": "其他",
+      "institutions": [],
+      "institution_type": "机构未公开",
+      "organization_sector": "机构未公开",
+      "primary_institution": "机构未公开",
+      "score": 77,
+      "reason": "与推荐系统研究直接相关，适合快速浏览其问题设定和实验结论。",
+      "abstract": "Narrative-driven recommendation allows users to express multifaceted needs through free-form text where stated preferences naturally qualify and condition one another. Existing methods typically treat narratives as flat keyword combinations or unconstrained generative queries, failing to capture how complex preferences hierarchically refine and contextualize each other. We propose the Preference Dependency Graph Framework (PDG-F), a narrative-driven recommendation framework centered on explicit preference dependencies. Specifically, PDG-A (PDG-Agent) first parses unstructured requests to organize user preferences and their mutual qualifications into a directed acyclic Preference Dependency Graph (PDG). Through this graph, candidate evidence from the open Web is acquired via directed path retrieval, and final recommendations are determined by topological path ranking. Comprehensive experiments across three diverse domains spanning English and Chinese contexts confirm that PDG-F consistently achieves superior recommendation performance over competitive baselines, open-domain retrieval agents, and frontier language models. Further diagnostic analyses show that our dependency-guided retrieval markedly raises the attainable candidate-pool ceiling, demonstrating the fundamental value of modeling preference dependencies in narrative-driven recommendation.",
+      "url": "https://arxiv.org/abs/2610.37280",
+      "pdf_url": "https://arxiv.org/pdf/2610.37280",
+      "affiliation_checked": true,
+      "article_theme": "用有向无环图建模叙事推荐中相互约束的偏好依赖",
+      "research_question": "叙事驱动推荐中，用户自由文本里的偏好并非独立并列，而是相互限定、层层细化，现有扁平关键词或生成式方法难以刻画这种依赖结构。论文研究如何显式建模偏好间的限定关系以指导开放网络证据获取与候选排序。",
+      "main_contribution": "提出PDG-F框架，由图构建代理PDG-A将叙事解析为偏好依赖图（PDG），再通过有向路径检索获取候选证据、以拓扑路径打分完成排序。该框架在电影、书籍、动漫三个中英文领域显著超越基线、检索代理与前沿LLM，验证了依赖建模的根本价值。",
+      "key_ideas": "🔸 PDG-A将叙事拆解为偏好原子，沿“解释视角—具体实例”两层结构展开为离散节点，节点以四元组初始化。\n🔸 对所有节点对在全叙事上下文中判断限定关系，形成有向边；通过反复移除强连通分量中叙事支持最弱的边解决环路，并做传递约简，得到DAG。\n🔸 按拓扑序生成各节点的具体偏好描述，以祖先偏好为上下文逐层细化，完成依赖图。\n🔸 对每条依赖边改写为Google搜索语法查询，经Serper API检索网页、抓取并切块，按节点偏好抽取候选与正反证据，候选继承节点溯源。\n🔸 排序时对0—4级关系标签打初始分，沿拓扑序用折扣因子（γ=0.7）的最大路径递归累积，跨节点用对数压缩聚合得到最终分数，排序过程确定性、无需多次重排。",
+      "analysis_summary": "🔸 在Movie/Book/Anime上，PDG-F(+Year)在P@10、R@10、NDCG@10全面领先，Movie上较最强基线提升13.7%—19.6%，Book上P@10提升92.4%，Anime上R@10提升60.9%。\n🔸 候选池显著扩大：每请求约252—687个候选（基线约20个），池召回在三个域分别升至0.4858、0.5481、0.4734，约翻倍甚至近三倍；Recall@10已超过OCG-Agent全池召回。\n🔸 独占发现的真实相关项占比30.41%—38.85%，与基线候选源部分互补；确定性图打分避免了RankGPT类列表重排的上下文窗口限制与位置偏差。\n🔸 消融显示全加性策略远优于均值/最大节点聚合；分数十分位分析显示相关项集中于最高分位；oracle分解表明候选池上限大幅提高，但池内排序仍是主要瓶颈。\n🔸 (+Year)变体用年份规则过滤缓解网络检索偏好新近内容的偏差，对经典电影为主的Movie收益最大；Anime极端首位（Recall@1）略逊于基线。",
+      "personal_view": "基于全文来看，这篇论文的核心创新在于把叙事中常被忽略的“偏好互相限定”结构化为有向无环图，并让检索与排序共用同一结构，思路清晰且机制自洽，拓扑路径累积打分兼具可解释性与确定性，是对LLM代理推荐流程的一次有价值的重构。实验覆盖中英文三个领域、并做了候选池、重叠、oracle分解等较细致的诊断，说服力较强。局限方面：依赖边判断与偏好生成完全依赖LLM代理的语义判断，可能引入级联误差且缺乏人工评估；候选池扩大带来可观的抓取与推理成本；Book/Anime基准仅30条查询，规模偏小；池内排序仍存在明显缺口，说明打分机制尚有改进空间。",
+      "focus_label": "偏好依赖图推荐",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 9
+    },
+    {
+      "id": "2610.37409",
+      "title": "Can Complementary Signals Bridge Similarity Islands? Manifold-Augmented Graph Embedding for Multimodal Recommendation",
+      "authors": [
+        "Zhenye Yang",
+        "Jinpeng Chen",
+        "Wenbo Fu",
+        "Jun Ma",
+        "Huan Li",
+        "Qimin Zhou",
+        "Tao Wang",
+        "Li Sun",
+        "Senzhang Wang"
+      ],
+      "published": "2026-10-27",
+      "categories": [
+        "cs.IR"
+      ],
+      "topic": "多模态推荐",
+      "institutions": [
+        "School of Computer Science (National Pilot Software Engineering School),Beijing University of Posts and Telecommunications, Beijing, China",
+        "Key Laboratory of Trustworthy Distributed Computing and Service (BUPT), Ministry of Education",
+        "Zhejiang University, Hangzhou, China Central South University, Changsha, China"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "国内学术界",
+      "primary_institution": "School of Computer Science (National Pilot Software Engineering School),Beijing University of Posts and Telecommunications, Beijing, China",
+      "score": 77,
+      "reason": "融合文本、图像或其他模态信息，有助于理解内容语义与用户兴趣。",
+      "abstract": "Multimodal Recommender Systems (MMRS) leverage rich item features to mitigate data sparsity, yet similarity-driven graph construction and propagation can favor semantically similar substitutes over functionally related complements. When behavioral associations connect semantically distant items, complementary signals can remain geometrically isolated, yielding fragmented \"Similarity Islands\" and semantic drift when standard propagation is applied. To overcome these limitations, we propose MAGE (Manifold-Augmented Graph Embedding), a framework for personalized multimodal ranking that decouples complementarity modeling into offline geometric warping and online topological propagation. The offline phase enhances item representations by extracting complement-aware residual directions via a Soft Conceptor mechanism and injecting them under a local gap-preserving constraint, incorporating co-purchase evidence while controlling the magnitude of geometric perturbation. Synergistically, the online phase employs an asymmetric dual-stream GNN that treats visual features as stable anchors and augmented textual features as flexible probes, fused through a self-calibrated cross-modal mechanism to reconcile shared semantics and modality-specific residual cues. Extensive experiments on four Amazon datasets show that MAGE yields consistent improvements over strong multimodal recommendation baselines. Together with the supporting analyses in the appendix, these results suggest that geometry-aware augmentation can alleviate the semantic mismatch that arises in complementary recommendation settings. Our code is available at https://github.com/Alex-bupt/mage.",
+      "url": "https://arxiv.org/abs/2610.37409",
+      "pdf_url": "https://arxiv.org/pdf/2610.37409",
+      "affiliation_checked": true,
+      "article_theme": "流形增强图嵌入MAGE弥合互补信号的相似性孤岛",
+      "research_question": "多模态推荐中，相似性驱动的图构建与传播偏好语义相似的替代品，而功能互补但语义遥远的商品在嵌入空间中被几何隔离，形成“相似性孤岛”，直接传播会引发语义漂移。论文研究如何在不破坏商品核心语义的前提下，将互补信号融入个性化排序。",
+      "main_contribution": "提出MAGE框架，将互补性建模解耦为离线几何增强与在线非对称双流传播两个阶段。离线阶段通过局部SVD与Soft Conceptor提取互补感知残差方向，并在显式的局部间隔保持约束下注入文本模态；在线阶段采用非对称双流GNN，以视觉为稳定锚点、增强文本为灵活探针，并通过自校准门控融合。在四个Amazon数据集上取得对强基线的一致提升。",
+      "key_ideas": "🔸 用LLM做一次性证据绑定文本抽取（Qwen3-32B-AWQ），仅提取有原文依据的功能属性，训练与推理阶段不再调用LLM；\n🔸 Phase I：对每个种子商品按局部相对百分位划分强/弱邻居集合，对种子与强邻居构建局部矩阵做SVD，用Soft Conceptor软性抑制替代子空间，从弱邻居投影残差中聚合共识互补方向，并对种子嵌入正交化；\n🔸 通过间隙保持约束自适应确定注入系数α：注入后强/弱集合间隔不得低于原始间隔的ρ倍，并设安全上限αmax=0.35，归一化后回溯校验；\n🔸 Phase II：视觉流使用视觉与文本kNN图交集构成的纯相似图做同质传播，文本流在注入过滤后共购边的混合增强图上传播（ωco=0.4，k=10），保留ID协同骨干；\n🔸 自校准交叉模态融合：注意力提取共享原型，用协同表征调制各模态残差，经双向门控残差式精炼后与ID骨干结合，配合矩匹配、骨干对齐与用户扰动一致性等正则。",
+      "analysis_summary": "🔸 全测试上MAGE在四个Amazon数据集所有指标均最优，R@20较最强基线分别提升约2.77%、4.81%、6.25%和6.53%，硬互补子集相对更强基线平均提升9.87%；\n🔸 消融显示移除Phase I、互补拓扑、非对称传播或门控均降低性能；细粒度控制中间隙约束贡献最大，正交化最小，单个安全组件的增益温和；\n🔸 仅用LLM文本替换产生混合结果，而离线增强作为即插组件可提升GUME/MGCN/MENTOR在Sports/Clothing上的全部指标，Baby迁移效果有限；\n🔸 鲁棒性方面，对30%共购边丢弃或保度重连，指标变化不超过±1.96%；Phase I预处理CPU上1.89–4.36秒、峰值内存低于0.4GB，扩展近似线性；\n🔸 作者坦承局限：共购边是 imperfect 证据，几何保障不保证语义正确性，30%扰动不能证明对任意噪声/极端稀疏/时序漂移的鲁棒性，Sports原始文本对照改变了验证patience，非严格匹配比较。",
+      "personal_view": "基于全文来看，本文的创新点在于把异质互补信号建模拆解为“离线几何重整+在线非对称传播”的双阶段解耦，用显式间隔保持约束控制注入幅度，避免语义漂移，思路清晰且实验控制较严谨——不仅做了总体对比，还专门构造硬互补子集和相似性孤岛统计来验证动机。附录对LLM预处理、正则敏感性和图扰动分析的透明度值得肯定。局限在于整体收益幅度中等，各安全组件单独贡献温和，Baby数据集迁移效果混合，且方法依赖共购元数据质量，共购信号本身可能携带流行度和曝光偏差，落地部署时需谨慎监控其公平性与可靠性。",
+      "focus_label": "多模态流形增强",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 33
+    },
+    {
+      "id": "2610.36890",
+      "title": "Latent Residual Reasoning for Ranking in Generative Recommendation",
+      "authors": [
+        "Haihan Shi",
+        "Ruidong Han",
+        "Wenjie Wang",
+        "Shangyu Chen",
+        "Sunhao Dai",
+        "Yongqi Li",
+        "Yangyang Li",
+        "Fei Jiang",
+        "Wei Lin",
+        "Fuli Feng",
+        "Xiangnan He"
+      ],
+      "published": "2026-10-27",
+      "categories": [
+        "cs.IR"
+      ],
+      "topic": "生成式推荐",
+      "institutions": [
+        "University of Science and Technology of China, Hefei, China",
+        "Meituan, Beijing, China",
+        "Gaoling School of Artificial Intelligence, Renmin University of China, Beijing, China",
+        "The Hong Kong Polytechnic University, Hong Kong SAR, China",
+        "Academy of Cyber, Beijing, China"
+      ],
+      "institution_type": "产学合作",
+      "organization_sector": "产学合作",
+      "primary_institution": "University of Science and Technology of China, Hefei, China",
+      "score": 74,
+      "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
+      "abstract": "Generative recommendation (GR) models for ranking typically adopt a fast-thinking direct prediction paradigm with strong practical efficiency. However, ranking requires fine-grained scoring across multiple candidate items, while existing GR models still mainly rely on one-shot prediction. This raises the question whether additional inference-time computation can further improve ranking quality. Recently, inspired by Chain-of-Thought (CoT) reasoning in large language models (LLMs), some work has begun to introduce reasoning into recommendation systems. Some of these methods rely on LLM reasoning frameworks to perform explicit reasoning in textual space, but such designs are not suitable for more widely deployed non-textual recommendation models. A more relevant direction is to introduce latent reasoning into ID-based recommendation models. Although recent work has extended latent reasoning to industrial ranking, how successive reasoning steps should improve fine-grained candidate scores remains less explored. To address this problem, we propose Refiner, a latent residual reasoning framework with parameter-efficient fine-tuning for generative ranking. Our approach introduces three key components: (1) a residual reasoning mechanism that progressively refines ranking scores through cumulative additive corrections, (2) history queries that provide condensed user behavior representations to enhance candidate-specific reasoning, and (3) a parameter-efficient fine-tuning strategy that leverages LoRA modules to adapt pre-trained models for latent reasoning. Extensive experiments on two public benchmarks, an offline industrial dataset, and an online A/B test demonstrate that Refiner consistently improves over direct prediction, validating its effectiveness and practical utility.",
+      "url": "https://arxiv.org/abs/2610.36890",
+      "pdf_url": "https://arxiv.org/pdf/2610.36890",
+      "affiliation_checked": true,
+      "article_theme": "用潜在残差推理提升生成式推荐排序的精细化打分",
+      "research_question": "生成式推荐排序模型普遍采用一步式直接预测，难以对候选物品进行细粒度打分。论文研究能否通过推理时额外计算（潜在空间多步推理）持续改进候选分数，同时避免LLM文本推理的开销并兼容已部署的非文本推荐模型。",
+      "main_contribution": "论文提出Refiner框架，将潜在推理建模为对候选分数的累加式残差修正，并引入历史查询提供紧凑的全局用户兴趣表示，配合冻结底座模型加LoRA模块的参数高效微调。该设计使潜在推理与排序目标对齐，且能以最小扰动适配已有的工业级排序模型，在公开数据、工业离线数据和线上A/B测试中均取得一致提升。",
+      "key_ideas": "🔸 为每个候选物品分配推理token自回归生成中间状态，通过扩展候选掩码保证候选间不泄漏信息，同时可并行给多候选打分；\n🔸 采用残差推理机制，每一步不重新预测完整分数，而是预测对前序累计分数的加性修正，用MSE对累计分数进行监督，逐步逼近真实标签；\n🔸 引入历史查询（history queries），从用户历史序列的隐状态中提取固定数量的紧凑表示，供各候选的候选特定推理共享全局用户兴趣信息；\n🔸 参数高效微调：冻结预训练的嵌入、Transformer和预测层，仅训练LoRA模块和专门的推理预测层，避免端到端重训练对已部署排序器的干扰；\n🔸 线上部署采用增量更新框架，每日Refiner从上一日Refiner检查点与当日冻结的MTGR检查点热启动，仅更新新增参数以跟随底座模型更新节奏。",
+      "analysis_summary": "🔸 在Steam和MovieLens10M上，MTGR+Refiner相对MTGR在AUC/GAUC上分别提升约2.3%、2.7%和2.5%、4.3%，优于改造为排序场景的潜在推理基线ReaRec；\n🔸 工业离线数据上提升幅度较小但具有统计显著性（如CTR GAUC提升1.6‰，p值0.008），符合工业界1‰即有意义的判断标准；\n🔸 消融显示去除历史查询、LoRA、残差目标或改为端到端训练均导致性能下降，其中端到端变体表现最差，残差和参数分离设计有效；\n🔸 分组分析表明Refiner在冷门物品和长序列用户上收益最大，热门物品上因底座已有强信号而提升相对较小；推理步数超过1-2步后增益迅速递减，残差幅度随步数加深而下降，历史查询数量取2或4时性能最佳且相对推理延迟低于1.1；\n🔸 1%流量、7天线上A/B测试中PV-CTR提升0.75%、UV-CTCVR提升0.21%、GMV提升0.46%，且作者指出当前RIL未经过专门的推理服务层优化。",
+      "personal_view": "基于全文来看，本文的核心创新在于把潜在推理显式对齐到排序任务的分数修正目标上：残差加性修正让每一步推理都有明确的监督意义，比直接逐步做BCE预测更契合排序对细粒度分数的需求。冻结底座加LoRA的参数高效设计对工业落地非常友好，配合增量更新框架解决了与已部署模型同步更新的实际问题，线上A/B测试也增强了说服力。局限方面：一是可比较的潜在推理方法受任务接口限制，未能与OnePiece的完整排序配置公平对比；二是固定推理深度对所有请求一视同仁，简单样本可能存在计算浪费，自适应深度选择是合理但尚未验证的方向；三是推理步数增多后收益迅速衰减，说明该方法更接近一种轻量的二次精修而非深度推理。总体上这是一项工程与学术结合较扎实的增量式工作。",
+      "focus_label": "潜在残差推理",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 12
+    },
+    {
+      "id": "2610.36973",
+      "title": "KL-MOPD: Discrepancy-Aware Multi-Objective On-Policy Distillation for Generative Recommendation",
+      "authors": [
+        "Weiqin Yang",
+        "Yandong Wang",
+        "Yuan Gao",
+        "Hao Deng",
+        "Jinxin Hu",
+        "Jing Cao",
+        "Jiawei Chen"
+      ],
+      "published": "2026-10-27",
+      "categories": [
+        "cs.IR"
+      ],
+      "topic": "生成式推荐",
+      "institutions": [
+        "Zhejiang University, Hangzhou, China",
+        "Alibaba Group, Beijing, China"
+      ],
+      "institution_type": "产学合作",
+      "organization_sector": "产学合作",
+      "primary_institution": "Zhejiang University, Hangzhou, China",
+      "score": 74,
+      "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
+      "abstract": "Coordinating multiple recommendation objectives (e.g., click and conversion) is critical for real-world generative recommendation (GR). However, since a positive item in GR can be retrieved only when its tokens are successively selected at every decoding step, traditional item-wise methods lack fine-grained token-wise supervision to guide intermediate steps. Motivated by its success in foundation models, we consider introducing multi-objective on-policy distillation (MOPD) into GR to distill two single-objective teachers into a student at each token. Yet, we find that in vanilla MOPD, (i) teachers exhibit unequal distillation difficulty at each token (i.e., token-level imbalance), and (ii) the harder-to-distill teacher varies across tokens (i.e., cross-token inconsistency), leaving each objective poorly learned at certain steps and hindering positive item retrieval for both objectives, leading to suboptimal performance. To address this challenge, we propose KL-MOPD (KL-Weighted Multi-Objective On-Policy Distillation), a simple yet effective distillation method that allocates token-wise teacher weights proportional to the initial student-teacher token-wise KL divergences, thereby strengthening supervision for the harder-to-distill teacher at every decoding step. Despite its simplicity, we theoretically prove that KL-MOPD strictly outperforms vanilla MOPD in the additive joint recommendation objective under mild conditions. Moreover, KL-MOPD is plug-and-play and computationally efficient, requiring only a one-time pre-training weight calibration with negligible training overhead. Extensive experiments on three public benchmarks, a billion-scale industrial dataset, and online A/B tests on our e-commerce advertising platform demonstrate that KL-MOPD significantly improves both individual and joint recommendation performance. The anonymous code is provided for peer review.",
+      "url": "https://arxiv.org/abs/2610.36973",
+      "pdf_url": "https://arxiv.org/pdf/2610.36973",
+      "affiliation_checked": true,
+      "article_theme": "用KL加权多目标在线蒸馏提升生成式推荐联合目标",
+      "research_question": "生成式推荐需同时协调点击与转化等多个目标，但传统条目级方法缺乏对中间解码步的token级监督。直接引入多目标在线蒸馏（MOPD）时存在token级蒸馏难度不均衡与跨token难蒸馏教师切换两个问题，导致目标学习不充分、正样本检索受阻。",
+      "main_contribution": "论文提出KL-MOPD，按初始学生与各教师的token级KL散度成比例分配教师监督权重，在每个解码步强化更难蒸馏的教师，并理论上证明在温和条件下其严格优于均权MOPD的加性联合推荐目标。方法即插即用、权重仅需训练前一次性预计算，几乎无额外开销。",
+      "key_ideas": "🔸先用SFT/DPO分别微调点击与价值两个单目标教师，学生从参考策略初始化，在自身采样轨迹上做反向KL蒸馏，实现on-policy学习与token级细粒度监督。\n🔸通过期望token级KL散度刻画每个token处各教师的蒸馏难度，实证发现难蒸馏教师会在解码步间切换，均权MOPD继承并放大这种失衡。\n🔸KL-MOPD将每个token的教师权重设为初始学生-教师KL的归一化比例，动态强化更难拟合的目标，缓解token级不均衡与跨token不一致。\n🔸给出定理3.1：联合目标增益下界由非负平方主导项S_KL控制，当S_KL大于误差项时严格优于均权MOPD，且增益随教师间难度差异增大而提升。\n🔸权重只依赖固定的初始学生与教师，训练前一次性预计算，无需额外前向传播或辅助模型，可无缝嵌入现有MOPD流程。",
+      "analysis_summary": "🔸在三个公开基准与TIGER、REG4Rec两个骨干上对比八个2026年前后的基线：单目标平均提升4.91%，联合目标超越最强基线与单目标教师平均4.12%，并形成严格更优的Pareto前沿。\n🔸与教师间平均条目级KL相比，KL-MOPD较MOPD进一步降低约13.70%，token级KL更均衡，验证理论分析。\n🔸消融显示条目级权重、MSE权重与Top-K限制等替代方案均逊于完整token级KL加权，证明逐tokenKL度量的必要性。\n🔸工业数据集（约15亿交互、4928万用户、1.58亿广告）离线联合指标提升3.19%；5天10%流量的在线A/B测试中广告收入与GMV分别提升1.63%和2.20%（p<0.05）。\n🔸训练几乎零额外开销，优于需动态权重或额外前向的基线；局限包括理论仅覆盖双目标设定、三教师及以上与通用语言任务留作未来工作。",
+      "personal_view": "基于全文分析，本文的亮点在于将基础模型中的多教师在线蒸馏范式系统性引入生成式推荐，并把均权蒸馏的失败模式归纳为token级不均衡与跨token不一致两个可观测、可度量的现象，方法虽只是一个KL比例加权，却配有完整的下界定理支撑，动机—方法—理论—实证链条完整。工程价值突出：一次性的权重预校准和零额外训练开销使其极易落地，在线A/B的收益也印证了实用性。可能的局限在于权重度量依赖初始学生的KL分布，若学生与教师初始差异极小或目标超过两个，机制与理论均需重新论证；此外推导中的近似误差项随序列长度增长，长token场景的适用性有待进一步检验。",
+      "focus_label": "多目标在线蒸馏",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 13
+    },
+    {
+      "id": "2610.37286",
+      "title": "LESSRec: Level-Specific History Modeling for Semantic ID-Based Recommendation",
+      "authors": [
+        "Shangxin Yang",
+        "Zongwei Wang",
+        "Jing Long",
+        "Junliang Yu",
+        "Min Gao"
+      ],
+      "published": "2026-10-27",
+      "categories": [
+        "cs.IR"
+      ],
+      "topic": "生成式推荐",
+      "institutions": [
+        "Chongqing University, Chongqing, China",
+        "Griffith University, Brisbane, Australia"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "国内学术界",
+      "primary_institution": "Chongqing University, Chongqing, China",
+      "score": 74,
+      "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
+      "abstract": "Semantic ID-based recommendation represents each item as a sequence of semantic tokens obtained through residual quantization. This paradigm generates the next item's tokens autoregressively from coarse to fine, entailing each prediction attending to historical tokens at all semantic levels. However, our inference-time analysis reveals that historical tokens at the target-token's semantic level tend to be more informative, whereas other levels can introduce interference. Motivated by these findings, we propose LESSRec that separately encodes the historical token sequence at each semantic level and restricts attention over historical tokens to the sequence at the target token's semantic level during prediction. To complement these level-specific histories, LESSRec explicitly provides an item-level semantic sequence that represents each historical item's overall semantics in chronological order. The decoder accesses the level-aligned token sequence and the item-level semantic sequence through two separate cross-attention branches and fuses their contexts. We further introduce LESSRec+, which uses separate encoders for different semantic-level histories with the same total parameter count to reduce encoder computation. Extensive experiments across three public datasets and three tokenizers demonstrate the recommendation effectiveness of LESSRec and LESSRec+, with efficiency analyses highlighting the computational benefits of LESSRec+.",
+      "url": "https://arxiv.org/abs/2610.37286",
+      "pdf_url": "https://arxiv.org/pdf/2610.37286",
+      "affiliation_checked": true,
+      "article_theme": "按语义层级分别建模历史序列以改进生成式推荐",
+      "research_question": "论文研究在语义ID生成式推荐中，预测某一语义层级的token时，交互历史中哪些语义层级真正提供有用证据。难点在于传统编码器将所有层级的token混合编码，跨层级信息会干扰同层级历史信号的有效利用。",
+      "main_contribution": "论文通过推理期掩码实验首次发现目标token的同层级历史更具预测价值，并提出LESSRec：用层级隔离自注意力分别编码各层级历史，用层级对齐交叉注意力限制解码器只访问目标层级历史，同时通过条目级语义序列和双交叉注意力融合补充条目整体语义。LESSRec+进一步将编码器层划分为层级专用组，在参数总量不变的前提下降低编码器计算量。",
+      "key_ideas": "🔸 推理期掩码实验表明，在层级隔离编码下，完全对齐访问比完全错配访问的Recall@10相对提升49.46%，证明同层级历史更有用。\n🔸 层级隔离自注意力（LIS）通过注意力掩码使每个历史token只与跨条目的同层级token交互，EOS可聚合全局信息但不回传给历史token。\n🔸 层级对齐交叉注意力（LAC）让解码器预测第r层token时只关注历史第r层token，与LIS在编码、解码两端互补隔离。\n🔸 条目级语义序列（ILS）对每个条目的L个层级编码状态做平均池化并经残差MLP精炼，按交互顺序排列，通过独立交叉注意力分支和条目级相对位置偏置与同层级分支加权融合。\n🔸 LESSRec+把6层编码器按深度[2,2,1,1]等划分给各层级专用编码器，处理更短序列且可并行，注意力计算从O(D(LT+1)²)降到O(D(T+1)²)。",
+      "analysis_summary": "🔸 在Games、Software、Beauty三个数据集和RQ-VAE、RQ-Kmeans、LETTER三种tokenizer下，LESSRec相对TIGER提升6.2%–39.2%，LESSRec+提升6.0%–54.3%，在36个数据集–tokenizer–指标组合中LESSRec+有31个优于LESSRec。\n🔸 消融显示ILS、LIS、LAC逐项加入均带来增益，三组件组合最优；附加实验表明去掉MLP会降低性能，拼接+MLP优于平均池化。\n🔸 效率方面，参数仅增加0.4%；LESSRec收敛时间减少34.0%但单epoch耗时增加5.8%，LESSRec+收敛时间减少65.2%、单epoch耗时减少33.7%、峰值显存降低39.2%。\n🔸 历史长度分析中，LESSRec增益从最短桶23.4%增至最长桶46.7%，LESSRec+从29.8%增至53.3%，长历史下层级隔离更能避免无关token稀释。\n🔸 局限包括融合系数α需调参、编码器深度分配无一致最优方案，理论分析依赖层级独立与马尔可夫等简化假设。",
+      "personal_view": "基于全文分析，这篇论文的创新点在于把'语义层级在预测中的角色不同'这一观察转化为清晰的架构设计，动机实验（掩码对比）和附录的信息论/梯度信噪比分析形成了较完整的证据链，方法简单且易于在现有编码器–解码器框架上实现。实用价值方面，LESSRec+在不增加参数的情况下显著降低训练和编码开销，对长历史用户收益更大，具备落地潜力。局限在于实验集中在三个中等规模亚马逊数据集，历史长度上限为20，结论对工业级更长序列和更深层级结构的适用性有待验证；此外理论假设较强，双分支融合系数等超参也需要针对场景调优。",
+      "focus_label": "语义ID历史建模",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 12
+    },
+    {
+      "id": "2610.37584",
+      "title": "REGER: Modeling inter-item Relations with Semantic IDs for Generative Recommendation",
+      "authors": [
+        "Yuxi Huang",
+        "Silin Zhou",
+        "Chenhao Wang",
+        "Zihan Li",
+        "Gangming Guo",
+        "Pei Ke",
+        "Shen Gao",
+        "Shuo Shang"
+      ],
+      "published": "2026-10-27",
+      "categories": [
+        "cs.IR",
+        "cs.AI"
+      ],
+      "topic": "生成式推荐",
+      "institutions": [
+        "University of Electronic Science and Technology of China, Chengdu, China"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "国内学术界",
+      "primary_institution": "University of Electronic Science and Technology of China, Chengdu, China",
+      "score": 74,
+      "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
+      "abstract": "Personalized recommendation depends on learning semantic and collaborative relations among items from online content and user interactions. Generative recommendation (GR) offers a promising paradigm by autoregressively generating discrete semantic IDs (SIDs) of items. However, randomly initialized SID token embeddings and GR models trained from scratch do not directly inherit the semantic relations inherent in items, while inter-item collaborative relations are learned largely implicitly through token-level attention and next-token supervision. To address this limitation, we propose REGER, a unified framework that explicitly incorporates inter-item relations into semantic pretraining, history encoding, and SID generation. We pretrain the GR model through generative semantic retrieval, enabling it to inherit inter-item semantic similarity by learning to generate semantic neighbors' SIDs. We combine global attention with local attention aligned with SID boundaries to capture historical context and directed transitions between adjacent items. We further develop a theoretical framework for hierarchical preference decomposition over the SID prefix tree, proving an exact factorization of collaborative preference distributions and a weighted decomposition of item-level KL divergence into prefix-conditional KL divergences. Building on this analysis, we distill a discriminative teacher's full conditional distributions over all legal next tokens at ground-truth prefixes along the target SID path, jointly optimizing this objective with cross-entropy. Extensive experiments on real-world datasets demonstrate consistent improvements over existing GR baselines and support the effectiveness of the proposed preference distillation.",
+      "url": "https://arxiv.org/abs/2610.37584",
+      "pdf_url": "https://arxiv.org/pdf/2610.37584",
+      "affiliation_checked": true,
+      "article_theme": "REGER：显式建模物品间关系的生成式推荐框架",
+      "research_question": "生成式推荐以离散语义ID（SID）为建模单元，但随机初始化的token嵌入、从零训练的模型难以继承物品间语义相似性、转移结构与协作偏好等item级关系。论文要解决如何将连续空间中的物品关系显式融入生成式推荐的预训练、历史编码与SID生成全过程。",
+      "main_contribution": "提出统一框架REGER，包含三方面机制：生成式语义检索（GSR）预训练使模型继承物品语义近邻关系；物品转移结构注意力（ITSA）融合全局token注意力与对齐SID边界的局部注意力以捕捉有向转移；并建立SID前缀树上的偏好分解理论，证明item级KL散度可精确分解为前缀条件KL的加权和，据此提出层次化协作偏好蒸馏HCPD，与CE联合优化。",
+      "key_ideas": "🔸 GSR预训练：以物品SID为输入，解码生成其top-K语义近邻的SID，使SID嵌入与编码解码骨干在学用户偏好前先继承内容语义关系，K=10效果最佳。\n🔸 ITSA：在T5编码器每层混合token-global（全历史双向自注意力）与item-local（仅关注当前及前一物品完整SID）两类注意力头，只改掩码不增参数，引入有向的短程转移结构偏置。\n🔸 理论框架：将SIDs组织为前缀树，证明物品偏好分布可精确分解为各前缀合法下一token条件概率之积，item级KL可分解为按前缀概率质量加权的条件KL之和。\n🔸 HCPD：以冻结判别式推荐器（DuoRec）为教师，在目标SID路径的真实前缀上对齐师生在全部合法下一token上的条件分布，其KL梯度直接纠正被低估的非目标分支。\n🔸 总损失为L_CE + λ·L_HCPD，推理用无约束beam search、不需要教师。",
+      "analysis_summary": "🔸 在Amazon Reviews 2014三个数据集上，REGER在所有指标上超越全部生成式与混合基线，并在多数设置下超过判别式的DuoRec；2023基准上取得最佳或次佳。\n🔸 消融显示去除任一组件均致性能下降，其中去除HCPD降幅最大，R@5下降10.9%–18.0%。\n🔸 将HCPD直接加到TIGER上优于TCA、APAO、GFlowGR等替代目标，且训练开销小（内存约3094MB、每epoch 23秒），推理速度与TIGER持平。\n🔸 教师选择分析表明DuoRec优于SASRec，弱教师也可能 transferring 不准确偏好损害学生排序。\n🔸 超参分析显示λ在0.8–1.0附近最优，局部/全局注意力头比例因数据集而异，均优于全局部或全全局；局限包括依赖教师质量与路径级蒸馏不完全等价全树KL。",
+      "personal_view": "基于全文来看，本文的创新点在于把'物品间关系'这一item级概念系统性地拆解为语义相似、转移结构和用户偏好三类挑战，并分别用预训练任务、注意力掩码和理论驱动的蒸馏目标予以显式建模，其中前缀树KL分解定理为token级蒸馏提供了简洁的理论依据，是相对扎实的贡献。HCPD与TCA-Aux的梯度对比分析也颇具启发性。实用方面，训练开销小且推理速度不变，便于落地。局限在于：蒸馏依赖教师对用户相对偏好的建模质量，教师不佳时可能迁移错误偏好；ground-truth路径蒸馏与全树KL存在偏差；超参（头比例、λ）需按数据集调优，跨域泛化仍需验证。",
+      "focus_label": "语义ID关系建模",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 13
+    },
+    {
+      "id": "2610.36941",
+      "title": "Algorithmic Monoculture in Machine Learning-based Site-Specific Fertilizer Recommendation",
+      "authors": [
+        "Abdelghani Belgaid"
+      ],
+      "published": "2026-10-27",
+      "categories": [
+        "cs.LG",
+        "cs.CY",
+        "econ.TH"
+      ],
+      "topic": "强化学习与长期价值",
+      "institutions": [
+        "College of Computing",
+        "Mohammed VI Polytechnic University"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "海外学术界",
+      "primary_institution": "College of Computing",
+      "score": 74,
+      "reason": "面向长期收益或交互式推荐，关注策略学习与离线评估的结合。",
+      "abstract": "Machine learning recommendations are often evaluated one model at a time, despite deployment across interconnected decision makers. For continuous NPK fertilizer prescriptions, correlated errors can aggregate across farms and generate systemic costs. A model of shared and farm-specific recommendation errors links expected social loss to model adoption shares; the Herfindahl-Hirschman Index characterizes concentration effects when common model errors are independent and predictive risks are equal. A covariance-generalized formulation captures the dependence between model families. A two-model threshold characterizes when privately optimal monoculture is socially dominated, and a convex portfolio rule limits average private predictive regret. Nine model families across five Moroccan cereal systems provide a benchmark-based calibration. Under illustrative parameters and a 10% regret cap, accuracy-constrained diversification lowers modeled social loss in all five systems by 10.89-41.53% (mean 19.41%). Uniform allocation reduces modeled loss in this setting, but breaches the regret cap in every crop. Correlation sensitivity shows that highly dependent model errors attenuate the benefits of diversification. These counterfactual outcomes are not estimates of agronomic or monetary welfare; the framework identifies adoption architecture and error dependence as ecosystem-level evaluation variables.",
+      "url": "https://arxiv.org/abs/2610.36941",
+      "pdf_url": "https://arxiv.org/pdf/2610.36941",
+      "affiliation_checked": true,
+      "article_theme": "把单一模型推广到多农场时，误差相关性如何放大系统性损失",
+      "research_question": "论文研究当多个农场采用同一机器学习模型生成NPK施肥处方时，模型共同误差如何在农场间相关聚合并产生系统性外部成本。难点在于现有评估以单模型预测精度为中心，忽略了跨农场采用结构带来的群体层面损失。",
+      "main_contribution": "论文构建了一个连续动作的经济模型，将采用份额、共享误差与总体外部性联系起来，推导出基于HHI的集中度惩罚和两模型精度—单一化阈值，并提出带平均私有遗憾上限的凸组合分配规则。框架进一步推广到跨模型协方差情形，并用摩洛哥五大谷物系统、九个模型家族的公开基准进行校准。",
+      "key_ideas": "🔸 将每农场处方误差分解为零均值模型共同冲击与农场特有误差，共同误差份额ρ刻画跨农场相关性，农场特有项随n以1/n速度消散，而共同冲击持续存在。\n🔸 在二次外部性假设下，社会损失可写成HHI的函数：当各模型风险相等时，均匀采用最小化损失、单一化最大化损失。\n🔸 推导两模型情形下私有最优单一化被社会占优的闭式阈值λ*，并在引入跨模型协方差Σz后给出广义形式，正协方差可消除多样化激励。\n🔸 提出精度受限的凸组合优化：在平均私有风险不超过(1+δ)r_min的约束下最小化社会损失，区别于单农场集成预测。\n🔸 用九个回归模型家族在五种摩洛哥谷物系统上的基准风险（目标归一化未解释方差）作为校准输入，比较单一化、均匀、受限和社会最优四种分配策略。",
+      "analysis_summary": "🔸 中心校准（ρ=0.25、λ=20、δ=0.10）下，受限组合在五个作物系统中均降低建模社会损失10.89–41.53%（均值19.41%），遗憾约束在每个作物上均达到绑定。\n🔸 均匀分配在该设定下也降低建模损失，但在所有作物上都违反10%遗憾上限（22.99–99.16%）；λ=0时均匀多样化反而增加损失。\n🔸 敏感性网格600个场景中69.0%出现严格为正的受限损失降低，收益随ρ和λ增大而增加，λ=0时消失。\n🔸 协方差敏感性显示κ=0.5时受限收益降为1.19–15.94%，κ≥0.95时基本无收益，说明误差相关性会削弱多样化好处。\n🔸 作者明确指出ρ、λ和协方差不能由基准统计量识别，结果是条件性的建模损失而非农艺或货币福利估计。",
+      "personal_view": "基于全文来看，这篇工作把算法单一化的经济视角引入连续处方型农业决策场景，创新点在于明确了“跨农场分配模型”与“农场内集成预测”的区别，并以闭式阈值和凸组合规则把私有精度与系统性风险的权衡形式化，思路清晰且可复现。但框架的可信度高度依赖外部性函数、共同误差份额与协方差等假设参数，论文也坦承这些量无法由现有基准识别，因此数值结论只能作为情景演示。若能通过分区、跨季重复观测识别方差分量并结合因果农艺响应，该框架对农业推广机构或平台治理将更具实用价值。",
+      "focus_label": "算法单一化风险",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 9
+    },
+    {
+      "id": "2610.36937",
+      "title": "JevRec: Linguistic Encoding with Jev-like Decision Modeling for LLM-based Generative Recommendation",
+      "authors": [
+        "Qiyong Zhong",
+        "Jiajie Su",
+        "Ming Yang",
+        "Li Zhang"
+      ],
+      "published": "2026-10-27",
+      "categories": [
+        "cs.CL"
+      ],
+      "topic": "生成式推荐",
+      "institutions": [
+        "["
+      ],
+      "institution_type": "研究机构",
+      "organization_sector": "海外研究机构",
+      "primary_institution": "[",
+      "score": 74,
+      "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
+      "abstract": "Generative recommendation (GR) represents items as semantic identifiers (SIDs) and autoregressively generates the next item's SID from interaction history. However, most methods assign the same SID length to all items despite highly unequal interaction frequencies. This uniform design repeatedly incurs the cost of fine-grained codes for popular items, while shortening codes to reduce this cost also compresses the semantic representations of long-tail items. Inspired by the compact forms of frequent expressions in natural language, we propose JevRec to encode items as variable-length words and generate the next item from interaction context. Linguistic encoding retains frequency-dependent semantic prefixes from shared codebooks, producing shorter SIDs for popular items and richer descriptions for long-tail items. Yet predicting a sequence-level length and generating token-level content impose different optimization requirements that may conflict under a shared output head. Our Jev-like decision modeling component therefore predicts a length distribution with a dedicated head and generates content conditioned on length through a separate head while sharing the interaction-history representation. Experiments on three public datasets show that JevRec outperforms all compared baselines across the evaluated recommendation metrics. Further analyses show lower training and inference time than TIGER and reduced gradient conflict between length and content prediction.",
+      "url": "https://arxiv.org/abs/2610.36937",
+      "pdf_url": "https://arxiv.org/pdf/2610.36937",
+      "affiliation_checked": true,
+      "article_theme": "JevRec：按流行度分配变长语义ID的生成式推荐框架",
+      "research_question": "生成式推荐通常给所有物品分配相同长度的语义ID（SID），但交互频率高度不均，导致热门物品反复承担细粒度编码成本，而缩短码长又会压缩长尾物品的语义表示。论文研究如何按物品交互频率分配不同长度的SID，并协调序列级长度预测与token级内容生成这两种可能冲突的优化目标。",
+      "main_contribution": "论文提出JevRec框架，包含两个核心组件：语言编码（Linguistic encoding）借鉴自然语言中高频表达形式紧凑的规律，通过共享残差量化码本加截断和冲突消解码，给热门物品更短、长尾物品更长的SID；类Jev决策建模（Jev-like decision modeling）用专门的长度分类头和内容生成头分离两类预测任务，共享用户历史表示并通过长度条件化生成衔接。推理阶段用长度概率做候选配额分配与跨长度排序，形成长度感知的推荐列表。",
+      "key_ideas": "🔸 按训练集物品频率将目录划分为N个频率组，第g组SID长度为M+g-1，热门物品截断保留少量语义码，长尾物品保留完整语义描述，组内用冲突消解token保证物品唯一性；\n🔸 物品文本经sentence-t5编码、PCA白化后，用单一共享残差量化器（M+N-2级码本）量化，各组共享码本，截断只改变保留细节而不需为每组单独学习语义空间；\n🔸 长度头用候选长度嵌入与解码器起始位置的历史状态拼接，经共享MLP在合法长度集合上做softmax分类；内容头从[START, 长度token]自回归生成SID及EOS，两头的联合概率分解为长度概率乘以条件内容概率；\n🔸 训练时以真实长度作为条件前缀，在单一解码pass中联合优化长度与内容损失的负对数似然，两目标单位权重、单阶段训练；\n🔸 推理时保留全部长度分布，用最大余数法把长度概率转换为各分支配额，每分支beam搜索并复用编码历史，最终按联合分数log q + log r 跨长度合并排序。",
+      "analysis_summary": "🔸 在Amazon Reviews三个数据集（Instrument、Scientific、Game）上，JevRec在全部12个数据集-指标组合上超越13个基线，相对最强基线平均提升6.52%，相对TIGER平均提升12.04%，且提升经配对t检验显著（p<0.05）；\n🔸 消融显示增益主要来自按频率分配长度：随机长度平均下降8.70%，反向频率更差；共享LM头平均降低7.50%，去掉长度token退化最大，而用历史-only长度分类器性能仍在JevRec的1%以内，说明关键在任务分离而非具体打分器；\n🔸 梯度分析表明共享头下长度与内容损失梯度余弦在所有检查点均为负（均值-0.105），分离预测头后池化均值升至-0.015，缓解但未消除冲突；\n🔸 效率上相对TIGER每epoch训练时间平均减少15.75%，测试集推理时间也全面降低，且在Instrument上提前20个epoch达到最佳验证NDCG@10；\n🔸 超参敏感性显示对N∈{2,3,4,5}和M∈{2,3,4}变化稳健（偏差小于3.2%），但M增至5会明显降低性能；局限包括仅在中等规模公开数据集验证、碰撞token容量依赖前缀桶分配等。",
+      "personal_view": "基于全文来看，这篇论文的创新点在于把自然语言中'高频词短、低频词长'的直觉系统地迁移到语义ID设计上，并用显式的长度预测任务与任务分离的输出头来解决长度决策与内容生成的优化冲突，梯度对齐分析为分离头的必要性提供了较有说服力的证据。实用价值方面，变长编码同时带来精度提升和训练/推理加速，对工业级长尾场景有参考意义。可能的局限在于：长度分配依赖训练集频率且静态固定，难以应对物品流行度漂移；Gamma先验的组划分和冲突消解token容量在目录剧烈增长时需重新设计；实验仅覆盖Amazon三个中等规模数据集，且超参（M=N=3）在所有数据集上共用，跨域泛化能力有待更大规模和多模态场景的验证。",
+      "focus_label": "变长语义ID推荐",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 12
+    },
+    {
+      "id": "2610.36958",
+      "title": "PailitaoMMSearch2.0 Technical Report: Scaling Generative Retrieval to Unified End-to-End Multimodal Search",
+      "authors": [
+        "Xiaohan Ye",
+        "Zihan Gong",
+        "Jingqian Zhao",
+        "Lianyu Du",
+        "Yunmeng Shu",
+        "Xu Chen",
+        "Zesheng Zhou",
+        "Renchun You",
+        "Bocheng Chen",
+        "Jinsong Lan",
+        "Haihong Tang",
+        "Bo Zheng"
+      ],
+      "published": "2026-10-27",
+      "categories": [
+        "cs.IR",
+        "cs.AI"
+      ],
+      "topic": "生成式推荐",
+      "institutions": [
+        "Taobao & Tmall Group of Alibaba"
+      ],
+      "institution_type": "工业界",
+      "organization_sector": "国内工业界",
+      "primary_institution": "Taobao & Tmall Group of Alibaba",
+      "score": 69,
+      "reason": "关注生成式建模、语义标识或物品生成，适合跟踪端到端推荐新范式。",
+      "abstract": "Generative retrieval models have been increasingly adopted in search and recommendation systems. However, industrial generative retrieval models are commonly specialized to a fixed online scenario: they learn from scenario-specific interactions, support a narrow set of query forms and retrieval objectives. We study how to remove these couplings and build a unified end-to-end multimodal search system for open-ended image--text queries, heterogeneous shopping intents, and online scenarios with different resource constraints. We present \\textbf{PailitaoMMSearch}, which directly generates product Semantic IDs from a raw query image and free-form instruction and scales along three dimensions. \\textbf{Data scaling} uses a reusable toolset that can be composed into intent- and lifecycle-specific workflows for cold-start synthesis, quality control, real-traffic refinement, and continuous data production. \\textbf{Intent scaling} progressively equips one model with e-commerce product knowledge, multiple retrieval relations, and adjustable reasoning budgets through continual pre-training (CPT), mixed-budget supervised fine-tuning (SFT), and unified reinforcement learning (RL). The RL stage combines intent-balanced optimization and Sample--Beam rollouts aligned with multi-candidate serving. \\textbf{Scenario scaling} exposes quality--cost operating points across model capacity and reasoning budget. The system is deployed in multimodal search applications on Taobao Pailitao. A controlled online A/B test reports statistically significant improvements, including item page views $\\textbf{+17.90\\%}$, transactions $\\textbf{+27.04\\%}$, and gross merchandise value $\\textbf{+8.94\\%}$.",
+      "url": "https://arxiv.org/abs/2610.36958",
+      "pdf_url": "https://arxiv.org/pdf/2610.36958",
+      "affiliation_checked": true,
+      "article_theme": "统一端到端多模态生成式搜索系统的三维度扩展",
+      "research_question": "工业界生成式检索模型通常与特定在线场景强耦合，受监督绑定、意图绑定和资源绑定限制，难以支持开放式图文查询和多种购物意图。论文研究如何用一个统一模型从原始图片加自由文本指令直接生成商品语义ID，同时适配不同检索意图与资源约束。",
+      "main_contribution": "提出PailitaoMMSearch 2.0，沿数据、意图、场景三个维度扩展生成式检索：可组合数据工具集支撑冷启动合成、真实流量精炼与持续生产；CPT、混合预算SFT与统一RL将相似、改写、搭配多意图对齐到单一模型；提出Sample-Beam rollout使RL训练与服务端beam解码对齐。系统已部署于淘宝拍立淘，在线A/B测试取得显著业务提升。",
+      "key_ideas": "🔸 数据扩展：五个可复用工具（粗筛、细筛、查询文本生成、CoT生成、质量控制）按意图与生命周期组装为冷启动合成、真实流量精炼、持续生产三条工作流，质量控制为强制终审门槛，级联编排降低生产成本。\n🔸 意图扩展：先经CPT适配电商商品知识与三级SID词表（每级8192码本），再做多意图、多思考预算（No/Low/High-think）混合SFT，服务时模型自行从图文推断检索关系，无需意图分类器。\n🔸 统一RL：按意图平衡采样防止高流量意图主导，用GRPO对同一查询的组内轨迹做相对优化，奖励采用意图专属评分规则。\n🔸 Sample-Beam rollout：先采样N条推理前缀，再对每条前缀beam解码B个SID序列，奖励在N×B分支上归一化，使策略优化与线上多候选beam服务方式对齐。\n🔸 场景扩展：提供0.8B/2B/4B三个模型规模与三种思考预算，形成质量-成本操作点，应用按资源包络选择配置而无需额外路由模型。",
+      "analysis_summary": "🔸 离线对比：2B Low-think配置取得最优综合权衡，宏NDCG 0.918、宏ER 55.1%，平均RT 278ms仅用1块GPU，较两个改写式系统与内部多路召回排序管线宏ER分别提升2.9、3.3、5.6点，搭配意图优势最大（ER 74.3%）。\n🔸 数据与训练消融：数据量从30%扩到100%宏ER提升2.71点；去除真实流量数据降0.78点，再去掉质量控制再降0.28点；CPT带来1.2点宏ER提升；跨意图迁移总体为正但不对称（编辑ER略降0.45点）。\n🔸 RL贡献：标准统一RL较SFT提升宏ER 3.67点，Sample-Beam再增2.30点，累计较SFT提升5.97点，收益集中于搭配意图，Sample-Beam增量主要体现在相似与编辑意图。\n🔸 规模研究：0.8B模型No-think最佳（50.78%），2B模型Low-think最佳（55.13%），4B模型High-think达最高宏ER 55.41%但RT达1133ms，最优操作点依意图与延迟需求而定；模型家族中2B到4B在Low-think下无增益。\n🔸 局限：开放式仅指查询接口而非普适关系覆盖，仅覆盖单一电商域三种关系；消融多基于2B；自动评审器与数据过滤、奖励模型可能存在相关误差；在线A/B只能衡量整体系统而无法归因到单组件。",
+      "personal_view": "基于全文来看，这篇技术报告的核心创新在于把生成式检索从单一场景解耦为可在数据、意图、场景三个维度同时扩展的系统性框架，其中Sample-Beam rollout针对训练采样与服务beam解码不匹配问题给出的方案简单而有针对性，属于工程价值突出的设计。可复用数据工具集加意图化评分规则的冷启动-上线-回流闭环，对同类工业系统建设有直接借鉴意义。局限方面：收益在相似、编辑、搭配三个意图间并不均衡，内部管线在相似和编辑ER上仍更强；模型规模之间是独立checkpoint而非弹性权重，扩展成本较高；自动评审器的潜在系统性偏差也值得警惕。在线A/B结果虽然显著，但作为整体系统指标难以说明各组件贡献比例。",
+      "focus_label": "多模态生成式检索",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 10
+    },
     {
       "id": "2610.35550",
       "title": "Cross-Domain Sequential Recommendation with Representation-Level User Transfer",
@@ -46,6 +627,42 @@
       "full_text_pages": 11
     },
     {
+      "id": "2610.36000",
+      "title": "RELAY: One Query, Two Roles for Sequential Recommendation",
+      "authors": [
+        "Zesheng Li",
+        "Chengchang Pan",
+        "Honggang Qi"
+      ],
+      "published": "2026-10-26",
+      "categories": [
+        "cs.IR"
+      ],
+      "topic": "序列与会话推荐",
+      "institutions": [
+        "University of Chinese Academy of Sciences, Beijing, China"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "国内学术界",
+      "primary_institution": "University of Chinese Academy of Sciences, Beijing, China",
+      "score": 85,
+      "reason": "聚焦用户行为序列与下一步偏好建模，和序列推荐主线直接相关。",
+      "abstract": "Sequential recommendation must combine semantic preferences with behavioral associations to deliver accurate rankings at low inference cost. Sharing history selection connects preference representation directly to the behavioral evidence used in candidate scoring. We present RELAY, a compact sequential recommender built around one query, two roles: semantic readout and behavioral-memory routing. A single learned query forms a semantic preference representation and reuses its attention to route direct-history and transition evidence into candidate scores. Candidate-conditioned gates calibrate the two memory channels for each candidate. RELAY trains both roles with a single catalog likelihood and produces the final ranking in one forward pass. Full-catalog experiments on six datasets show that RELAY achieves the highest Recall@5 and NDCG@5 among the compared methods on every dataset, improving over the previous best model by 14.22% and 17.88% on average. With 2.044 million predictor parameters, RELAY reduces predictor size by 65.12% and achieves a 1.75~1.79$\\times$ inference speedup over the previous best model.",
+      "url": "https://arxiv.org/abs/2610.36000",
+      "pdf_url": "https://arxiv.org/pdf/2610.36000",
+      "affiliation_checked": true,
+      "article_theme": "一个查询两种角色：高效一体的序列推荐模型RELAY",
+      "research_question": "序列推荐需要在有限推理预算下同时利用语义偏好与行为关联证据，但现有方法通常将偏好表征与行为证据选择分离建模。论文要解决的核心问题是：能否让语义读取与行为记忆路由共享同一套历史选择，从而用一个排序目标同时决定关注哪些历史交互以及把哪些证据路由给候选。",
+      "main_contribution": "论文提出RELAY，围绕‘一次选择历史、两处使用证据’原则构建紧凑推荐器：单一可学习查询既形成语义偏好表示，又复用同一注意力把直接历史和转移证据路由进候选打分；候选条件门控为每个候选校准两条记忆通道。仅用单个全目录似然即可联合训练两种角色，一次前向传播完成推荐，并在六个数据集上取得精度、参数量与推理速度的全面领先。",
+      "key_ideas": "🔸 用固定四码语义ID（SID）表示物品，双向编码器+位置编码得到历史表示，一个可学习查询对历史做多头注意力，归一化后的头均权重同时驱动语义读取与记忆路由。\n🔸 语义读取通过残差交叉注意与前馈块得到查询状态，与候选SID向量做余弦相似度形成语义打分，覆盖全目录；候选侧码嵌入施加stop-gradient，共享投影保持可训练。\n🔸 行为记忆含两条通道：直接历史通道支持历史中已见SID，转移通道基于对数压缩的有界top-B转移计数表连接历史SID到关联候选；候选条件门控（历史项+候选交互项）校准两通道强度，得到统一打分。\n🔸 训练时采用排除当前记录的转移计数C(-n)，并证明可从原top-(B+1)邻域精确恢复调整后的top-B邻域，避免扫描目录；同时推导出共享注意力梯度同时包含读数状态路径与显式路由残差路径，说明排序目标耦合监督两种角色。\n🔸 记忆修正是对语义先验的稀疏概率倾斜，支撑集大小不超过m(B+1)，服务时缓存候选向量，一次前向完成全目录打分与Top-K排序。",
+      "analysis_summary": "🔸 六个Amazon数据集全目录评测中，RELAY在所有数据集上R@5与N@5均为最优，相对最强基线OneChord平均提升14.22%和17.88%，N@5增益介于7.91%（Scientific）到26.32%（Games）。\n🔸 预测器仅2.044百万参数，比OneChord少65.12%；推理时间0.13–0.70秒，相对OneChord加速1.75–1.79倍，相对FAVE也快1.32–1.38倍，兼得最高精度与最低成本。\n🔸 消融显示移除当前记录排除影响最大（平均R@5降23.07%），移除转移记忆降10.49%，直接历史记忆贡献较小；三种量化器（OPQ、RQ-VAE、RQ-Kmeans）下RELAY均领先。\n🔸 路由干预实验表明打乱查询权重使N@5降11.18%，均匀权重降7.73%，且长历史上内容相关选择优势更大；稀疏分组实验显示尾部、头部物品与短长历史上增益均为正。\n🔸 局限方面，多查询扩展虽提升精度（4查询N@5增5.08%）但推理时间增加33.93%；记忆基于固定统计计数，依赖训练数据中的转移模式，冷启动转移缺失时只能依赖语义通道。",
+      "personal_view": "基于全文分析，我认为RELAY的核心创新在于把‘关注哪些历史交互’这一决策统一给语义读取和记忆路由共用，使排序目标同时塑造偏好表征与证据分配，这比分别建模两条通路更加简洁优雅。排除当前记录转移贡献的精确top-(B+1)恢复机制也巧妙借鉴了目标统计的思想，消融证明其影响最大，说明该设计确有必要。实用价值突出：单次前向、参数极少、速度领先，适合低延迟场景。但需注意其行为记忆依赖训练集转移计数这一固定统计，难以捕捉分布漂移与新兴行为模式；稀疏支撑也意味着超出直接历史与转移邻域的候选只能依赖语义打分，行为证据的表达上限受B预算约束。",
+      "focus_label": "序列推荐共享查询",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 13
+    },
+    {
       "id": "2610.34673",
       "title": "Agent Memory as Recommendation: Recommender-System Design for Long-Term Memory of LLM Agents",
       "authors": [
@@ -81,6 +698,93 @@
       "note_model": "glm-4.5-air",
       "note_basis": "full_text_pdf",
       "full_text_pages": 12
+    },
+    {
+      "id": "2610.36239",
+      "title": "BehaveRec: When Does Long-Term Behavioral History Help Sequential Recommendation? A Study with Session, History, and Community Signals",
+      "authors": [
+        "Aysenur Inan",
+        "Reza Yousefi Maragheh",
+        "Jayesh Uddhav Kudase",
+        "Selene Xu",
+        "Kaushiki Nag",
+        "Jianpeng Xu",
+        "Sushant Kumar"
+      ],
+      "published": "2026-10-26",
+      "categories": [
+        "cs.AI",
+        "cs.IR"
+      ],
+      "topic": "序列与会话推荐",
+      "institutions": [
+        "Walmart Global Tech, Sunnyvale, CA, USA {aysenur.inan, reza.yousefimaragheh, jayeshuddhav.kudase, yue.xu, kaushiki.nag, jianpeng.xu, sushant.kumar}@walmart.com"
+      ],
+      "institution_type": "研究机构",
+      "organization_sector": "海外研究机构",
+      "primary_institution": "Walmart Global Tech, Sunnyvale, CA, USA {aysenur.inan, reza.yousefimaragheh, jayeshuddhav.kudase, yue.xu, kaushiki.nag, jianpeng.xu, sushant.kumar}@walmart.com",
+      "score": 82,
+      "reason": "聚焦用户行为序列与下一步偏好建模，和序列推荐主线直接相关。",
+      "abstract": "Sequential recommendation models typically predict a user's next action from recent session interactions, which limits personalization when short-term signals are weak or ambiguous. Rather than assuming that incorporating longer-term history and community signals is universally beneficial, we study when it actually helps. We propose BehaveRec, a three-signal framework combining a causal session transformer, a bidirectional User History Encoder over a 90-day window, and a GraphSAGE module over a user-user graph built from behavioral embedding similarity rather than item co-occurrence; a learned gate blends the three signals per user. On an industrial dataset of 137M sequences from 12.6M users, BehaveRec improves R@5 by +3.2% over SASRec, with a larger-capacity SASRec baseline (more parameters than BehaveRec) still trailing by +2.5%, ruling out capacity as the explanation. More importantly, a user-level stratification by history length reveals a clear dose-response relationship: BehaveRec's advantage is negligible below roughly 10 interactions and grows monotonically with history richness, reaching +0.017 R@5 for users with 101+ events. This pattern is corroborated across one industrial and three public datasets spanning history-rich to history-sparse regimes, where session-only models remain preferable. These headline results, and the resulting deployment threshold, are established for category-level intent prediction; a preliminary, single-run check on the full item-level vocabulary yields a directionally mixed result and is scoped as an open question rather than a claim. We use these results to derive a practical deployment rule -- roughly 20 interactions per user -- for when long-term history and behavioral-graph signals are worth their added complexity. Despite this added complexity, BehaveRec remains lightweight: it uses 5.67M parameters and trains on a single GPU in under two days.",
+      "url": "https://arxiv.org/abs/2610.36239",
+      "pdf_url": "https://arxiv.org/pdf/2610.36239",
+      "affiliation_checked": true,
+      "article_theme": "BehaveRec：用长程行为历史增强序列推荐的条件研究",
+      "research_question": "论文研究长期行为历史与社区信号究竟在何时、对哪些用户才能真正帮助会话式序列推荐，而非默认其总是有益。难点在于需要可控架构隔离各信号贡献，并量化收益随用户历史丰富度的变化规律。",
+      "main_contribution": "提出BehaveRec三信号框架：7天会话的因果Transformer、90天历史的双向User History Encoder（含可学习[USER] token）、以及基于行为嵌入相似度（而非商品共现）构建用户-用户图的GraphSAGE模块，通过可学习ThreeWayGate按用户融合。基于1.37亿训练序列、1260万用户的工业数据集，给出历史长度的剂量-响应曲线，得出约20次交互的实用部署阈值，并诚实报告方法不适用的场景。",
+      "key_ideas": "🔸会话编码器（4层因果Transformer）捕捉当前意图，UHE将90天历史压缩为单个256维用户画像向量，即使会话相同也能区分不同用户；\n🔸行为图以UHE历史嵌入的余弦相似度连边（top-20邻居），无共同商品但行为模式相似的用户也能成为邻居，GraphSAGE聚合社区信号；\n🔸ThreeWayGate按用户学习三信号权重：长会话升权会话信号，冷会话+富历史升权画像，紧密社区升权图信号；\n🔸训练采用标签平滑交叉熵加InfoNCE对比对齐（会话与历史表示），分类器与输入嵌入表权重绑定；\n🔸意图词汇由LLM辅助三阶段流水线聚成2371个可解释意图簇，生产部署在商品详情页和加购后页推荐轮播。",
+      "analysis_summary": "🔸工业数据集上V5较SASRec提升R@5 +0.0226（+3.2%），其中UHE贡献83%，图信号再增+0.0038；SASRec-Large（6.46M参数）仍落后2.5%，排除容量混淆；\n🔸用户分层显示清晰剂量-响应：1–5次交互时为−0.002，101+次时达+0.017；冷会话+富历史格子收益最大（+0.0251）；shift序列上优势（+0.0371）约为continuation序列（+0.0052）的7倍；\n🔸稀疏历史场景（Amazon，平均14–17事件）中SASRec反而领先4.6%–15.9%；全商品级MovieLens单项初步结果方向不一致（R@5 −2.5%但HR@10 +1.3%）；\n🔸效率高：5.67M参数，单张A100约38小时训练完，在线P99延迟<3ms，图每24小时重建不到40分钟；A/B测试显示年化GMV增加240万美元、iOS千次曝光GMV 3.1倍；\n🔸局限：工业主结果为单次训练、图消融仅在共享骨干上换边未独立重训、20次阈值是选定工作点而非发现的常数。",
+      "personal_view": "基于全文来看，这篇论文最有价值的不是架构本身——长短期兴趣融合在工业界已有大量先例——而是其将“何时有用”作为核心问题的实证方法论：固定域与词汇的用户级分层、四数据集跨域印证、联合会话×历史网格，共同支撑了一条可直接落地的部署规则。对行为嵌入相似度图优于商品共现边的受控验证也有实际参考意义。作者对失败场景（Amazon稀疏数据、商品级任务）的坦诚报告值得肯定。局限在于工业主结果仅单次训练、图消融未独立重训、阈值依赖人为选定的实用显著性标准，且未与MIMN/SIM等长序列建模系统直接对比，结论外推需谨慎。",
+      "focus_label": "长短期行为融合",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 10
+    },
+    {
+      "id": "2610.36389",
+      "title": "MAREval: A Multi-Agent Framework for Evaluating Natural Language Recommendation Explanations",
+      "authors": [
+        "Reza Yousefi Maragheh",
+        "Jayesh Uddhav Kudase",
+        "Aysenur Inan",
+        "Ramin Giahi",
+        "Kai Zhao",
+        "Parth Parikh",
+        "Jianpeng Xu",
+        "Jason Cho",
+        "Evren Korpeoglu",
+        "Sushant Kumar"
+      ],
+      "published": "2026-10-26",
+      "categories": [
+        "cs.AI",
+        "cs.IR"
+      ],
+      "topic": "公平、可信与安全",
+      "institutions": [
+        "Ramin Giahi* Kai Zhao* Parth Parikh Jianpeng Xu",
+        "Jason Cho Evren Korpeoglu Sushant Kumar",
+        "Walmart Global Tech, Sunnyvale, CA, USA"
+      ],
+      "institution_type": "研究机构",
+      "organization_sector": "海外研究机构",
+      "primary_institution": "Ramin Giahi* Kai Zhao* Parth Parikh Jianpeng Xu",
+      "score": 80,
+      "reason": "讨论偏差、鲁棒性或可信问题，适合补齐推荐系统治理视角。",
+      "abstract": "Evaluating natural language explanations in recommender systems is essential for fostering user trust, transparency, and engagement. However, existing evaluation approaches like human evaluations, while accurate, are resource-intensive and impractical at the scale required by modern recommendation platforms. Also, automated methods using single-agent LLMs suffer from prompt sensitivity and inconsistent outputs. To address these challenges, we propose MAREval, a structured multi-agent framework for evaluating recommendation explanations using large language models. MAREval orchestrates (i) a planner agent that uses a novel Chain of Debate (CoD) prompting strategy to coordinate agent roles and enforce logically consistent evaluation plans; (ii) a moderator agent that regulates discussions by mitigating prompt drift; and (iii) an arbitrator agent that aggregates outputs from multiple evaluation rounds and (iv) a Monte Carlo sampling method, improving robustness and alignment with human judgment. We conduct comprehensive evaluations on both public (TopicalChat) and proprietary recommendation datasets, demonstrating that MAREval outperforms state-of-the-art baselines. Comprehensive experiments on a public benchmark and a proprietary e-commerce dataset show that MAREval improves alignment with human judgments over strong singleand multi-agent baselines. Stability analyses indicate substantially lower variability across repeated trials. In a large human-annotation gate, MAREval meets production quality thresholds where prior evaluators fall short, and online A/B testing demonstrates statistically significant improvements in engagement and revenue metrics. These results establish MAREval as a scalable and reliable solution for human-aligned evaluation of recommendation explanations in real-world systems",
+      "url": "https://arxiv.org/abs/2610.36389",
+      "pdf_url": "https://arxiv.org/pdf/2610.36389",
+      "affiliation_checked": true,
+      "article_theme": "多智能体协作评测推荐解释质量的框架MAREval",
+      "research_question": "推荐系统生成的自然语言解释质量难以大规模可靠评估：人工评审准确但昂贵低效，而单智能体LLM评审存在提示敏感和输出不一致的问题。如何构建一个既能与人类判断对齐、又能稳定输出的自动化解释质量评估框架，是本文试图解决的核心问题。",
+      "main_contribution": "提出MAREval，一个结构化多智能体评测框架，包含：用Chain of Debate（CoD）提示策略生成同步计划的planner智能体、通过上下文调节缓解提示漂移的moderator智能体、聚合多轮讨论结果的arbitrator智能体，并结合蒙特卡洛采样（MAMCS）降低LLM随机性。实验表明其在公开TopicalChat和自研电商数据集上均优于强基线，且通过人工评审门槛与在线A/B测试验证了生产可用性。",
+      "key_ideas": "🔸 规划先行：planner智能体基于评测标准、上下文与流水线流程，用Chain of Debate为每个智能体生成同步的分步计划，避免各智能体独立规划导致的逻辑不一致。\n🔸 结构化辩论：多个evaluator智能体按计划批评与修正判断、标记幻觉，由moderator智能体将各轮部分评测压缩为去噪摘要，作为动态记忆传递共享上下文，防止冗余和提示漂移。\n🔸 仲裁裁决：T轮辩论后，arbitrator智能体基于最终摘要、仲裁计划、评测标准和上下文以结构化决策方式给出最终评测结果。\n🔸 蒙特卡洛采样：对可获取token概率的模型直接计算期望得分；对黑盒模型则独立运行完整流水线N次并取算术平均，缓解单次采样的随机性与离群判断。\n🔸 框架可泛化：moderation可扩展为基于嵌入的向量记忆以实现冗余过滤与论点聚类，CoD也可自然推广到其他NLG工作流。",
+      "analysis_summary": "🔸 主实验：基于gpt-3.5-turbo，MAREval在TopicalChat整体对话质量上达最高相关性（ρ=0.548、τ=0.478），在电商PE数据集Relevance（ρ=0.338、κ=0.334）和Phraseness（ρ=0.216、κ=0.208）上显著优于Vanilla、CoT、Self-Refine、G-Eval和ChatEval等基线。\n🔸 稳定性：MAREval在TopicalChat六个标准上的平均标准差最低（0.0197），比最优基线G-Eval（0.0227）低，Self-Refine波动最大（平均0.1563）。\n🔸 消融：去除moderator导致Groundedness从ρ=0.553降至0.497；同时去除MoD与MC后整体对话质量降至ρ=0.456，验证各组件互补作用。\n🔸 超参与延迟：评测智能体从2增至4、MC采样增至5次时相关性提升，之后收益趋于饱和；五个智能体时单线程平均运行8.16秒。\n🔸 生产验证：MAREval过滤的解释在人工评审中硬标准通过率100%、软标准98.6%（G-Eval分别为91.0%和76.1%）；在线A/B测试显示ATC提升1.18%（p=0.05）、GMV提升1.36%（p<0.01）。局限包括高延迟成本、PE数据集规模较小（108条），以及消融在PE上部分指标与完整版持平。",
+      "personal_view": "基于全文的分析来看，MAREval的创新点不在单一技术，而在于把CoD同步规划、moderator上下文调节、仲裁与蒙特卡洛采样整合为一条端到端、可落地的评测流水线，并罕见地给出了人工评审门槛与在线A/B双重生产验证，这在评测类工作中实用价值突出。但需注意其局限：PE数据集仅108条解释且为私有，通用性结论依赖TopicalChat的间接类比；相关性绝对值在推荐场景仍不高；框架延迟和调用成本显著（单次8秒以上），蒙特卡洛多次采样进一步放大开销。此外论文未深入分析智能体数量与任务复杂度的关系，未来值得在更大规模公开推荐解释基准上复验。",
+      "focus_label": "多智能体评测",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 19
     },
     {
       "id": "2610.35765",
@@ -239,6 +943,86 @@
       "note_model": "glm-4.5-air",
       "note_basis": "full_text_pdf",
       "full_text_pages": 12
+    },
+    {
+      "id": "2610.36208",
+      "title": "Counterfactual Profile Perturbations for Recommendation Explanations: A Reproducibility Study",
+      "authors": [
+        "Meysam Varasteh",
+        "Elizabeth McKinnie",
+        "Robin Burke"
+      ],
+      "published": "2026-10-26",
+      "categories": [
+        "cs.IR",
+        "cs.AI"
+      ],
+      "topic": "强化学习与长期价值",
+      "institutions": [
+        "Department of Computer Science, University of Colorado, Boulder, Boulder, Colorado, USA, 80309",
+        "Department of Information Science, University of Colorado, Boulder, Boulder, Colorado, USA, 80309"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "海外学术界",
+      "primary_institution": "Department of Computer Science, University of Colorado, Boulder, Boulder, Colorado, USA, 80309",
+      "score": 74,
+      "reason": "面向长期收益或交互式推荐，关注策略学习与离线评估的结合。",
+      "abstract": "This reproducibility paper explores the counterfactual explanation technique known as Learning to eXplain Recommendations (LXR). Prior work has shown that LXR can reliably identify perturbations that, if applied to a user's profile, cause the user's top ranked item to no longer be recommended, thereby explaining the item's recommendation as a function of the user's rating choices. In this paper, we extend this work in multiple ways. We expand the scope of the original LXR study to look at explanations for items other than the most highly recommended item, finding that LXR is also effective at this version of the task. We consider alternate baselines for LXR, including item popularity and latent factor similarity, and we see that for some tasks these alternatives work surprisingly well. We also examine the impact of item popularity, finding that LXR offers better explanation quality (shorter perturbations) when less popular items are being explained. Finally, we conduct a brute-force exploration of a subset of the perturbation space in order to estimate a lower bound for optimal perturbation size against which LXR and other such methods can be compared.",
+      "url": "https://arxiv.org/abs/2610.36208",
+      "pdf_url": "https://arxiv.org/pdf/2610.36208",
+      "affiliation_checked": true,
+      "article_theme": "复现并扩展LXR反事实推荐解释方法",
+      "research_question": "论文复现并检验LXR反事实推荐解释方法，回答四个问题：能否扩展到top-1之外的目标物品、物品流行度如何影响解释质量、典型扰动规模是否具有实用可行性、以及LXR结果距离最优最小扰动有多远。",
+      "main_contribution": "论文在三个数据集与MF、VAE两种推荐模型上系统复现LXR，提出Top10任务下的LXR10训练方式、新的物品流行度（Pop）与潜在因子相似度（LF）基线，并用绝对物品数取代原来的百分比粒度，引入MPNR和Coverage指标。此外通过暴力穷举子集搜索估计最优扰动规模下界，为LXR提供可比较的优化基准。",
+      "key_ideas": "🔸 先训练推荐模型（MF或VAE），用其生成的推荐作为训练数据训练解释器LXR，解释器输出对用户画像中每个物品的解释分数，移除高分物品即可使目标物品跌出推荐。\n🔸 提出LXR10：从top-10推荐中随机采样目标物品训练解释器，使方法可解释推荐列表中非首位物品（Top10任务）。\n🔸 引入两个新基线：Pop（物品流行度）与LF（用MF潜在因子向量计算目标物品与画像物品相似度），LF无需训练独立模型。\n🔸 重新设计评估：以绝对扰动大小为准，定义MPNR（使目标物品排名下降10位所需最小移除物品数）和Coverage（可成功解释的用户比例），并用RBO比较不同解释器找到的扰动列表重叠度。\n🔸 通过对MPNR小于20的用户穷举所有扰动子集，估计最优最小扰动规模，检验LXR的优化程度。",
+      "analysis_summary": "🔸 LXR可成功推广到top-1之外的目标物品，LXR10在所有条件下不差于LXR，Top10任务中LXR10表现最强（如ML1M+VAE下Coverage 100%、MPNR 12）。\n🔸 LF基线表现惊人地好：在MF场景下甚至主导LXR（Top10任务ML1M/Yahoo/Pinterest的MPNR分别为12/4/5），即使在VAE场景也常与LXR接近，提示嵌入相似度是有效的反事实信号。\n🔸 最优扰动通常仍然很大：即使最优穷举搜索平均也需要7个物品，LXR10为8-10个，说明LXR接近但不完全最优，且多数扰动超过用户易理解的5个物品。\n🔸 RBO分析显示LXR10与LF找到的扰动列表重叠很少（如VAE+Yahoo仅0.16），表明反事实扰动解不唯一。\n🔸 过滤掉15%最热门物品后MPNR显著下降但Coverage大幅降低（Yahoo+MF下Coverage从98%降至33%），揭示解释质量与覆盖范围间的强权衡。",
+      "personal_view": "基于全文分析，这篇复现论文的价值在于严谨且坦诚：它不仅验证了LXR的核心能力，还通过更合理的绝对粒度评估和穷举下界，揭示了原研究中被百分比报告方式掩盖的问题——扰动规模实际偏大，理想的反事实解释模板在实用中面临挑战。LF基线的强势表现尤其有启发，说明嵌入相似度可能以极低成本逼近学习式解释器的效果。局限在于：最优性分析仅在ML1M数据上进行，结论普适性有限；且缺乏用户研究，扰动是否真正可理解、流行物品作为解释成分是否令用户信服，仍需进一步验证。总体而言，这是一篇对可解释推荐社区有实际参考价值的复现与批判性扩展工作。",
+      "focus_label": "反事实解释复现",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 9
+    },
+    {
+      "id": "2610.36370",
+      "title": "IOSage: Detecting HPC I/O Bottleneck Patterns to Guide LLM Recommendations",
+      "authors": [
+        "Mahdi Banisharif",
+        "Tabassum Mahmud",
+        "Ahmad Tarraf",
+        "Suren Byna",
+        "Ali Jannesari"
+      ],
+      "published": "2026-10-26",
+      "categories": [
+        "cs.DC",
+        "cs.LG",
+        "cs.PF"
+      ],
+      "topic": "LLM 与 Agent",
+      "institutions": [
+        "1Iowa State University, USA, {msharif, tmahmud, jannesar}@iastate.edu",
+        "2Technical University of Darmstadt, Germany, ahmad.tarraf@tu-darmstadt.de",
+        "3The Ohio State University, USA, byna.1@osu.edu"
+      ],
+      "institution_type": "学术界",
+      "organization_sector": "海外学术界",
+      "primary_institution": "1Iowa State University, USA, {msharif, tmahmud, jannesar}@iastate.edu",
+      "score": 74,
+      "reason": "关注大模型或智能体如何改变推荐流程，适合跟踪新一代推荐范式。",
+      "abstract": "HPC applications often leave much of their parallel file system's bandwidth unused, and turning their Darshan logs into concrete I/O fixes still requires a scarce I/O expert. Rule-based tools flag counters against thresholds set by experts, and in tools built on large language models (LLMs), such as ION and IOAgent, the LLM decides which bottlenecks a log contains. We present IOSage, in which a classifier trained on many labeled logs, not the LLM, makes that decision, since a single log gives an LLM no baseline for what is abnormal. The LLM receives the I/O bottleneck patterns the classifier detects, the job's configuration files, per-file Darshan evidence, and for each pattern a card built from benchmark training runs, and writes recommended changes. Applied by hand and measured in repeated paired runs, the changes IOSage names speed up median total wall time 4.38x for an openPMD kernel (4.02x on a second storage tier) and 1.42x for hourly WRF restarts. For 5 of the 6 application scenarios with a helpful change, IOSage with Claude Sonnet 4 names it, including the change for 10-minute WRF restarts (up to 1.93x faster); with GPT-4o and Llama 3.1 as well, the classifier and cards name more helpful changes than the LLM alone. On 78 benchmark test runs without a pattern, the LLM deciding alone proposes changes for 64; with the classifier, for 9. The classifier reaches 0.929 Micro-F1 on 488 labeled benchmark test runs (0.916 as the gate; 0.832 on the 158 from configurations and jobs outside training), above Drishti's rules, WisIO, and IOAgent's pipeline without its literature retrieval. On TraceBench's nine expert-labeled traces from production systems, it has the highest precision of the tools compared (0.82), with 2 false positives against 12 for the keyword-mapped LLM diagnoses shipped with TraceBench and 5 for Drishti, on the five issue labels that match registered patterns.",
+      "url": "https://arxiv.org/abs/2610.36370",
+      "pdf_url": "https://arxiv.org/pdf/2610.36370",
+      "affiliation_checked": true,
+      "article_theme": "用分类器先判定瓶颈再让LLM给出I/O优化建议",
+      "research_question": "如何把HPC应用产生的Darshan日志自动转化为具体可行的I/O优化建议？难点在于单条日志没有判断异常的基线，让LLM直接决定日志中存在哪些瓶颈模式会导致大量误报。",
+      "main_contribution": "IOSage提出分类器与LLM分工的框架：在大量带标签日志上训练的多标签分类器充当精度门控，决定日志中存在哪些七种注册瓶颈模式，LLM再结合模式卡片、逐文件证据和作业配置文件生成具体修改建议。配置标签提供独立真值用于检测评分，修改效果通过反复配对运行的总墙钟时间实测验证。",
+      "key_ideas": "🔸 训练六个基准（IOR、mdtest、DLIO、h5bench、HACC-IO、mpi4py程序）的参数扫描，由诱发该模式的运行配置（而非计数器阈值）给689次运行打标签，保留488次作测试；\n🔸 将配置标签与基于Drishti规则标注的91807条Polaris生产日志以双质量加权（基准样本权重100、生产日志权重1）合并，每模式训练一个XGBoost模型，读取157个计数器特征；\n🔸 推理时概率超过阈值τ=0.3的模式才作为精度门控进入提示词，每个模式配有一张由训练运行构建的卡片，包含典型计数器值（SHAP选出的关键特征）与通用修改模板；\n🔸 应用提示词额外包含逐文件Darshan证据和作业配置文件（如WRF的namelist.input），使LLM无需读源码即可给出最小正确修改，并可回答无需修改；\n🔸 验证阶段由人工应用建议，运行11次有/无修改的轮询配对运行，以配对比值中位数及3至9分位区间评估总墙钟时间，并审计两版本等价性。",
+      "analysis_summary": "🔸 分类器在488条标注测试运行上Micro-F1达0.929（门控0.916），在158条配置与作业均超出训练的运行上为0.832，显著超过Drishti规则（0.364）、WisIO（0.311）和无检索的IOAgent（0.331，精度仅0.218）；\n🔸 在TraceBench九条专家标注的生产系统轨迹上，分类器精度最高（0.82），假阳性仅2个，对照LLM诊断的12个与Drishti的5个，但召回（0.56）低于Drishti；\n🔸 实测应用中，Claude Sonnet 4版IOSage在6个有有效修改的场景中命中5个：openPMD内核加速4.38×（闪存层4.02×），10分钟WRF重启最高1.93×，每小时重启1.42×；LLM单独决策给Nek5000提出的共享文件修改实测变慢（0.95×）；\n🔸 在78条无模式测试运行上，LLM单独对64条提出修改，加入分类器后仅9条；门控召回91.8%、精度0.914，特征提取与推理中位耗时合计41毫秒，单条日志LLM调用成本约0.016美元（对比IOAgent约0.55美元）；\n🔸 局限：只覆盖七种注册模式，留一基准测试时Micro-F1可跌至0甚至0.26–0.64，训练仅来自两个Lustre系统，应用结论基于8个场景且提示词在其中开发，修改为人工应用且增益在不同日期会波动。",
+      "personal_view": "基于全文分析，这篇论文最有价值之处是把\"哪些模式存在\"的判断从LLM手中交给在大量标注日志上训练的分类器，直接击中了LLM单凭一条日志缺乏正常基线这一要害，配置标签提供的独立真值和配对运行的实测验证也体现了少见的严谨性。分类器简单（XGBoost）却有效，说明该问题的关键在标签与特征而非模型复杂度。局限在于模式集合封闭、泛化依赖每类工作负载的标注运行，且应用层面证据仅八个场景；WaqComM++改动仅在少数运行中被命中，提示LLM从模式到具体修改的推理仍有不确定性。整体是从LLM诊断走向可靠工程工具的务实一步。",
+      "focus_label": "HPC I/O瓶颈诊断",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 13
     },
     {
       "id": "2610.34124",
