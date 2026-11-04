@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-04T09:05:46Z",
+  "generated_at": "2026-11-04T12:14:54Z",
   "source": "arXiv",
   "papers": [
     {
@@ -28,17 +28,17 @@
       "abstract": "While conversational recommendation systems provide a more natural user interface, they face the challenge of progressively discovering a user's needs before they can recommend an item that satisfies them. To evaluate the ability of AI agents at this elicitation process, we introduce $τ$-Rec-Books, a benchmark that holds each user request fixed while varying only when the user reveals their requirements: all at the start (volunteer), one at the start and the rest when asked (mixed), or some never (hidden). A hidden requirement can be found only by proposing books and inferring it from the user's accept or reject verdicts. We generate 450 tasks over a catalog of 20,000 books from Wikidata, develop a rule-based simulated user to answer the agent, and score recommendations against catalog metadata without an LLM judge. Across four agents and two search interfaces, success rates fall for every agent and interface, on average from 0.975 (volunteer) to 0.756 (mixed) and 0.283 (hidden). Mixed tasks fail mainly because agents do not ask, and when told to ask, every agent reaches at least 0.931. On hidden tasks, most failures come from agents recommending a book they never proposed to the user. When told to propose first, agents only match a simple baseline that proposes popular books, and stay well below one that uses rejection to rule out possible requirements. We release the catalog pipeline, task generator, simulated user, validators, reference agents, and all agent traces at https://github.com/nbharaths/tau-rec/tree/main/data/tracks/books-wikidata-v2.",
       "url": "https://arxiv.org/abs/2611.04459",
       "pdf_url": "https://arxiv.org/pdf/2611.04459v1",
-      "affiliation_checked": true,
+      "focus_label": "需求挖掘评测",
       "article_theme": "τ-Rec-Books：控制需求披露时机的智能体推荐基准",
       "research_question": "对话式推荐智能体在用户需求披露时机不同（主动全说、被问才说、部分永不说）的情况下，完成可验证推荐的能力如何变化？难点在于需在固定请求的对照条件下区分提问、验证与搜索能力，且不能依赖 LLM 评审。",
       "main_contribution": "论文提出 τ-Rec-Books 基准，将需求披露作为受控变量：150 个任务族各有 volunteer、mixed、hidden 三种变体，仅披露标签不同。配套 2 万册 CC0 图书目录、规则化模拟用户、LLM 无关的评分与验证器、脚本参考智能体及全部 32,976 次试验轨迹，全部开源可复现。",
       "key_ideas": "🔸 每个谓词带披露标签（stated/on ask/hidden），同一任务族三种条件仅差标签；hidden 用户拒答某字段但暗示存在要求，只能靠提议图书并从接受/拒绝判定中推断。\n🔸 规则化模拟用户按固定模板回复，判定由目录 ID 硬校验产生，评分不使用 LLM；试验须通过五项协议检查（最多推荐一本、不得推荐已读书等）。\n🔸 目录来自 Wikidata，2 万册嵌套 5k/10k 子集，谓词涉及体裁、语言、出版国与年份，任务分简单/中等/复杂三档并含 NVR（无有效答案）任务以测试弃权。\n🔸 提供关键词搜索与结构化过滤两种工具接口，以及 ask、ask-and-verify、protocol 等渐进提示，比较提问、先提议再验证、解释拒答语义的增量作用。\n🔸 参考智能体：popularity 提议热门匹配书，eliminating 维护隐藏要求候选列表并用拒绝逐步排除，检验任务可解性。",
       "analysis_summary": "🔸 四个模型、两种接口下，可满足任务 pass^1 从 volunteer 0.975 降至 mixed 0.756、hidden 0.283，差距经 Holm 校验显著；结构化搜索平均加 7.1 分（主要来自 Qwen）。\n🔸 mixed 失败主因是不主动提问：ask 提示使所有模型至少达 0.931；hidden 失败中 78% 来自推荐未经提议验证的书。\n🔸 先提议再验证的智能体仅追平热门书基线（0.483–0.617），仍低于会排除隐藏要求的 eliminating 智能体；protocol 提示平均提升 22.5 分仍不足以追平。\n🔸 目录从 5k 扩到 20k 只损失关键词 4.2 分、结构化 0.8 分，披露时机的影响远大于接口与规模；LLM 用户使成绩再降 7.4–10.2 分。\n🔸 局限：目录偏向英语及英美作品、体裁偏科幻，规则用户不解释拒绝、未经真人验证，软偏好与 critiquing 场景留待后续工作。",
       "personal_view": "基于全文的分析，这项工作的最大亮点在于把'何时披露需求'做成受控变量，使提问、验证与搜索能力可以被干净地区分评测，配以无 LLM 的可验证评分和全轨迹开源，方法论上相当扎实。结论也很有启发：失败主因不是检索而是'不问'与'不验证就承诺'，这直接指出了智能体推荐系统的改进方向。局限同样明显：规则化用户用目录词汇回答、从不解释拒绝，更接近硬约束搜索而非真实对话；目录与国家谓词高度偏向英美；仅在 2 万规模图书域验证。其实用价值主要在于为对话式推荐的引出式评测提供了一个可复现的模板，但向软偏好和真实用户迁移仍需大量后续工作。",
-      "focus_label": "需求挖掘评测",
       "note_model": "glm-4.5-air",
       "note_basis": "full_text_pdf",
-      "full_text_pages": 16
+      "full_text_pages": 16,
+      "affiliation_checked": true
     },
     {
       "id": "2611.04455",
@@ -72,17 +72,17 @@
       "abstract": "Diffusion-based recommenders learn user preferences by denoising interaction histories, but the added noise can distort the original preference signals. Flow-based collaborative filtering (CF) instead learns a discrete path from a sampled source to the user's observed training interactions (the target history), enabling inference in a few steps. Existing flow-based CF methods sample sources using global item frequencies to reflect the sparsity and popularity of observed interactions. Each source is sampled independently of its target history, leaving the predictor without user-specific source cues for learning to reconstruct that history. We propose SourceFlow, which brings collaborative structure into the source distribution itself rather than adding further conditioning to the predictor. Like inference from observed histories, training uses collaborative evidence to predict missing interactions. Specifically, Neighborhood Coupling constructs displaced binary sources by replacing historical items with unobserved collaborative alternatives. Collaborative Consensus further refines replacement probabilities using evidence from other interactions of users who share the observed item. Stretched Restoration retains these replacements at late flow times during training, providing more opportunities to recover the original interactions. Experiments on five recommendation datasets show consistent improvements over competitive baselines, including a mean relative Recall@10 gain of 15.7% over the strongest flow-based baseline. Controlled experiments confirm that these gains depend on correctly pairing collaborative sources with their target histories, as reassigning the same source vectors across users reverses the gains. Code will be publicly released upon acceptance.",
       "url": "https://arxiv.org/abs/2611.04455",
       "pdf_url": "https://arxiv.org/pdf/2611.04455v1",
-      "affiliation_checked": true,
+      "focus_label": "流匹配源耦合",
       "article_theme": "用协同替代品构造训练源提升流式推荐",
       "research_question": "现有流匹配协同过滤在训练时从全局分布独立采样源，无法为其目标历史提供用户特定线索。论文研究如何通过源分布设计（源-目标耦合）帮助流式CF更有效地学习用户偏好。",
       "main_contribution": "提出SourceFlow，在不改动预测网络与推理流程的前提下，将训练源构造为替换了历史物品的位移二值向量：Neighborhood Coupling用协同样近邻生成替代品，Collaborative Consensus用更高阶共现支持重加权采样概率，Stretched Retirement（Stretched Restoration）延长替代品在流时间中的保留。理论上证明条件源耦合改变重构问题的贝叶斯最优预测器，实验在五个数据集上一致超越基线。",
       "key_ideas": "🔸 邻域耦合：以用户每个历史物品为锚点，从其训练图上的top-K未观察协同邻居中采样替代品，构造与目标历史无重叠但保留偏好结构的二值源。\n🔸 协同共识：聚合与锚点物品共现过的其他用户的间接支持分数¯c(i,j)，以q∝w(ε+¯c)^β重加权候选池，将概率向获得更广泛协同支持的候选分配。\n🔸 拉伸恢复：通过保留指数γ<1（替代品存留概率(1−t)^γ）在流路径后段保留更多替代品，让预测器有更多机会从协同线索恢复被替换的历史交互。\n🔸 耦合形式：训练采用π=p_data(x1)q_collab(x0|x1)，源由目标历史决定并与之配对，而推理仍从观察历史出发沿用两步规则。",
       "analysis_summary": "🔸 五个数据集全部20个数据集-指标组合排名第一，Recall@10相对CoFlowCF平均提升15.7%（8.0%–23.5%）。\n🔸 消融显示邻域耦合贡献最大初始增益，共识与拉伸调度带来进一步提升；打乱源-目标配对使NDCG@10从0.0395降至0.0310，硬负例正则化控制也无法复现增益。\n🔸 源保留偏好组结构（匹配率67.6% vs 全局的34.0%），92.4%用户的重构更接近配对历史；拉伸调度在共享状态上恢复率与测试NDCG@10均更高。\n🔸 冷门物品（Q1）相对增益最大，参数量与训练/推理时间与Base基本持平，耦合存储（Sports 9.4MB）小于网络权重；局限包括Beauty上拉伸无增益、γ和K需一定搜索。",
       "personal_view": "基于全文来看，这篇论文的创新点在于把流匹配文献中的源-目标耦合思想具体落地到二值协同过滤场景：不改动模型与推理，仅通过设计配对的协同替代源和保留调度就获得显著增益，且配对分析（打乱配对增益消失）为方法有效性提供了较强证据。实用价值方面，该方法实现开销小、推理不变，可直接叠加到FlowCF/CoFlowCF类系统。局限在于依赖训练数据构建物品协同图，稀疏或冷启动物品的锚点可能缺乏可靠邻居而退化为流行度采样；此外构建质量受阈值、K与β等超参影响，跨域更大数据集上的可扩展性仍待验证。",
-      "focus_label": "流匹配源耦合",
       "note_model": "glm-4.5-air",
       "note_basis": "full_text_pdf",
-      "full_text_pages": 12
+      "full_text_pages": 12,
+      "affiliation_checked": true
     },
     {
       "id": "2611.04203",
@@ -111,17 +111,17 @@
       "abstract": "Conventional recommender systems operate within platform-specific catalogs, limiting access to potentially valuable resources across platforms. We propose user-centered agentic recommendation, a paradigm in which user agents compare recommendations from competing platform agents, and formalize their interaction as a repeated game. Platforms strategically modify descriptions without changing intrinsic item value, while each user agent assesses platform credibility using feedback from consumed items only. Our analysis shows that expanded resource access need not improve user welfare: strategic misrepresentation and limited verification can offset the benefits of platform competition. We quantify when platform credibility assessment allows users to benefit from broader access despite strategic exaggeration. Our analysis identifies resource and reporting conditions that guarantee higher average welfare than the original platform with an interaction budget linear in platform count. Experiments on synthetic and Amazon-grounded markets show that credibility assessment can improve finite-horizon utility, while its benefits depend on market size and mechanism parameters.",
       "url": "https://arxiv.org/abs/2611.04203",
       "pdf_url": "https://arxiv.org/pdf/2611.04203v1",
-      "affiliation_checked": true,
+      "focus_label": "用户中心Agentic推荐",
       "article_theme": "平台竞争何时能让多平台Agent推荐真正惠及用户",
       "research_question": "论文研究用户中心Agentic推荐范式：个人用户代理向多个竞争平台征集推荐，但平台可在不改变商品真实价值的情况下策略性夸大描述，而用户只能通过已消费资源验证。核心问题是：在何种条件下，多平台竞争比留在原单平台更能提升用户福利？",
       "main_contribution": "论文将用户代理与多个竞争平台代理的交互形式化为重复博弈，提出平台可信度评估机制（用指数平均修正历史夸大），并给出有限时域福利保证。理论表明无可信度评估时全夸大是弱纳什均衡，而在报告差距幅度有界条件下，保证用户受益所需交互预算随平台数线性增长，且冷启动例子说明该线性阶不可降低。",
       "key_ideas": "🔸 用户代理广播同一查询给所有平台代理，各平台返回候选及其报告相关度A=r+λ(1−r)，代理用可信度修正S=A−ω打分，经Gumbel噪声随机选择后仅消费选中资源。\n🔸 平台可信度评估仅用已消费商品的真实值更新对应平台记录（指数平均），未选中记录不变，从而把福利损失核算限定在实际消费事件上，无需最小曝光或未消费反馈。\n🔸 福利分解为校准增益（真实分数选择相对原平台的收益）减去策略性夸大造成的扭曲；定理4.3给出扭曲上界nΨ(ν,η)/T+δ/(2ν)。\n🔸 推论4.4说明当增益下界超过δ/(2ν)时，T≥nΨ(ν,η)/(G−δ/(2ν))的正预算即可保证U_T≥B_T，对固定正边际，预算随平台数线性增长。\n🔸 冷启动构造（一个价值1平台、若干价值0平台、全夸大报告）证明初始效用可为O(1/n)，且该机制的线性交互预算阶不可改进。",
       "analysis_summary": "🔸 合成市场（128用户、4096轮、平台数2–32）中，无可信度评估时平均效用始终低于原平台，加入评估后净增益转正（Exp3平台下净增益0.048，区间[0.039,0.058]），即使平台持续满额夸大也有效。\n🔸 Amazon语义市场（Qwen3-Embedding-0.6B嵌入、2048商品、32虚拟目录）中，评估相对未修正报告有正向配对改进，但最终净增益区间[−0.0160,0.0004]含零，未超越原平台。\n🔸 控制市场验证证书实验中，受限Exp3下首次正向区间出现在128轮，而推论4.4认证的预算为1465轮，说明证书给出的是保证区域而非经验受益边界，存在较大松弛。\n🔸 温度敏感性实验显示降低ν改善选择但增大扭曲，净增益而非扭曲单独决定用户受益；约三分之一合成用户和约三分之二Amazon用户相对原平台仍受损。\n🔸 局限包括保证依赖标量报告、精确消费反馈、零初始化记录和有界报告差距幅度；Amazon实验评估的是语义代理而非真实消费者福利。",
       "personal_view": "基于全文分析，这篇论文的创新之处在于把Agentic推荐中的平台竞争与策略性夸大问题纳入可解析的重复博弈与福利分析框架，用消费反馈的可信度评估给出可计算的用户受益预算条件，理论与实验相互印证，冷启动反例尤其有说服力。实用价值在于为多平台用户代理设计提供了信用修正这一轻量机制，且不要求平台诚实。但局限也明显：报告模型为标量插值、消费反馈假设精确，真实LLM场景中文本描述与语义噪声更复杂；Amazon实验中净增益仍跨零，且结论依赖语义相似度作为价值代理，距离真实消费者福利验证尚有距离。",
-      "focus_label": "用户中心Agentic推荐",
       "note_model": "glm-4.5-air",
       "note_basis": "full_text_pdf",
-      "full_text_pages": 37
+      "full_text_pages": 37,
+      "affiliation_checked": true
     },
     {
       "id": "2611.05319",
@@ -152,17 +152,17 @@
       "abstract": "In LLM-based recommendation, memory acts as a user-level agent in a memory-augmented backbone. Yet users and items remain asymmetric: only the user is given a structured profile; it enters a bandwidth-limited reranker prompt; and it is frozen after warmup. We recast LLM-based recommendation as an agentic-communication process in four stages: BUILD a self-description, TRANSMIT it along the collaborative graph, UNDERSTAND the other side, and SYNC it from the next interaction. This formulation reveals three unresolved communication challenges: the item side never produces a comparable self-description (one-sided BUILD); profile-level signals enter only the bandwidth-limited reranker prompt rather than retrieval, where they would not compete for context tokens (prompt-trapped UNDERSTAND); and the user's description is frozen after warmup with no principled update rule (absent SYNC). We instantiate the missing stages as HARP (Homophily-aware Agentic Recommendation via dual Profiles), a training-free, three-operator addition to a frozen LLM backbone: a rule-extracted symmetric item profile (zero extra LLM calls), a channel-decomposable profile-level homophily H(phi_u, phi_i) consumed at retrieval time rather than inside the reranker prompt, and a single-pass reflective update realising in-context profile evolution without any gradient step. On four public benchmarks (Yelp, Books, MovieTV, Goodreads), HARP lifts Hit@1 over the strongest published baseline by 6.9%-24.0%, with family-wise Holm-corrected p < 1e-9 on every dataset. Ablations and a per-case attribution study show that the operators contribute complementary gains, with the retrieval-side gate as the main source; we also report the trade-off introduced by the reflective pass. We formulate agentic communication and provide a training-free instantiation. Code is available at https://github.com/Jove-Zhen/HARP.",
       "url": "https://arxiv.org/abs/2611.05319",
       "pdf_url": "https://arxiv.org/pdf/2611.05319v1",
-      "affiliation_checked": true,
+      "focus_label": "Agent化通信推荐",
       "article_theme": "HARP：免训练双画像与同质性门控的LLM推荐框架",
       "research_question": "现有记忆增强的LLM智能体推荐范式中，用户与物品是不对称参与者：只有用户有结构化画像、画像仅在带宽受限的重排提示中被消费、且预热后画像不再更新。论文试图诊断并补齐这三处'通信断裂'，且要求全程不训练、保持骨干LLM冻结。",
       "main_contribution": "论文将LLM推荐重构为BUILD–TRANSMIT–UNDERSTAND–SYNC四阶段智能体通信过程，据此识别三大挑战（单侧画像、提示陷阱式理解、缺失同步），并提出HARP这一免训练三算子方案：规则抽取的对称物品画像、画像级同质性门控检索、以及单次反思式画像更新。该框架在四个公开基准上取得全面最优。",
       "key_ideas": "🔸BUILD：用户画像由一次LLM调用生成（历史分recent/medium/distant三段并带Ebbinghaus式时间权重），物品画像则通过零LLM成本的规则抽取器（R1–R4：本体投影、词典编码、质量归纳、通道互斥）对齐到同一四通道schema（preference/quality/context/audience）。\n🔸UNDERSTAND：定义通道可分解的画像级同质性H(ϕu,ϕi)（短语集非对称软Jaccard再加权求和），以单调门g(H)=α+(1-α)H重加权协同检索分数，用户-用户与用户- item两类边分别设底限α。\n🔸关键设计论证：画像信号应在检索侧而非重排提示侧被消费——提示预算饱和后注入画像与协同记忆是零和替换，且冻结LLM无法学会权衡两路证据（Remark 2）。\n🔸SYNC：以测试项前的warmup窗口记录命中/未命中集合，单次CoT反思调用提出画像改写，可选确定性critic（零额外LLM调用）做接受/拒绝把关，实现无梯度的上下文画像演化。\n🔸通道互斥加线性聚合保证H的可分解性（Remark 1），使逐通道消融等价于对H的加性扰动，为算子级归因提供代数基础。",
       "analysis_summary": "🔸在Yelp、Books、MovieTV、Goodreads四个InstructRec基准上，HARP相对最强已发表基线MemRec将Hit@1提升6.9%–24.0%，且Holm校正后p<10⁻⁹，Wilson CI下界全面高于MemRec点估计。\n🔸五级消融阶梯显示检索侧同质性门是主要增益来源：MONOLOGUE→DIALOGUE提升5.7pp，而仅提示注入（MONOLOGUE/CONSULT）与MEMORY持平；修复源分解表明75%–84%的修复来自检索门（Pillar 2）。\n🔸SYNC带来小幅残差增益（Yelp/MovieTV/Goodreads +0.8/+0.5/+1.3pp，Books为−0.4pp），存在保守性与覆盖率的权衡；逐案归因显示46.8%的未命中是near-miss，42.3%来自与画像正交的LLM先验。\n🔸成本方面相对MemRec每用户仅增加一次反思LLM调用加O(k|C|)的CPU侧同质性计算；门控剪枝约0.6ms，端到端延迟10.81s（p95=13.28s），并在deepseek、gemini、qwen3-30b等其他骨干上保持优势。\n🔸局限包括：通道权重与底限虽非下游调优但依赖人工设定；评估遵循准确率导向协议，未涉及新颖性/多样性；Goodreads物品元数据偏自由文本导致画像覆盖率较低、增益最弱；画像可能继承LLM骨干偏差。",
       "personal_view": "基于全文来看，本文最有价值的贡献并非某个单一算子，而是用四阶段通信框架作为诊断工具，系统性地暴露了记忆增强智能体推荐的三个结构性缺口，并给出逐一对应、可分离消融的免训练补丁。'画像应在检索侧而非提示侧消费'这一论证配合负控制实验（提示注入不增、反向消融显著下降）尤其有说服力，统计检验也相当扎实。实用价值在于零训练成本即可叠加到现有记忆增强骨干上，且多骨干验证增强了可信度。可能的局限在于：物品画像的规则抽取器依赖人工本体与词典，跨域迁移成本未讨论；增益高度集中于检索门，SYNC的净收益有限且在Books上为负；同质性门在超稀疏或冷启动场景下的表现仍待检验。此外逐通道归因是观察性分解而非严格因果消融，结论外推需谨慎。",
-      "focus_label": "Agent化通信推荐",
       "note_model": "glm-4.5-air",
       "note_basis": "full_text_pdf",
-      "full_text_pages": 31
+      "full_text_pages": 31,
+      "affiliation_checked": true
     },
     {
       "id": "2611.05071",
@@ -192,17 +192,17 @@
       "abstract": "Researchers struggle to find relevant datasets amid the growing volume of data across repositories and scholarly publications. Manual dataset retrieval is time-consuming and often fails to identify valuable resources that are not easily discoverable through direct links or popularity metrics. Dataset recommendation, which aims to identify datasets relevant to a paper, author, or query, has become essential for improving dataset discoverability and reuse. However, this task remains challenging because Scholarly Knowledge Graphs (SKGs) are large-scale, heterogeneous, dynamic, and incomplete. Although openly available SKGs organize scientific knowledge by linking scholarly outcomes, they often lack meaningful connections between datasets, leaving them isolated and underutilized. These graphs contain millions of evolving relations but still suffer from missing or inaccurate metadata, duplicate records, and weak dataset integration. This work presents the Multimodal Scholarly Attention Network (MM-SAN), a heterogeneous multimodal graph representation learning method for recommending datasets relevant to research publications within real-world SKGs. MM-SAN combines topology-aware and text-based embeddings, enabling effective recommendations even when textual metadata is limited or absent. It operates in transductive, semi-inductive, and fully inductive settings, adapting to evolving SKGs without requiring retraining. Experiments show that MM-SAN outperforms state-of-the-art methods, providing a robust and scalable solution for dataset recommendation.",
       "url": "https://arxiv.org/abs/2611.05071",
       "pdf_url": "https://arxiv.org/pdf/2611.05071v1",
-      "affiliation_checked": true,
+      "focus_label": "异构图数据集推荐",
       "article_theme": "多模态图表示学习应对稀疏动态学术图的数据集推荐",
       "research_question": "论文研究如何在真实世界的大规模、异构、动态且高度稀疏的学术知识图谱（SKG）中，为研究论文推荐相关数据集。难点在于现有方法多在均质、静态、特制的稠密图上评估，且当文本元数据缺失或低质量、节点为新节点时效果急剧退化。",
       "main_contribution": "论文提出MM-SAN，一个三阶段（增广→采样→聚合）多模态异构图表示学习框架：通过注入主题与实体节点增密稀疏图，用相似度加权随机游走采样邻居，再用多头cross-attention融合文本与拓扑两种模态。该方法是首个在transductive、semi-inductive和fully inductive三种场景下均无需重训练且保持竞争力的数据集推荐方法，并在从元数据丰富到元数据稀缺的完整评估课程中一致超越SOTA图基线。",
       "key_ideas": "🔸增广阶段：用DBpedia Spotlight做实体链接、BERTopic+KeyBERT做主题建模，向稀疏图注入entity和topic两类新节点，主题促进全局连通、实体强化局部内容关联。\n🔸双模态嵌入：结构嵌入用node2vec随机游走，文本嵌入用all-MiniLM-L6-v2编码长文本（标题、摘要）、Phrase-BERT编码短文本（主题、实体、关键词）。\n🔸采样阶段：从目标节点生成随机游走，按综合余弦相似度并除以跳数距离的评分选取top邻居，并按（论文+数据集）、（关键词+主题+实体）、（作者+venue+组织）三组各选top-n，实现局部代表采样，适应动态图而无需全局信息。\n🔸聚合阶段：文本嵌入作Q、拓扑嵌入作K/V进行多头cross-attention（8头、维度128），输出按组独立计算后拼接，使文本缺失时可依赖拓扑、拓扑稀疏时可依赖文本。\n🔸训练用交叉熵损失加负采样（每正边5个负样本），sigmoid内积打分；缺失模态用全1常量向量替代文本嵌入。",
       "analysis_summary": "🔸在MES（稀疏度99.97%）和PubMed（99.99%）两个OAG子图上，MM-SAN在所有场景和指标上超越6个通用归纳基线与8个transductive基线，差异经配对t检验显著（p<0.05）。\n🔸最困难场景（fully inductive + 25%元数据）下，MES上相对最强基线HGNN提升R@5 +41%、nDCG@5 +38%，PubMed上R@5 +59%；MES transductive/100%元数据下R@5达0.727。\n🔸纯文本基线ST-T在理想元数据的trans/semi场景可超过图方法（如PubMed Tran R@5 0.590 vs 0.380），但元数据减少时无法实例化。\n🔸消融显示删除增广阶段损害最大，cross-attention优于GRU/LSTM/多头注意力/线性投影，拼接优于学习式合并；模态消融表明拓扑缺失时文本是更强后备信号，反之亦然。\n🔸作者承认局限：数据集规模增大且无文本描述时性能下降，高质量元数据完全可用时纯文本方法更强；作者作为查询的扩展实验中MM-SAN仍领先（MES Tran R@5 0.677 vs HGNN 0.567）。",
       "personal_view": "基于全文分析，本文的核心创新在于将图增强、邻域采样与跨模态cross-attention组合成一个针对真实SKG稀疏性的完整方案，并通过三场景×四级元数据可用性的评估课程系统回答了鲁棒性、灵活性与多功能性三个研究问题，实验设计严谨、消融充分，实用价值体现在可支持论文撰写时推荐数据集及提升可复现性。局限方面，作者自己指出在元数据完美时纯文本方法更强，且性能随图规模增大而下降；此外纯文本基线覆盖场景有限，与更现代的LLM文本检索方法的对比缺失，评估依赖OAG子图也可能影响结论对其他SKG的普适性。",
-      "focus_label": "异构图数据集推荐",
       "note_model": "glm-4.5-air",
       "note_basis": "full_text_pdf",
-      "full_text_pages": 35
+      "full_text_pages": 35,
+      "affiliation_checked": true
     },
     {
       "id": "2611.04775",
@@ -228,17 +228,17 @@
       "abstract": "Recommender systems are ubiquitous on the Web, making understandable explanations essential for users. Although large language models (LLMs) increasingly generate natural-language justifications, evaluating their factual grounding and personalized relevance remains challenging. Statement-level ranking offers an alternative by selecting concise, review-derived explanations, enabling fine-grained and reproducible evaluation using established ranking metrics. However, existing statement ranking methods largely rely on collaborative representations, while semantic enhancements often fail to outperform simple user-history popularity baselines. Moreover, directly adapting language models for personalized statement ranking remains largely unexplored. In this work, we introduce LMStaR (Language Models for Statement Ranking), a fully text-based framework that formulates personalized explanation ranking as dense retrieval. A query encoder represents the user's interaction history and target-item metadata, while a statement encoder maps candidate explanations into a shared embedding space. Both encoders are jointly adapted through multi-positive contrastive learning to learn personalized relevance. Experiments on Amazon Beauty, Amazon Toys, and Yelp show that LMStaR achieves the highest NDCG@1 across all three domains, outperforming CLER by 1.06--8.25 points (+11.8--65.9%). It also leads top-five ranking on both Amazon datasets, although CLER remains stronger on Yelp. Task-specific adaptation improves all five evaluated backbones and transfers across domains without target-domain fine-tuning. Counterfactual analyses further reveal the importance of user-specific histories. These findings highlight the potential of task-adapted language models for personalized explanation ranking.",
       "url": "https://arxiv.org/abs/2611.04775",
       "pdf_url": "https://arxiv.org/pdf/2611.04775v1",
-      "affiliation_checked": true,
+      "focus_label": "解释排序检索",
       "article_theme": "用语言模型把个性化推荐解释排序转化为稠密检索",
       "research_question": "如何在语句级解释排序中直接对齐用户文本历史与候选解释语句，超越基于协同表示的方法和难以击败的用户历史流行度基线？现有语义增强方法难以胜过简单基线，将语言模型任务化适配到个性化解释排序仍基本空白。",
       "main_contribution": "论文提出 LMStaR，一个全文本化的双编码器稠密检索框架：查询编码器表示用户交互历史与目标物品元数据，语句编码器编码候选解释，二者通过多正样本对比学习联合优化。这是首个针对个性化语句排序联合适配语言模型编码器的方法，并在三个领域验证了排序效果、骨干鲁棒性与跨域迁移能力。",
       "key_ideas": "🔸 将个性化解释排序建模为稠密检索：查询编码器编码任务指令+用户历史+目标物品元数据，语句编码器独立编码候选语句，以余弦相似度排序；\n🔸 训练数据按时序构造：只用当前交互之前的经历作为上下文，目标交互的全部真实语句为正样本，从目标物品其余语句中采样负样本；\n🔸 采用多正样本 InfoNCE 对比目标，对每个正样本独立对比所有负样本后取平均，避免排序好的正样本补偿排序差的正样本；\n🔸 默认使用 LoRA 适配双编码器，改进 StaR 数据构建流程（提取提示强调用户偏好与物品特征的匹配，并加入重排序器验证聚类合并）；\n🔸 系统分析用户历史数量、选择策略、历史长度分组及反事实查询扰动。",
       "analysis_summary": "🔸 主结果：LMStaR 在三个数据集上均取得最高 NDCG@1，相比 CLER 在 Beauty/Toys/Yelp 分别提升 3.50(+31.2%)、8.25(+65.9%)、1.06(+11.8%) 点；NDCG@5 在 Amazon 两个数据集领先，Yelp 上落后 CLER 1.10 点；\n🔸 骨干与适配：五个骨干任务化适配后全部提升，LoRA 一致优于全量微调 0.84–2.66 NDCG@5 点，小的适配模型可超过大的零样本模型；\n🔸 跨域迁移：六个迁移配置均超过零-shot 检索与常规基线，Beauty→Toys 甚至超过目标域训练的 CLER，但域内适配仍然最优；\n🔸 历史分析：前几个最近交互带来大部分收益；换成他人历史使 NDCG@5 下降 5.65–13.20 点，而替换目标物品元数据影响很小（≤0.97 点），显示强烈依赖用户自身历史；\n🔸 局限：二值相关性来自自动抽取聚类，未评估解释的感知有用性；候选池含训练时不可见语句，测试限定训练见过的物品。",
       "personal_view": "基于全文分析，这篇论文的创新点在于把成熟的稠密检索范式（双编码器+指令+多正样本对比学习）系统地引入个性化解释排序，绕开了生成式解释的事实性难题，并首次对该任务进行了细致的骨干、微调方式与跨域分析，实验设计严谨（反事实探针、历史分组、bootstrap 置信区间都值得称道）。实用价值方面，语句排序可复现、可解释，且 LoRA 适配小模型即可超越大模型零样本，部署成本较低。局限也很明显：Yelp 的 top-5 劣势暗示单向量查询难以覆盖多方面解释，作者也承认候选池与物品可见性设定偏理想化；数据构建依赖 Qwen 系模型可能引入偏差。未来可探索混合或多向量排序以及人工评估解释质量。",
-      "focus_label": "解释排序检索",
       "note_model": "glm-4.5-air",
       "note_basis": "full_text_pdf",
-      "full_text_pages": 12
+      "full_text_pages": 12,
+      "affiliation_checked": true
     },
     {
       "id": "2611.04439",
@@ -268,17 +268,17 @@
       "abstract": "Recommender systems are widely used in e-commerce and content platforms, where improvement requires repeated model design, training optimization, and experimental validation. Large language model (LLM) agents increasingly automate this development cycle. Sustained autonomous improvement requires agents to improve both recommendation models and their development workflows. However, task-performance-driven approaches select updates mainly by candidates' final scores, without a separate optimization signal for experimentation quality. We therefore present DualEvolve, a dual-level framework that co-evolves recommendation mechanisms and agent orchestration toward recursive self-improvement. Inner evolution revises model and training code using task feedback to improve recommendation performance. Outer evolution scores the inner-loop experimental process, updates harness and skill rules using these scores and execution traces, and adjusts orchestration choices based on next-round scores to improve the quality of subsequent experiments. Experiments on MovieLens-1M and three Amazon Reviews 2023 subsets cover four recommendation methods and 16 settings. DualEvolve achieves higher test means than Base, OpenEvolve, and DeepEvolve in all 64 setting-metric comparisons, with macro-averaged relative gains over DeepEvolve of 7.6% (HR@5) and 9.0% (NDCG@5).",
       "url": "https://arxiv.org/abs/2611.04439",
       "pdf_url": "https://arxiv.org/pdf/2611.04439v1",
-      "affiliation_checked": true,
+      "focus_label": "双层自进化推荐",
       "article_theme": "机制与编排双层协同进化的推荐系统自优化框架",
       "research_question": "现有LLM驱动的推荐系统自动改进方法只依据任务的最终分数来筛选更新，缺少对实验设计、分析与后续决策质量的独立优化信号，导致Agent可能重复无效改动而不修正开发流程。论文研究如何在LLM参数冻结的条件下，让推荐机制与Agent开发工作流同时实现递归自我改进。",
       "main_contribution": "DualEvolve是一个双层协同进化框架：内层通过诊断、假设、实现、分析与修订迭代改进推荐模型与训练代码；外层从决策质量、实验严谨性、分析深度和搜索新颖性四个维度评分实验过程，用Thompson采样选择harness与skill编辑动作，并用下一轮过程分数的残差更新动作类型效用，实现跨轮闭环。同时将评估器与准入门槛置于可编辑范围之外以保障奖励完整性。",
       "key_ideas": "🔸内层机制进化：五个冻结LLM角色（诊断者、提出者、编码者、分析者、修订者）形成机制谱系，候选先经低保真筛选、胜者再经高保真验证，用带噪声底线和成本系数的准入门槛决定是否替换当前最优机制。\n🔸外层编排进化：固定GLM-5.2评分器按决策质量、实验严谨性、分析深度、新颖性四维度评分每轮实验过程，菜单Agent提出harness/skill编辑，Thompson采样在KEEP与各编辑类型间选择。\n🔸延迟效用更新：用下一轮过程奖励与EMA基线的残差作为所选动作类型的效用观测，更新正态后验，指导后续编排选择，并设置采样方差下限保持探索。\n🔸奖励完整性边界：任务评估器、成本测量、校准与准入门槛固定且不可编辑，候选代码需通过静态审计禁止触及评估数据的接口，过程奖励只影响候选生成与规则修订。\n🔸双Wiki知识结构：只读的外部Wiki提供论文先验（111张方法卡），内部Wiki积累任务特定的候选记录、失败教训与课程，课程可迁移而原始记录保持任务本地。",
       "analysis_summary": "🔸在ML-1M与三个Amazon子集、四种推荐方法共16个设置上，DualEvolve在全部64个设置-指标对比中测试均值超过Base、OpenEvolve和DeepEvolve，相对DeepEvolve宏平均提升7.6%（HR@5）和9.0%（NDCG@5）。\n🔸三次独立搜索的稳定性实验中，12个设置-指标对比全部最优，搜索间标准差为0.0025–0.0118。\n🔸消融显示过程反馈优于任务增益反馈：Baby/NGCF上Task-Gain比Full低0.0455–0.0643；去除Thompson采样或Wiki也带来明显下降；菜单动作54%选择KEEP、25%选择EDIT HARNESS、21%选择EDIT SKILL。\n🔸成本方面每搜索用时5.2–11.2小时、0.77–1.00百万token，token比DeepEvolve估计值低49%–63%；捷径暴露压力测试中未披露和部分披露条件下112个机制均无捷径使用，而完全披露时一次搜索在56个机制中25个采用捷径，验证了固定评估边界的必要性。\n🔸进化规则可跨设置迁移：向Software/NGCF迁移Baby来源规则后所有指标显著优于无迁移对照，Baby/NCF规则相对目标Full还提升0.4%–1.6%；局限包括仅在四个数据集和小规模数据上验证，以及过程评分器与人的一致性κ为0.432。",
       "personal_view": "基于全文分析，本文的核心创新在于把Agent工作流本身作为可优化对象，并用下一轮过程分数作为延迟奖励驱动Thompson采样，形成了任务改进与流程改进的跨轮闭环，这在推荐系统自动进化研究中是较新的视角。奖励完整性设计（固定评估器与准入门槛加静态审计）配合捷径暴露实验，提供了对自我进化系统安全性的实证讨论，具有较高实用价值。局限在于：过程奖励依赖LLM评分器，与人的一致性中等（κ=0.432），评分噪声可能传导进编排决策；实验集中在离线公共数据集与99负采样评估，尚未验证工业在线场景；跨搜索稳定性仅在三个代表性设置检验，泛化性有待更多证据。",
-      "focus_label": "双层自进化推荐",
       "note_model": "glm-4.5-air",
       "note_basis": "full_text_pdf",
-      "full_text_pages": 12
+      "full_text_pages": 12,
+      "affiliation_checked": true
     },
     {
       "id": "2611.04140",
@@ -309,17 +309,17 @@
       "abstract": "Traditional recommender systems rely on arbitrary integer IDs to identify items, which carry no semantic information and force models to learn representations from interaction data. While leveraging content information can partially mitigate cold-start, this paradigm inherently suffers from exploding embedding tables and scenario-specific architectures. Recent years have seen the emergence of semantic IDs, which encode semantic information directly into the item identity, reflecting content, hierarchy, and relationships. This framework addresses the above limitations by offering a principled way to encode large-scale semantic information into item identity, benefiting both generative and discriminative applications and unlocking more native unification across modalities, domains, and tasks. This tutorial traces the evolution from raw IDs to semantic IDs as a scalable means of information utilization, offering a comprehensive review of their development and applications across multi-modality, cold-start, and cross-domain recommendation. Hands-on exercises guide attendees through building and evaluating semantic IDs, training models, and exploring cross-domain transfer. We conclude by discussing open challenges, including dynamic semantic IDs and multi-stakeholder utility. All materials of the tutorial could be found at the official website https://semantic-id-tutorial.github.io.",
       "url": "https://arxiv.org/abs/2611.04140",
       "pdf_url": "https://arxiv.org/pdf/2611.04140v1",
-      "affiliation_checked": true,
+      "focus_label": "语义ID教程",
       "article_theme": "从原始ID到语义ID：推荐系统物品标识的演进与实践",
       "research_question": "传统推荐系统依赖无语义的任意整数ID，导致嵌入表爆炸、冷启动缺失且无法跨场景迁移。论文旨在系统梳理语义ID如何把内容、层级与行为信息直接编码进物品标识，并在生成式与判别式两条应用路径上提供统一框架。",
       "main_contribution": "这是一份半天的动手型教程，以信息利用方式的演进为主线，覆盖语义ID的构造方法、多模态融合、协同信号注入与跨域迁移等核心议题。教程包含两个基于Amazon Reviews数据集的实践环节，使用Cornac框架与可公开获取的Jupyter notebook，指导学员完成语义ID构建、生成式模型训练与跨域迁移评估，并讨论动态语义ID与多利益方效用等开放挑战。",
       "key_ideas": "🔸以原始ID、辅助信息、语义ID三阶段梳理物品标识演进：原始ID支持精确查找与记忆但无身份级迁移能力；辅助内容可缓解冷启动但嵌入表仍随词表膨胀；语义ID通过RQ-VAE、RQ-KMeans等向量量化方法将物品表示为离散token序列，使身份本身成为结构化对象。\n🔸深入讲解TIGER与YouTube排序模型两个代表性案例，分别展示语义ID在生成式推荐（生成下一物品的语义ID）与判别式排序（作为结构化输入特征）中的作用，并引用Google、快手、Meta的工业部署说明其在冷启动与嵌入稳定性上的收益。\n🔸讨论语义ID构造的关键设计选择：量化哪些信息、如何组织token词表、如何平衡紧凑性、稳定性、语义一致性与下游可用性；多模态部分对比早期融合与后期融合在复杂度、灵活性与冗余上的权衡。\n🔸协同信号注入部分覆盖协同嵌入量化、内容模型微调与对比训练三条路线，并强调核心设计张力：语义ID既要反映内容语义，又要充分捕捉用户交互模式。\n🔸跨域部分指出传统方法依赖显式的源域-目标域对齐且难以扩展，而语义ID在量化过程中自然产生跨域共享的语义结构，无需显式对齐即可实现可扩展的迁移。",
       "analysis_summary": "🔸教程结构完整：3小时核心内容分九个环节，从基础概念到多模态、冷启动、跨域，再到未来方向与开放讨论，配备两次练习与两次茶歇。\n🔸实践设计注重可及性：练习使用Amazon Reviews数据集，所有代码以自包含notebook形式提供，可在Google Colab免费资源上运行，并预计算内容嵌入与基线模型以聚焦语义ID本身。\n🔸实践内容一让学员训练RQ-KMeans生成语义ID、检查token结构，并与原始ID基线在生成式推荐任务上对比；实践内容二考察多域设置下的跨域迁移架构。\n🔸与相关教程对比，本文的差异化在于以语义ID为核心主线、覆盖生成式与判别式双重应用、并首次提供动手环节。\n🔸作为教程提案，论文本身不含新实验结果，主要局限在于开放挑战（如目录动态变化下的ID稳定性、超越命中率的评估）仍停留在讨论层面。",
       "personal_view": "基于全文来看，这份教程的价值在于把分散在生成式推荐、多模态融合与跨域迁移文献中的语义ID工作整合成一条清晰的信息利用演进主线，兼顾学术脉络与工业实践（Google、快手、Meta的部署案例增强了说服力）。动手环节依托Cornac和免费算力资源降低了入门门槛，对研究者与工程师都具备实用价值。局限方面，教程以综述与实践为主，对语义ID的稳定性、冗余、评估方法等挑战更多是提出问题而非给出方案；此外半日篇幅内覆盖多模态、协同信号与跨域三大议题，深度上难免有所取舍。总体而言，它是进入语义ID领域的一份及时且可操作的入门材料。",
-      "focus_label": "语义ID教程",
       "note_model": "glm-4.5-air",
       "note_basis": "full_text_pdf",
-      "full_text_pages": 5
+      "full_text_pages": 5,
+      "affiliation_checked": true
     },
     {
       "id": "2611.05006",
@@ -346,7 +346,17 @@
       "abstract": "Content-category dashboards summarize production recommendation logs, although the serving policy selects the users, items, and contexts behind each mean. Using KuaiRand random-insertion impressions, we audit these summaries on the same 12,472 users and 5,486 videos in both logs. Standard means have absolute/centered mean absolute error (MAE) 0.1935/0.0491 and rank correlation 0.7833. User demeaning plus a random grand-mean anchor reduces absolute MAE by 80.0%, but centered MAE by only 21.0%, without reliably improving rank. A complete-support ledger allocates weighted squared error mainly to within-video residual (72.41%) and video mix (23.90%), with 3.65% from random support. In a frozen later test, early category calibration reaches MAE 0.0251 versus 0.0531 for scalar calibration; their direct difference is -0.0280 [-0.0296, -0.0172]. Decision evidence is cutoff-specific: the nominal top-10 regret change for row-weighted demeaning versus naive is -0.0062 [-0.0084, -0.0003], while top-5 and top-20 intervals include zero. The six-contrast family-wise top-10 interval [-0.0136, 0.0013] includes zero. An outcome-free disjoint randomized-reference split also leaves all six nominal contrasts covering zero. A known-truth stress test shows incomplete improvement under a mean-additive positive control and failure under item mix and weak overlap. All decompositions are descriptive and each result is conditional on its overlap cohort. KuaiRand intervals quantify user-cluster variation conditional on the realized catalog and calendar; we claim neither intrinsic category effects nor a universally valid correction.",
       "url": "https://arxiv.org/abs/2611.05006",
       "pdf_url": "https://arxiv.org/pdf/2611.05006v1",
-      "affiliation_checked": true
+      "affiliation_checked": true,
+      "article_theme": "用随机插入日志审计品类均值看板的偏差来源",
+      "research_question": "生产推荐日志得出的内容品类均值看板与匹配的随机插入参考相差多远，其中简单用户调整能修正多少？难点在于服务水平差、形状差、排序差与决策损失可能各自不同，需分别审计而非用一个误差数字概括。",
+      "main_contribution": "论文提出一套条件化审计协议而非新因果估计器：在配对用户和视频支持上分离水平、中心化形状、排序与top-k决策差异；用Kitagawa式分解加Shapley分配构建完整支持的误差台账；并设计抗泄露的前瞻校准协议与已知真值压力测试，揭示用户去均值、倾向加权的成败边界。",
+      "key_ideas": "🔸 三段式审计：先在生产日志与随机插入日志的共同支持上比较品类向量；再核算视频内残差、曝光组合与被排除支持的贡献；最后冻结早期校准并在后续窗口评估看板与top-k决策。\n🔸 用户去均值（CE/RW）可精确消去用户水平α_u，但保留实际组合项B_k与用户-品类交互G_k，故只是诊断工具而非通用无偏校正。\n🔸 用Kitagawa率-构成分解加两方Shapley约定，把观察到的品类差距精确分解为视频内残差W_k与视频曝光组合M_k；式(10)进一步恢复被共同支持排除的进入/退出部分。\n🔸 前瞻协议：历史标准流量估计用户基线，早期随机/标准窗口估计标量或逐品类校准，冻结参数后在5月1–8日 untouched 窗口评估，测试随机结果只作参考。\n🔸 决策推断采用配对bootstrap后悔差、家族式max-t区间和不相交哈希拆分的免结果参考集，避免用同一噪声参考既定义又估值（赢家诅咒）。",
+      "analysis_summary": "🔸 在12,472用户、5,486视频的配对支持上，朴素均值绝对/中心化MAE为0.1935/0.0491，秩相关0.7833，差距主要是水平而非排序反转；CE加随机总均值锚使绝对MAE降低80.0%，但中心化MAE仅降21.0%，秩改善区间含零。\n🔸 Shapley分配：绝对差距72.8%归视频内残差、27.2%归视频组合；中心化后视频组合占51.4%。完整支持台账中随机支持贡献仅3.65%。无明显时间漂移。\n🔸 前瞻冻结测试中逐品类校准MAE 0.0251优于标量校准0.0531（差-0.0280，区间不含零），但决策收益仅top-10名义显著（-0.0062），家族式区间及拆分参考下全部含零。\n🔸 已知真值测试：均值加性正控下RW仅部分改善，用户-品类交互与物品选择下失败；弱重叠下oracle Hájek方差主导（全局ESS仅5.3%）。\n🔸 局限：单一平台、17天窗口，≥5品类规则仅保留50.96%用户，品类标签为模型预测，所有结果条件于重叠队列。",
+      "personal_view": "基于全文的分析，这篇论文的创新点不在提出新估计器，而在系统化的估计对象界定与诊断栈：把看板偏差拆为水平、形状、排序、支持路径与决策损失，并诚实报告各校正手段的适用边界，这种审计视角对工业界看板治理很有实用价值，前瞻冻结校准还给出了可直接落地的周级工作流。局限在于结论条件性很强：单一短视频平台、短期窗口、品类标签本身是预测值，且前瞻队列只保留61.2%历史合格用户，去均值无法处理用户-品类交互与物品混选，弱重叠下倾向加权方差爆炸。读者应将其作为一套审计方法论借鉴，而非可迁移的通用纠偏结论。",
+      "focus_label": "日志测量审计",
+      "note_model": "glm-4.5-air",
+      "note_basis": "full_text_pdf",
+      "full_text_pages": 10
     },
     {
       "id": "2611.04715",
@@ -385,17 +395,17 @@
       "abstract": "Generative recommendation is gaining traction in production, retrieving items by generating their identifiers one token at a time. The generated sequences must identify relevant catalog items, so constrained decoding couples relevance scoring with validity filtering. Because most possible sequences are invalid, scoring before filtering wastes computation on candidates that will be discarded. Our evaluation shows that filtering first can avoid this work with negligible impact on recommendation quality. We present ZeroGR, a filtering-first constrained decoding system for generative recommendation. ZeroGR uses a step-sliced filtering index to reduce GPU memory use by tailoring data representations to each decoding step. Its execution engine adopts shared-slot execution to accelerate data exchange across stages and hybrid projection to adapt computation to workload patterns, thereby reducing execution overhead. During index refreshes, ZeroGR applies layout-guided streaming construction to speed up updates and limit serving interference. Extensive evaluation shows that ZeroGR accelerates the filtering and scoring pipeline by up to $9.9\\times$ over representative baselines while reducing GPU index memory use and accelerating index reconstruction.",
       "url": "https://arxiv.org/abs/2611.04715",
       "pdf_url": "https://arxiv.org/pdf/2611.04715v1",
-      "affiliation_checked": true,
+      "focus_label": "约束解码加速",
       "article_theme": "先过滤后打分的生成式推荐解码加速系统ZeroGR",
       "research_question": "生成式推荐的约束解码中，先打分后过滤会对将被丢弃的无效候选浪费大量计算；论文研究能否改为先过滤后打分且推荐质量不受影响，并在有限GPU显存内高效实现这一解码顺序。",
       "main_contribution": "论文实证表明先过滤与先打分在推荐质量上几乎等价（返回物品重叠约99.9%），据此提出ZeroGR系统。其核心包括按解码步切片且按候选密度选择稀疏/稠密表示的过滤索引、以共享候选槽与混合投影为核心的执行引擎，以及布局引导的流式索引构建管线，将过滤+打分+候选选择的总延迟最多降低9.9倍。",
       "key_ideas": "🔸 分析SID解码的有效候选稀疏性（后期步密度低至0.05%），证明先过滤后打分可在保证目录有效性的同时跳过绝大多数无效logit计算，且归一化差异对beam search排名影响可忽略。\n🔸 设计step-sliced过滤索引：每个解码步独立维护前缀到有效续token的映射，稠密步用后继表、稀疏步用SID数组+边界数组，且条目位置即后继状态、末步无需存储完成标志，从而压缩显存占用。\n🔸 共享候选槽执行：每beam固定等长候选槽行，过滤、投影、归一化、top-k选择与gather各阶段按位置直接读写，避免跨beam前缀和等协调开销。\n🔸 混合投影：稠密步用规则的全投影矩阵乘，稀疏步用专用过滤kernel生成工作队列后仅计算有效token的logit，投影模式由更新时的warm-up测量固定。\n🔸 布局引导流式构建：CPU两次扫描按LCP先定布局再并行填充分块，经双pinned缓冲与H2D异步传输重叠，构建不与在线推理争抢GPU算力和带宽。",
       "analysis_summary": "🔸 在工业搜索与观看数据集上，ZeroGR端到端（过滤+打分+选择）延迟较代表性基线最多加速9.9倍，Search数据集batch 32下FP16仅需1.88ms，比无约束解码还快9.1倍。\n🔸 索引显存较STATIC减少最多74.5%，使STATIC在24GB的4090D上放不下的数据集得以容纳；索引构建仅0.914s，为STATIC的0.36%，即快278倍。\n🔸 消融显示执行模型是关键：朴素选择性投影虽计算相同少量logit却比全投影慢5.1倍，ZeroGR靠共享槽与专用kernel比其快8.5倍；小top-k kernel与投影模式选择在FP16下再降27%延迟。\n🔸 延迟分解表明过滤+投影阶段占基线延迟绝大部分（FP32 batch 32下占STATIC的97%），也是ZeroGR加速最大的阶段（相对CPU trie最高120倍）。\n🔸 Watch数据集上大多数token仍有效，约束收益有限，ZeroGR仅略慢于无约束解码、较STATIC仍快2.0–3.2倍；FP16小batch下隐维较小使全投影已很便宜，加速空间收窄。",
       "personal_view": "基于全文分析，这篇工作的创新点在于把约束解码中“过滤与打分的顺序”从实现细节上升为系统设计的核心问题，并用实证证明先过滤几乎无损，进而围绕这一顺序重构索引表示与GPU执行模型，属于系统与算法结合的扎实工程贡献。其价值对生产级生成式推荐部署相当直接：延迟、显存和索引重建三方面均有可观改善，且混合投影策略能适应不同数据集的稠密/稀疏步分布。可能的局限在于：质量等价性主要基于公开MovieLens-1M与特定工业数据集的经验证据，理论保证较弱；性能依赖SID树形目录的稀疏结构，对候选分布接近稠密的场景收益有限；此外投影模式在更新时固定，面对请求间分布差异大的场景可能欠灵活。",
-      "focus_label": "约束解码加速",
       "note_model": "glm-4.5-air",
       "note_basis": "full_text_pdf",
-      "full_text_pages": 14
+      "full_text_pages": 14,
+      "affiliation_checked": true
     },
     {
       "id": "2611.04225",
@@ -424,17 +434,17 @@
       "abstract": "Large language models (LLMs) increasingly shape recommendations across chatbots, e-commerce, and user-generated content (UGC) platforms, creating demand for Generative Engine Optimization (GEO) to improve item visibility in generated responses. Existing GEO studies are mainly content-centric, optimizing visibility under general-purpose queries. However, a shared item description usually serves users with different needs and decision goals, resulting in its visibility gains being dependent on the request. To investigate how changing intent affects visibility, we formulate IntentGEO to evaluate shared rewrites across need specificity and decision progression. We revisit existing GEO methods and find that their visibility gains vary across user intents. More critically, learning-based prompt optimization can underperform its handwritten seed on average. Tracing these updates reveals prompt drift from explicit recommendation instructions toward generic promotional tactics. To address this drift, we propose AMO (Anchored Meta-Optimization), which preserves recommendation instructions in a fixed core while learning appended strategies from citation feedback. Across four domains and ten intent states, AMO improves average citation-rank gain by 35% over the strongest prior learning-based baseline and leads on nine states. Ablations show that learned additions improve on the fixed core alone and that AMO outperforms full-prompt optimization initialized from that core. It also achieves the highest gains in an agentic recommendation pipeline and, after separate adaptation, on Doubao, a commercially deployed, closed-source online assistant. These findings highlight user intent as a key dimension of GEO evaluation and support anchored adaptation across recommendation needs and decision stages.",
       "url": "https://arxiv.org/abs/2611.04225",
       "pdf_url": "https://arxiv.org/pdf/2611.04225v1",
-      "affiliation_checked": true,
+      "focus_label": "意图感知GEO优化",
       "article_theme": "面向推荐场景的意图感知生成式引擎优化与锚定提示优化方法",
       "research_question": "现有生成式引擎优化（GEO）方法在内容改写上的可见性提升随用户意图（需求具体性与决策阶段）变化而波动，且基于学习的提示优化可能低于其手写种子提示。论文研究如何在变化的推荐需求与决策目标下评估共享改写效果，并防止优化过程中的提示漂移。",
       "main_contribution": "论文提出IntentGEO问题形式化，沿需求具体性（P系列）和决策推进（Q系列）两个维度共十个状态评估共享改写，揭示现有GEO方法收益依赖查询、提示优化会偏离推荐指令的漂移现象。随后提出锚定元优化方法AMO，将推荐核心指令固定不动，仅通过引用反馈学习追加的改写策略，在四个领域十个意图状态上平均引用排名增益比最强学习基线提升35%，并扩展到Agent式推荐和商用Doubao助手。",
       "key_ideas": "🔸 构建P/Q双维度意图评估体系：P系列从宽泛类别（P1）逐步加入目标支持的具体属性到P5，Q系列从全面调研（Q1）到单一最佳推荐（Q5），共享同一改写文本与候选池，衡量改写是否随意图变化保持收益。\n🔸 通过诊断实验发现提示漂移：MetaOpt-Rec优化后，种子提示中的\"完整保留事实\"与\"推荐者口吻\"标记几乎消失，而\"关键词\"和\"行动号召\"等通用营销标记出现在全部36次更新中。\n🔸 AMO将GEO形式化为带结构约束的优化：提示P=[C;A]，固定推荐核心C承载必须保留的指令，仅用引用条件化奖励反馈指导元优化器搜索追加策略A，验证集选择最优更新。\n🔸 奖励设计考虑保留引用、新增引用和失去引用三种情况，训练时其余候选描述保持不变，只改写目标文档的白帽设置。\n🔸 训练得到的策略无需再优化即可迁移到Agent式搜索工作流，并可在Doubao商用助手上以DeepSeek-V4-Flash作为改写骨干单独适配。",
       "analysis_summary": "🔸 AMO整体排名增益1.12，比RecGEO高18%、比MetaOpt-Prog高35%，在十个状态中九个最优；top-5引用率较Base提升13.98个百分点，未参与训练的Ragdoll上增益1.19。\n🔸 消融显示学习追加使增益从Core only的0.98升至1.12，而从同一核心出发的全提示优化仅0.74，说明结构锚定优于无约束编辑。\n🔸 鲁棒性检验：改写P3–P5措辞后AMO在P3领先、P5与RecGEO持平；核心改述后仍保持提升；迁移到Gemini 2.5 Flash-Lite和Qwen3-30B-A3B均取得最高增益。\n🔸 LLM裁判评分中AMO平均4.57，自然性4.71、显著性4.99，但一致性4.01低于部分基线，Content Improvement平均质量最高；通用策略如Statistics一致性仅2.98。\n🔸 局限：即使在AMO下，P5（属性完全匹配）的增益仍明显收窄至0.06，且置信区间显示AMO相对Base在P5不显著，说明紧密匹配请求下改写空间有限。",
       "personal_view": "基于全文来看，这篇文章的亮点在于将GEO评估从单一通用查询推进到意图感知的多状态视角，并通过对优化轨迹的指令标记追踪给出了提示漂移这一可验证的解释，使锚定式优化有明确的诊断依据而非纯粹的架构直觉。AMO的\"冻结核心+学习附加\"设计简单务实，配合Agent工作流和商用Doubao助手的验证，实用价值较高，尤其适合电商等需要长期共享商品描述的场景。局限方面，评估依赖单一答案模型与LLM裁判，意图状态由模板构造，可能与真实用户查询分布存在差距；P5状态下增益近乎消失也提示该方法在强匹配场景收益有限，且追加策略的可解释性与跨平台泛化仍需更多检验。",
-      "focus_label": "意图感知GEO优化",
       "note_model": "glm-4.5-air",
       "note_basis": "full_text_pdf",
-      "full_text_pages": 12
+      "full_text_pages": 12,
+      "affiliation_checked": true
     },
     {
       "id": "2611.04720",
@@ -473,17 +483,17 @@
       "abstract": "Industrial recommender systems allocate substantial computation to pointwise candidate scoring, yet separate reranking and mix-ranking stages still assemble the final exposure slate using hand-crafted rules and specialized low-capacity models. Mix-ranking combines product cards, short videos, livestreams, and advertising cards supplied by distinct upstream business channels. Although these rules and models encode valuable domain knowledge, they are inherently limited in leveraging additional data and computation. They constrain the combinatorial space of candidate slates and determine objective trade-offs through manual tuning. To enable scalable and effective slate generation, we reformulate reranking and mix-ranking as a unified learning problem whose performance can improve with computation. Specifically, we instantiate this formulation across the reranking and mix-ranking stages and propose OneTrans-GSR, a single decoder-only policy that extends our deployed OneTrans backbone to generate the exposure slate end-to-end. During training, a reward model evaluates complete slates and guides reinforcement learning toward slate-level and long-term objectives. During decoding, business constraints are explicitly enforced. Offline evaluation shows that slate quality consistently improves as reward-model and policy compute increase. Deployed in a large-scale industrial recommendation system, OneTrans-GSR mixes heterogeneous content types within a unified slate. In online A/B tests, it improves GMV/u by 2.63%, advertiser value by 2.06%, and repurchase rate by 2.03%, while reducing end-to-end latency across the reranking and mix-ranking stages by 13%. These results mark a paradigm shift in slate generation: moving beyond human-engineered heuristics toward a general learned policy creates a scalable path for further algorithmic optimization and compute-driven improvement.",
       "url": "https://arxiv.org/abs/2611.04720",
       "pdf_url": "https://arxiv.org/pdf/2611.04720v1",
-      "affiliation_checked": true,
+      "focus_label": "生成式混排重排",
       "article_theme": "一个自回归Transformer统一重排与混排的生成式排序范式",
       "research_question": "工业推荐系统中，最终曝光列表仍由手工规则和低容量模型组装，性能无法随数据与算力提升。论文研究能否用单个学习策略、通过离线列表级奖励优化，替代线上Generator–Evaluator级联，同时满足多目标与业务约束。",
       "main_contribution": "提出OneTrans-GSR，将重排与混排统一为受约束的自回归列表生成问题：一个decoder-only策略直接生成曝光列表，slate级奖励模型仅在训练期提供多目标奖励，配合GMR-PO将多目标奖励与软业务偏好结合。系统在字节电商场景全量部署，A/B测试GMV/u提升2.63%、广告主价值提升2.06%、复购率提升2.03%，两级端到端延迟下降13%。",
       "key_ideas": "🔸 训练分三阶段：奖励模型预训练（EOS读出+逐item辅助头+内容类型偏好头）、decoder在长行为序列上预训练、再用GMR-PO做RL后训练，RM仅离线使用，容量不受线上预算限制。\n🔸 RM以EOS token的最终隐状态对完整列表打分，输出ListClick/ListOrder/ListGMV三个目标，并联合延迟的14天复购标签训练LTV RM，按pCTR·pCVR·pREP分解聚合长期奖励。\n🔸 GMR-PO对每个rollout组做集成打分（均值减分歧惩罚κ=0.01）、组内min-max归一化后按加权几何平均聚合多目标奖励，与独立标准化后的软规则奖励优势相加，用带KL正则的clipped目标更新。\n🔸 解码时用可用性mask、标签频率控制和连续logit调整强制硬约束（配额、去重、间距、广告boost），训练rollout与线上服务使用同一解码分布；候选嵌入输出侧停梯度防止嵌入坍缩。\n🔸 Prefill将用户行为与全部候选置于上下文中实现候选早期交互，prefill KV cache跨并行采样共享，服务时并行解码多条列表并选序列对数概率最高者直接输出。",
       "analysis_summary": "🔸 离线消融显示：去掉自回归解码使三目标RG全为负，去掉RL后训练主要损害ListOrder/ListGMV，去掉精排分数使所有RG转负，prefill优于cross-attention与output-only交互。\n🔸 EOS读出在AUC（ListClick 0.8162）、PCOC（1.00）和对位置交换、同品类替换的敏感性上均优于求和读出；集成LCB打分器线上GMV/u提升2.63%高于单RM的1.41%，尽管其离线RG更低。\n🔸 GMR-PO在ListOrder/ListGMV上均值RG最高但无方法在三目标全占优；仅约束解码违规率最低（0.11%/0.30%）且保持正RG，广告boost实验显示广告主价值与UV CVR存在单调权衡。\n🔸 系统优化后训练加速4.91×、内存降81.8%，服务模型路径加速16.68×；缩放实验显示RM判别力与ListOrder/ListGMV RG随算力提升，但ListClick RG较平且未证明通用缩放律。\n🔸 局限：生成列表的discovery仍低于线上基线且未被解码调整完全弥补，硬mask无法保证交互配额整体可满足，A/B只评估整体系统，AUC实验在单一生产数据上进行。",
       "personal_view": "基于全文分析，本文最大的创新在于把此前依赖手工规则的混排/重排环节，重构为一个可随算力与数据规模化的约束自回归生成问题，并用仅离线使用的slate级奖励模型解耦评估与服务的成本约束。工程上，prefill候选交互、输出侧停梯度、共享prefill KV cache等细节体现了从概念到全量部署的完整闭环，A/B结果也证明单策略可直接替代Generator–Evaluator级联。局限方面：奖励只是代理信号，离线RG与线上收益的错位（单RM臂）提示过优化风险；几何平均聚合与加权超参依赖人工调优；discovery与疲劳模式尚未完全追平生产列表；且结论仅在单一电商系统验证，跨场景泛化仍待考察。整体是一篇范式意义与工程价值兼备的工业论文。",
-      "focus_label": "生成式混排重排",
       "note_model": "glm-4.5-air",
       "note_basis": "full_text_pdf",
-      "full_text_pages": 26
+      "full_text_pages": 26,
+      "affiliation_checked": true
     },
     {
       "id": "2611.02457",
@@ -776,17 +786,17 @@
       "abstract": "Semantic-ID-based (SID) generative recommendation (GR) represents each item as a sequence of discrete tokens and predicts the next item through autoregressive SID generation. However, existing methods face two challenges. First, insufficient shared context modeling for user sequences: full-history and recent behaviors provide overlapping yet complementary evidence, but modeling them within a single sequence may dilute current cues, whereas processing them through separate streams may fail to coordinate them. Second, insufficient personalized adaptation in progressive SID decisions: although decoder states evolve with generated prefixes, existing models typically use a shared output-side transformation across recommendation instances, without explicitly selecting a transformation suited to the current user need. To address these challenges, we propose Multi-View Thinking with Adaptive Generation (MV-Thinker), a framework that Thinks Globally and Generates Personally. First, Multi-View Temporal Thinking uses view-specific thinking queries and readers over overlapping full-history and recent-history views, coordinating both sources into complementary user-conditioned contexts before SID generation. Second, Hierarchical Residual Adaptation organizes lightweight adapters into nested residual paths before a shared vocabulary projection, adaptively transforming context-bearing decoder states for SID decisions. Extensive experiments on four public datasets demonstrate that MV-Thinker consistently outperforms strong discriminative and generative recommendation baselines across multiple ranking metrics. The implementation code and datasets are available on: https://anonymous.4open.science/r/MV-Thinker",
       "url": "https://arxiv.org/abs/2611.02463",
       "pdf_url": "https://arxiv.org/pdf/2611.02463v1",
-      "affiliation_checked": true,
+      "focus_label": "生成式推荐框架",
       "article_theme": "MV-Thinker：多视角思考与自适应生成的生成式推荐",
       "research_question": "语义ID（SID）生成式推荐中，如何在共享偏好上下文中协同整合全历史与近期行为证据（避免稀释或割裂），同时在渐进式SID决策中按实例自适应地选择解码器状态变换，实现“全局思考、个性化生成”。",
       "main_contribution": "提出MV-Thinker框架，包含多视角时序思考（MVT）和分层残差自适应（HRA）两个模块。MVT通过重叠的全历史/近期历史视图和视图专属的思考查询与读取器构建互补的用户条件上下文；HRA将轻量适配器组织为嵌套残差路径，在共享词表投影前自适应变换解码器状态，并配合损失感知轮盘训练与置信度推理。",
       "key_ideas": "🔸 MVT在物品级构建重叠的全历史视图与近期视图（近w个物品），用两个特殊思考token作为查询，通过独立的交叉注意力读取器分别读取两视图编码状态，形成互补的偏好上下文注入解码器。\n🔸 HRA将无偏置瓶颈适配器组织为嵌套残差路径，深层路径复用浅层变换并叠加残差更新，残差按路径深度归一化，所有路径共享同一词表投影矩阵。\n🔸 损失感知轮盘训练按路径损失构建轮盘分布并随机采样路径供主损失更新，浅层适配器在深层路径中前向保留但梯度截断，并加入负载均衡正则防止路径早塌。\n🔸 推理时在第一个真实SID位置评估所有路径，选择最大下一token对数概率最高的路径并在整个束搜索中固定，兼顾路径一致性与解码开销。\n🔸 采用三阶段渐进训练：先训练基线生成骨干，再联合学习思考查询与HRA，最后加入双视图读取器并冻结骨干进行时序精炼。",
       "analysis_summary": "🔸 在Instruments、Beauty、Games、Yelp四个数据集上，MV-Thinker在TIGER与LETTER两种骨干下所有指标均优于判别式与生成式基线，且经t检验显著。\n🔸 SID目录覆盖分析显示Instruments上K=20覆盖从19.56%提升至25.50%，至少覆盖10个用户的SID从1216增至1545，实现曝光拓宽且不牺牲精度。\n🔸 路由分析显示Beauty上160名采样用户的路径选择比例为40.6%、18.1%、26.3%、15.0%，说明不同用户确实偏好不同变换深度。\n🔸 消融表明MVT与HRA贡献互补：去HRA对Hit@5影响更大，去MVT对NDCG@5影响更大；去思考机制带来最大下降，仅用全视图优于仅用近视图，两者结合最优。\n🔸 思考token位置对比实验表明将思考放在生成前的统一位置优于分散或密集插入的布局；局限包括推理需在首个SID位置评估全部路径，且仅在四个公开中小规模数据集验证。",
       "personal_view": "基于全文分析，MV-Thinker的创新在于将“行为证据组织”与“输出侧自适应变换”解耦：MVT用重叠视图加视图专属读取器解决全历史与近期线索的协同难题，HRA以嵌套残差路径实现按实例选择变换深度，且保持共享词表投影，兼顾个性化与参数效率。损失感知轮盘训练和置信度推理的设计也较为务实，避免了硬路由早塌与逐路径束搜索的开销。实用价值方面，框架为轻量适配器级别插件，可叠加于不同骨干（TIGER/LETTER均有提升），工程落地门槛较低。可能的局限在于：近期窗口大小w需手工设定；推理仍需评估全部路径；实验集中于中小规模公开数据集，能否在大规模工业目录与真实在线环境中保持收益尚待验证。",
-      "focus_label": "生成式推荐框架",
       "note_model": "glm-4.5-air",
       "note_basis": "full_text_pdf",
-      "full_text_pages": 14
+      "full_text_pages": 14,
+      "affiliation_checked": true
     },
     {
       "id": "2611.02453",
@@ -1036,17 +1046,17 @@
       "abstract": "Next point-of-interest (POI) recommendation supports personalized place discovery on location-based Web platforms. Mobility routines can recur across users while being realized at different places and adapted to individual preferences. We present DualClusterNet, a causal sequential recommender that composes two population-shared prototype dictionaries. At each observed prefix, soft routers retrieve pattern and spatial mixtures; a factorized multiplicative interaction couples them, feature-wise affine modulation adapts the shared representation, and a separate user-conditioned branch with an additive--projective gate retains individual variation. The prediction head combines this representation with a learned first-order transition term and ranks the complete training POI vocabulary. We evaluate on NYC and TKY using a training-only vocabulary and an original-final-target protocol that neither bridges unknown POIs nor substitutes earlier targets. The available single-seed results show competitive full-candidate ranking, while controlled analyses support the contribution of the compositional and personalized branches. Code is available at https://anonymous.4open.science/r/DualClusterNet-F4EE/.",
       "url": "https://arxiv.org/abs/2611.03726",
       "pdf_url": "https://arxiv.org/pdf/2611.03726v1",
-      "affiliation_checked": true,
+      "focus_label": "双字典个性化推荐",
       "article_theme": "DualClusterNet：双原型字典组合的下一个兴趣点推荐",
       "research_question": "下一个兴趣点（Next-POI）推荐中，如何复用跨用户共享的移动规律（模式），同时让其表达适应当前空间上下文并保留用户个体差异？难点在于轨迹会在不同模式间切换，共享结构不应强迫用户表示相同。",
       "main_contribution": "论文提出因果序列推荐器 DualClusterNet，维护种群共享的模式原型字典与空间原型字典，在每个轨迹前缀用软路由检索两组混合系数，通过可分解的逐元素乘积交互耦合二者，再用 FiLM 式特征仿射调制与独立的用户条件分支实现个性化，并以可学习的标量门控融合加性与投影两条路径，最后结合一阶转移项对完整训练词表排序。作者还设计了统一的闭集评估协议并给出消融与敏感性分析。",
       "key_ideas": "🔸 因果 LSTM 编码 POI、类别、时刻、星期、训练坐标 KMeans 区域及时距/距距差等上下文特征，不使用任何未来信息。\n🔸 两个可训练字典分别存储模式原型与空间原型，软路由按前缀预测 softmax 混合系数，而非把整个用户硬分配到单一簇。\n🔸 投影后的两组混合做逐元素乘积，精确展开等价于对所有模式—空间配对的隐式加权混合，无需存储 O(Kp×Ks) 的配对张量。\n🔸 用户 FiLM 仿射调制（sigmoid 约束缩放）适配共享表示，另有 tanh 用户条件残差分支，标量门 ρ 在加性与投影融合间逐前缀插值。\n🔸 评分头由上下文偏好、学习的一阶转移嵌入与候选偏置组成，对完整训练 POI 词表做全候选 softmax 与交叉熵训练。",
       "analysis_summary": "🔸 在统一协议下，NYC 上模型取得最优 Acc@1（0.2400）与 MRR（0.3516），TKY 上 Acc@1（0.2664）与 MRR（0.3679）领先，但 Acc@5/10 分别被 STHGCN、ST-RNN/DCHL 超越，优势集中在首位排序。\n🔸 消融显示移除完整组合栈使 NYC/TKY Acc@1 分别降 2.94 与 2.56 个百分点，移除个人分支降 1.88 与 1.57；FiLM 在 TKY 上略为负贡献，数据集依赖。\n🔸 敏感性扫描显示 Kp=64 在两城最优，Ks 与 R 的偏好因城市而异（NYC 偏好 32/128，TKY 偏好 64/256）。\n🔸 案例诊断揭示门控值 ρ 与修正/回退行为相关但非因果解释，全候选评估不使用采样候选池。\n🔸 局限：仅单种子结果、闭集评估不覆盖冷启动与跨城市迁移、字典无语义监督，转移项贡献未单独剥离。",
       "personal_view": "基于全文分析，这篇工作的创新点不在引入聚类本身，而在组合规则的设计：模式与空间两个字典的乘性可分解交互让空间上下文调制模式的表达方式，结构清晰且有精确的数学展开支撑，优于简单的拼接融合。严格的统一闭集协议、全候选排序与诚实的单种子声明也值得肯定，作者明确不宣称普遍优越性，学术态度审慎。实用上，模型无需图传播或大模型推理，计算成本主要在全候选输出头，部署友好。但局限同样明显：闭集评估回避了冷启动与未见 POI 这一实际痛点；主结果的优势幅度极小（如 NYC MRR 差距仅 0.0007），缺乏多种子统计检验；原型可解释性悬而未决；FiLM 在部分设置下反而有害，说明个性化机制并非处处有效，工程落地前需在目标城市重新调参验证。",
-      "focus_label": "双字典个性化推荐",
       "note_model": "glm-4.5-air",
       "note_basis": "full_text_pdf",
-      "full_text_pages": 11
+      "full_text_pages": 11,
+      "affiliation_checked": true
     },
     {
       "id": "2611.02019",
