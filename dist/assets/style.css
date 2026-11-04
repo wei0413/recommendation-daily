@@ -198,6 +198,11 @@ kbd { color: #94a3b8; border: 1px solid var(--line); border-bottom-width: 2px; b
 .abstract-panel h4 { margin: .9rem 0 .28rem; color: var(--ink); font-size: .76rem; letter-spacing: .04em; }
 .abstract-panel h4:first-child { margin-top: 0; }
 .abstract-panel .institution-row { margin: .45rem 0 0; }
+.detail-loading, .detail-error { padding: .8rem .9rem; border-radius: 8px; background: #f8fafc; color: #64748b; }
+.detail-loading::before { content: ""; display: inline-block; width: .7rem; height: .7rem; margin-right: .45rem; border: 2px solid #cbd5e1; border-top-color: var(--blue); border-radius: 50%; animation: spin .8s linear infinite; vertical-align: -.08rem; }
+.detail-error { color: #b91c1c; background: #fef2f2; }
+.detail-button:disabled { opacity: .65; cursor: wait; }
+@keyframes spin { to { transform: rotate(360deg); } }
 .full-note { margin-bottom: 1rem; padding: 1rem; border: 1px solid #dbe3ec; border-radius: 12px; color: #334155; background: linear-gradient(180deg, #ffffff, #f8fafc); }
 .full-note-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: .7rem; }
 .full-note-heading h4 { margin: 0; font-size: .9rem; }

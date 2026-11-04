@@ -101,14 +101,18 @@ jobs:
           FULL_TEXT_DIRECT_LIMIT: "120000"
           FULL_TEXT_CHUNK_CHARS: "45000"
         run: python scripts/enrich_papers.py
+      - name: Build lightweight browser data
+        id: webdata
+        if: ${{ always() && steps.freshness.outputs.should_run == 'true' }}
+        run: python scripts/build_web_data.py
       - name: Save refreshed data
         id: publish
-        if: ${{ always() && steps.freshness.outputs.should_run == 'true' }}
+        if: ${{ always() && steps.freshness.outputs.should_run == 'true' && steps.webdata.conclusion == 'success' }}
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add dist/data/recommendations.json
+          git add dist/data
           if git diff --cached --quiet; then
             echo "No data changes to commit."
           else

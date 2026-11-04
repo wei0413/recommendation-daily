@@ -54,6 +54,10 @@ const state = {
   calendarMonth: null,
   selectionState: "ready",
   pageSize: 30,
+  lastCalendarNavAt: 0,
+  lastCalendarNavDelta: 0,
+  detailRequests: new Map(),
+  fullArchivePromise: null,
 };
 
 const $ = selector => document.querySelector(selector);
@@ -68,10 +72,10 @@ const normalizeBullets = value => String(value || "")
 const bulletHtml = value => normalizeBullets(value)
   .map(line => `<p>${escapeHtml(line)}</p>`)
   .join("");
-const hasFullTextNote = paper => paper.published >= NOTE_START_DATE
+const hasFullTextNote = paper => Boolean(paper.has_full_text_note) || (paper.published >= NOTE_START_DATE
   && paper.note_basis === "full_text_pdf"
   && Boolean(paper.article_theme && paper.research_question && paper.main_contribution
-    && paper.key_ideas && paper.analysis_summary && paper.personal_view);
+    && paper.key_ideas && paper.analysis_summary && paper.personal_view));
 const paperNoteText = paper => [
   "📝 论文笔记",
   "",
@@ -121,6 +125,7 @@ const parseDate = value => {
   const [year, month, day] = value.split("-").map(Number);
   return new Date(year, month - 1, day);
 };
+const monthSerial = (year, month) => year * 12 + month;
 const readDateHash = () => {
   const match = location.hash.match(/(?:^#|&)dates=(\d{4}-\d{2}-\d{2})(?:~(\d{4}-\d{2}-\d{2}))?/);
   return match ? { start: match[1], end: match[2] || match[1] } : null;
@@ -147,13 +152,28 @@ function setLatestWindow() {
   state.calendarMonth = date.getMonth();
 }
 
+async function fetchJson(url, timeoutMs = 15000) {
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const response = await fetch(url, { cache: "no-store", signal: controller.signal });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return await response.json();
+  } finally {
+    window.clearTimeout(timeout);
+  }
+}
+
 async function init() {
   renderSkeletons();
   initEngagement();
   try {
-    const response = await fetch("./data/recommendations.json", { cache: "no-store" });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const payload = await response.json();
+    let payload;
+    try {
+      payload = await fetchJson("./data/recommendations-index.json");
+    } catch {
+      payload = await fetchJson("./data/recommendations.json", 25000);
+    }
     state.papers = payload.papers || [];
     state.generatedAt = payload.generated_at || "";
     state.papers.forEach(paper => {
@@ -288,10 +308,11 @@ function renderCalendar() {
   const today = beijingDateKey();
   const todayDate = parseDate(today);
   const earliestDate = state.earliestDate ? parseDate(state.earliestDate) : null;
-  const atEarliestMonth = earliestDate
-    && year === earliestDate.getFullYear()
-    && month === earliestDate.getMonth();
-  const atLatestMonth = year === todayDate.getFullYear() && month === todayDate.getMonth();
+  const visibleMonth = monthSerial(year, month);
+  const earliestMonth = earliestDate ? monthSerial(earliestDate.getFullYear(), earliestDate.getMonth()) : visibleMonth;
+  const latestMonth = monthSerial(todayDate.getFullYear(), todayDate.getMonth());
+  const atEarliestMonth = visibleMonth <= earliestMonth;
+  const atLatestMonth = visibleMonth >= latestMonth;
   const weekdays = ["日", "一", "二", "三", "四", "五", "六"];
   let html = `
     <div class="calendar-head">
@@ -318,6 +339,25 @@ function renderCalendar() {
   }
   html += "</div>";
   $("#datePicker").innerHTML = html;
+}
+
+function changeCalendarMonth(delta) {
+  const now = Date.now();
+  if (delta === state.lastCalendarNavDelta && now - state.lastCalendarNavAt < 350) return;
+
+  const todayDate = parseDate(beijingDateKey());
+  const earliestDate = state.earliestDate ? parseDate(state.earliestDate) : todayDate;
+  const earliestMonth = monthSerial(earliestDate.getFullYear(), earliestDate.getMonth());
+  const latestMonth = monthSerial(todayDate.getFullYear(), todayDate.getMonth());
+  const currentMonth = monthSerial(state.calendarYear, state.calendarMonth);
+  const targetMonth = Math.min(latestMonth, Math.max(earliestMonth, currentMonth + delta));
+  if (targetMonth === currentMonth) return;
+
+  state.lastCalendarNavAt = now;
+  state.lastCalendarNavDelta = delta;
+  state.calendarYear = Math.floor(targetMonth / 12);
+  state.calendarMonth = targetMonth % 12;
+  renderCalendar();
 }
 
 function renderRangeDisplay() {
@@ -402,10 +442,7 @@ function bindEvents() {
   $("#datePicker").addEventListener("click", event => {
     const nav = event.target.closest("[data-calendar-nav]");
     if (nav) {
-      const next = new Date(state.calendarYear, state.calendarMonth + Number(nav.dataset.calendarNav), 1);
-      state.calendarYear = next.getFullYear();
-      state.calendarMonth = next.getMonth();
-      renderCalendar();
+      changeCalendarMonth(Number(nav.dataset.calendarNav));
       return;
     }
     const dateButton = event.target.closest("[data-date]");
@@ -553,6 +590,68 @@ function render() {
   loadMore.textContent = `再显示 ${Math.min(30, allPapers.length - papers.length)} 篇`;
 }
 
+async function loadPaperDetails(paper) {
+  if (paper._detailsLoaded || Object.prototype.hasOwnProperty.call(paper, "abstract")) {
+    paper._detailsLoaded = true;
+    return paper;
+  }
+  if (state.detailRequests.has(paper.id)) return state.detailRequests.get(paper.id);
+
+  const request = (async () => {
+    try {
+      const details = await fetchJson(`./data/papers/${encodeURIComponent(paper.id)}.json`, 12000);
+      Object.assign(paper, details, { _detailsLoaded: true });
+      return paper;
+    } catch (detailError) {
+      if (!state.fullArchivePromise) {
+        state.fullArchivePromise = fetchJson("./data/recommendations.json", 25000);
+      }
+      let archive;
+      try {
+        archive = await state.fullArchivePromise;
+      } catch {
+        state.fullArchivePromise = null;
+        throw detailError;
+      }
+      const completePaper = (archive.papers || []).find(item => item.id === paper.id);
+      if (!completePaper) throw detailError;
+      Object.assign(paper, completePaper, { _detailsLoaded: true });
+      return paper;
+    }
+  })();
+  state.detailRequests.set(paper.id, request);
+  try {
+    return await request;
+  } catch (error) {
+    state.detailRequests.delete(paper.id);
+    throw error;
+  }
+}
+
+function renderPaperDetails(paper) {
+  const hasEditorialNote = hasFullTextNote(paper);
+  const institutions = (paper.institutions || []).filter(Boolean);
+  const organizationSector = paper.organization_sector || paper.institution_type || "机构未公开";
+  const institutionHtml = institutions.length
+    ? institutions.slice(0, 3).map(name => `<span class="institution-badge">${escapeHtml(name)}</span>`).join("") + (institutions.length > 3 ? `<span class="institution-empty">+${institutions.length - 3}</span>` : "")
+    : '<span class="institution-empty">机构信息未公开</span>';
+  const noteHtml = hasEditorialNote ? `<section class="full-note">
+      <div class="full-note-heading"><h4>📝 论文笔记</h4><button type="button" data-action="copy-note">复制</button></div>
+      <div class="note-identity"><p><b>📖 标题：</b>${escapeHtml(paper.title)}</p><p><b>🌐 来源：</b>arXiv, ${escapeHtml(paper.id)}</p></div>
+      <h4>笔记标题</h4><p class="note-title">${escapeHtml(paper.article_theme)}</p>
+      <h4>🛎️ 文章简介</h4>
+      <p><b>🔸研究问题：</b>${escapeHtml(paper.research_question)}</p>
+      <p><b>🔸主要贡献：</b>${escapeHtml(paper.main_contribution)}</p>
+      <h4>📝 重点思路</h4><div class="note-bullets">${bulletHtml(paper.key_ideas)}</div>
+      <h4>🔎 分析总结</h4><div class="note-bullets">${bulletHtml(paper.analysis_summary)}</div>
+      <h4>💡 个人观点</h4><p>${escapeHtml(paper.personal_view)}</p>
+      <p class="full-text-proof">基于 arXiv PDF 全文解读${paper.full_text_pages ? ` · ${paper.full_text_pages} 页` : ""}</p>
+    </section>` : "";
+  return `${noteHtml}
+      <h4>${hasEditorialNote ? "论文原始摘要" : "摘要"}</h4><p>${escapeHtml(paper.abstract || "暂无摘要。")}</p>
+      <h4>作者机构</h4><div class="institution-row"><span class="institution-type">${escapeHtml(organizationSector)}</span>${institutionHtml}</div>`;
+}
+
 function renderCard(paper) {
   const topic = paper.topic || "其他";
   const color = topicColors[topic] || topicColors["其他"];
@@ -567,27 +666,12 @@ function renderCard(paper) {
   const noteSource = hasEditorialNote && paper.note_model
       ? `全文解读 · ${paper.note_model}`
       : "";
-  const institutionHtml = institutions.length
-    ? institutions.slice(0, 3).map(name => `<span class="institution-badge">${escapeHtml(name)}</span>`).join("") + (institutions.length > 3 ? `<span class="institution-empty">+${institutions.length - 3}</span>` : "")
-    : '<span class="institution-empty">机构信息未公开</span>';
   const scoreHelp = `推荐分 ${paper.score}：用于阅读排序，综合推荐相关性、内容信号与新近程度；不等同于学术质量。`;
   const editorialHtml = hasEditorialNote ? `<dl class="editorial-summary">
       <div><dt>文章主题</dt><dd>${escapeHtml(paper.article_theme)}</dd></div>
       <div><dt>研究问题</dt><dd>${escapeHtml(paper.research_question)}</dd></div>
       <div><dt>主要贡献</dt><dd>${escapeHtml(paper.main_contribution)}</dd></div>
     </dl>` : "";
-  const noteHtml = hasEditorialNote ? `<section class="full-note">
-      <div class="full-note-heading"><h4>📝 论文笔记</h4><button type="button" data-action="copy-note">复制</button></div>
-      <div class="note-identity"><p><b>📖 标题：</b>${escapeHtml(paper.title)}</p><p><b>🌐 来源：</b>arXiv, ${escapeHtml(paper.id)}</p></div>
-      <h4>笔记标题</h4><p class="note-title">${escapeHtml(paper.article_theme)}</p>
-      <h4>🛎️ 文章简介</h4>
-      <p><b>🔸研究问题：</b>${escapeHtml(paper.research_question)}</p>
-      <p><b>🔸主要贡献：</b>${escapeHtml(paper.main_contribution)}</p>
-      <h4>📝 重点思路</h4><div class="note-bullets">${bulletHtml(paper.key_ideas)}</div>
-      <h4>🔎 分析总结</h4><div class="note-bullets">${bulletHtml(paper.analysis_summary)}</div>
-      <h4>💡 个人观点</h4><p>${escapeHtml(paper.personal_view)}</p>
-      <p class="full-text-proof">基于 arXiv PDF 全文解读${paper.full_text_pages ? ` · ${paper.full_text_pages} 页` : ""}</p>
-    </section>` : "";
   return `<article class="paper-card" style="--topic-color:${color};--score:${Number(paper.score) || 0}" data-id="${escapeHtml(paper.id)}">
     <div class="paper-card-head">
       <div class="score" aria-label="${escapeHtml(scoreHelp)}" title="${escapeHtml(scoreHelp)}"><b>${paper.score}</b><small>推荐分</small></div>
@@ -604,15 +688,11 @@ function renderCard(paper) {
     <div class="paper-labels"><span>${escapeHtml(focusLabel)}</span><span>${escapeHtml(organizationSector)}</span><span>${escapeHtml(primaryInstitution)}</span>${noteSource && hasEditorialNote ? `<span class="note-source">${escapeHtml(noteSource)}</span>` : ""}</div>
     ${editorialHtml}
     <div class="card-actions"><button class="detail-button" type="button" data-action="abstract" aria-expanded="false">${hasEditorialNote ? "展开笔记" : "查看摘要"} ▼</button><a class="link-button" href="${escapeHtml(paper.pdf_url || paper.url.replace("/abs/", "/pdf/"))}" target="_blank" rel="noopener">PDF ↗</a></div>
-    <div class="abstract-panel">
-      ${noteHtml}
-      <h4>${hasEditorialNote ? "论文原始摘要" : "摘要"}</h4><p>${escapeHtml(paper.abstract || "暂无摘要。")}</p>
-      <h4>作者机构</h4><div class="institution-row"><span class="institution-type">${escapeHtml(organizationSector)}</span>${institutionHtml}</div>
-    </div>
+    <div class="abstract-panel"><p class="detail-loading">展开后加载论文摘要与完整笔记。</p></div>
   </article>`;
 }
 
-function handleCardClick(event) {
+async function handleCardClick(event) {
   const card = event.target.closest(".paper-card");
   const action = event.target.closest("[data-action]")?.dataset.action;
   if (!card || !action) return;
@@ -633,12 +713,31 @@ function handleCardClick(event) {
   }
   if (action === "abstract") {
     const panel = card.querySelector(".abstract-panel");
-    const open = panel.classList.toggle("open");
-    event.target.setAttribute("aria-expanded", String(open));
-    const hasEditorialNote = paper ? hasFullTextNote(paper) : false;
-    event.target.textContent = open
-      ? (hasEditorialNote ? "收起笔记 ▲" : "收起摘要 ▲")
-      : (hasEditorialNote ? "展开笔记 ▼" : "查看摘要 ▼");
+    const button = event.target.closest("[data-action='abstract']");
+    const retrying = Boolean(panel.querySelector(".detail-error"));
+    const open = retrying || !panel.classList.contains("open");
+    if (!open) {
+      panel.classList.remove("open");
+      button.setAttribute("aria-expanded", "false");
+      button.textContent = hasFullTextNote(paper) ? "展开笔记 ▼" : "查看摘要 ▼";
+      return;
+    }
+
+    panel.classList.add("open");
+    panel.innerHTML = '<p class="detail-loading">正在加载摘要与完整笔记…</p>';
+    button.disabled = true;
+    button.setAttribute("aria-expanded", "true");
+    button.textContent = "加载中…";
+    try {
+      await loadPaperDetails(paper);
+      panel.innerHTML = renderPaperDetails(paper);
+      button.textContent = hasFullTextNote(paper) ? "收起笔记 ▲" : "收起摘要 ▲";
+    } catch {
+      panel.innerHTML = '<p class="detail-error">详细内容加载失败，请检查网络后重试。</p>';
+      button.textContent = "重试加载";
+    } finally {
+      button.disabled = false;
+    }
   }
 }
 
