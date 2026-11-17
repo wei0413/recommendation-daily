@@ -1,6 +1,17 @@
 name: Update conference papers
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/update-conferences.yml"
+      - "scripts/update_conference_papers.py"
+      - "dist/conferences.html"
+      - "dist/index.html"
+      - "dist/assets/conferences.css"
+      - "dist/assets/conferences.js"
+      - "dist/assets/engagement.js"
   schedule:
     # Every Monday at 11:37 Asia/Shanghai. Scheduled workflows run only after this branch is merged.
     - cron: "37 3 * * 1"
