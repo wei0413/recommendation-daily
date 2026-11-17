@@ -7,6 +7,8 @@ const conferenceState = {
   topic: "",
   search: "",
   yearCache: new Map(),
+  savedOnly: false,
+  saved: new Set(JSON.parse(localStorage.getItem("recsys-conference-saved") || "[]")),
 };
 
 const cq = selector => document.querySelector(selector);
@@ -112,6 +114,19 @@ function bindConferenceEvents() {
     renderConferencePage();
   });
   cq("#conferenceSearch").addEventListener("input", event => { conferenceState.search = event.target.value.trim().toLowerCase(); renderConferencePage(); });
+  cq("#conferenceSavedToggle").addEventListener("click", () => {
+    conferenceState.savedOnly = !conferenceState.savedOnly;
+    renderConferencePage();
+  });
+  cq("#conferenceResults").addEventListener("click", event => {
+    const button = event.target.closest("[data-conference-save]");
+    if (!button) return;
+    const id = button.dataset.conferenceSave;
+    if (conferenceState.saved.has(id)) conferenceState.saved.delete(id);
+    else conferenceState.saved.add(id);
+    localStorage.setItem("recsys-conference-saved", JSON.stringify([...conferenceState.saved]));
+    renderConferencePage();
+  });
   cq("#clearYear").addEventListener("click", async () => {
     conferenceState.year = "";
     cq("#yearSelect").value = "";
@@ -134,6 +149,7 @@ function filteredConferencePapers({ ignoreConference = false, ignoreTopic = fals
     if (conferenceState.rank && paper.ccf_rank !== conferenceState.rank) return false;
     if (!ignoreConference && conferenceState.conference && paper.conference !== conferenceState.conference) return false;
     if (!ignoreTopic && conferenceState.topic && paper.topic !== conferenceState.topic) return false;
+    if (conferenceState.savedOnly && !conferenceState.saved.has(paper.id)) return false;
     if (conferenceState.search) {
       const haystack = [paper.title, ...(paper.authors || []), paper.doi, paper.conference].join(" ").toLowerCase();
       if (!haystack.includes(conferenceState.search)) return false;
@@ -160,6 +176,7 @@ function renderConferenceControls() {
 
 function paperRow(paper) {
   const rank = paper.ccf_rank === "领域旗舰" ? paper.ccf_rank : `CCF ${paper.ccf_rank}`;
+  const saved = conferenceState.saved.has(paper.id);
   return `<article class="conference-paper">
     <div class="paper-venue-mark"><b>${conferenceEscape(paper.conference)}</b><small>${conferenceEscape(rank)}</small></div>
     <div class="conference-paper-body">
@@ -167,6 +184,7 @@ function paperRow(paper) {
       <p class="conference-authors">${conferenceEscape((paper.authors || []).join(", ") || "作者信息暂缺")}</p>
       <div class="conference-paper-meta"><span>${conferenceEscape(paper.topic)}</span><span>${paper.year}</span>${paper.doi ? `<a href="https://doi.org/${conferenceEscape(paper.doi)}" target="_blank" rel="noopener">DOI ${conferenceEscape(paper.doi)} ↗</a>` : ""}</div>
     </div>
+    <button class="conference-save ${saved ? "saved" : ""}" type="button" data-conference-save="${conferenceEscape(paper.id)}" aria-label="${saved ? "取消收藏" : "收藏"} ${conferenceEscape(paper.title)}" aria-pressed="${saved}">${saved ? "★" : "☆"}</button>
   </article>`;
 }
 
@@ -215,6 +233,8 @@ function renderConferencePage() {
   cq("#conferenceYearCount").textContent = new Set(papers.map(paper => paper.year)).size;
   const date = conferenceState.payload.generated_at ? new Date(conferenceState.payload.generated_at).toLocaleDateString("zh-CN", { timeZone: "Asia/Shanghai" }) : "未知";
   cq("#conferenceGenerated").textContent = `数据更新：${date} · ${conferenceState.payload.source}`;
+  cq("#conferenceSavedCount").textContent = conferenceState.saved.size;
+  cq("#conferenceSavedToggle").setAttribute("aria-pressed", String(conferenceState.savedOnly));
   cq("#conferenceResults").setAttribute("aria-busy", "false");
 }
 

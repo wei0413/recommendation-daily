@@ -45,7 +45,7 @@
 .venue-rank.rank-B { background: #7c3aed; }
 .venue-rank.rank-领域旗舰 { background: #059669; }
 .venue-papers { display: grid; }
-.conference-paper { display: grid; grid-template-columns: 82px 1fr; gap: 1rem; padding: 1rem 1.1rem; border-top: 1px solid #edf1f5; }
+.conference-paper { display: grid; grid-template-columns: 82px 1fr auto; gap: 1rem; padding: 1rem 1.1rem; border-top: 1px solid #edf1f5; }
 .conference-paper:first-child { border-top: 0; }
 .conference-paper:hover { background: #fbfcfd; }
 .paper-venue-mark { min-height: 54px; display: grid; place-content: center; align-self: start; border: 1px solid #dbeafe; border-radius: 9px; color: #1d4ed8; background: #eff6ff; text-align: center; }
@@ -58,6 +58,8 @@
 .conference-paper-meta { display: flex; flex-wrap: wrap; gap: .38rem; margin-top: .5rem; }
 .conference-paper-meta span, .conference-paper-meta a { padding: .16rem .42rem; border-radius: 5px; color: #475569; background: #f1f5f9; text-decoration: none; font-size: .62rem; }
 .conference-paper-meta a { color: #1d4ed8; background: #eff6ff; }
+.conference-save { width: 36px; height: 36px; display: grid; place-items: center; border: 1px solid #dbe2ea; border-radius: 9px; color: #64748b; background: white; font-size: 1.15rem; }
+.conference-save:hover, .conference-save.saved { color: #be123c; border-color: #fecdd3; background: #fff0f2; }
 
 @media (max-width: 960px) {
   .conference-hero { flex-wrap: wrap; gap: .7rem 0; }
@@ -71,6 +73,7 @@
   .conference-hero > div { min-width: 33.333%; padding: 0 .65rem; }
   .venue-group > header { grid-template-columns: 1fr auto; }
   .venue-group > header p { grid-column: 1 / -1; }
-  .conference-paper { grid-template-columns: 1fr; }
+  .conference-paper { grid-template-columns: 1fr auto; }
   .paper-venue-mark { min-height: 0; width: fit-content; padding: .35rem .6rem; display: flex; gap: .4rem; }
+  .conference-paper-body { grid-column: 1 / -1; }
 }

@@ -22,6 +22,8 @@ GitHub Actions 会在北京时间工作日上午 10:17 运行，并在 10:47、1
 
 `scripts/update_conference_papers.py` 从 Crossref 的 DOI/会议论文集记录中读取正式出版论文，再用高精度标题规则筛选推荐系统研究，生成轻量索引 `dist/data/conference-index.json` 和按年份拆分的数据文件。页面默认只读取最新年份，切换年份时再按需加载，避免一次下载全部历史论文。合并本分支后，`Update conference papers` 工作流每周一北京时间 11:37 更新一次；也可手动指定起止年份重建。会议库不调用大模型，也不会消耗论文解读 API。
 
+每日页和会议页共用公开浏览量与点赞计数；计数服务自 2026-11-18 起重新累计。第三方计数暂时不可用时显示最近一次本机缓存，点赞会先保存在浏览器并在后续访问时自动重试同步。每日论文收藏与会议论文收藏分别保存在当前浏览器中。
+
 ## 发布到 GitHub
 
 不需要购买服务器。进入仓库 **Settings → Pages**，将 **Build and deployment / Source** 设置为 **GitHub Actions**。首次运行 `Update papers and deploy` 工作流后，站点会公开发布到：

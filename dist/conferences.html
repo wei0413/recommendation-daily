@@ -9,6 +9,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f172a'/%3E%3Cpath d='M14 18h36v32H14z' fill='none' stroke='%23fb7185' stroke-width='4'/%3E%3Cpath d='M21 12v12M43 12v12M20 32h24M20 40h16' stroke='%23f8fafc' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="./assets/style.css">
   <link rel="stylesheet" href="./assets/conferences.css">
+  <script src="./assets/engagement.js" defer></script>
   <script src="./assets/conferences.js" defer></script>
 </head>
 <body class="conference-page">
@@ -20,7 +21,7 @@
     </div>
     <p class="intro">按年份与会议，定位数据挖掘、信息检索和推荐系统的重要论文。</p>
     <nav class="site-switcher" aria-label="站点频道">
-      <a href="./index.html">每日 arXiv</a>
+      <a href="./#latest">每日 arXiv（最新）</a>
       <a class="active" href="./conferences.html" aria-current="page">会议论文库</a>
     </nav>
 
@@ -52,7 +53,18 @@
           <span class="sr-only">搜索会议论文</span>
           <input id="conferenceSearch" type="search" placeholder="搜索标题、作者或 DOI" autocomplete="off"><kbd>/</kbd>
         </label>
-        <a class="daily-link" href="./index.html">返回每日论文 →</a>
+        <div class="engagement-module" aria-label="网站浏览与点赞数据">
+          <div class="engagement-metric" title="推荐论文雷达累计浏览量；新计数服务自 2026-11-18 起统计">
+            <span class="engagement-icon" aria-hidden="true">◉</span>
+            <span><b id="pageViewCount">统计中</b><small>总浏览量</small></span>
+          </div>
+          <button class="site-like" id="siteLikeButton" type="button" aria-pressed="false" title="每天可以为网站点赞一次">
+            <span class="engagement-icon" aria-hidden="true">♥</span>
+            <span><b id="siteLikeCount">0</b><small id="siteLikeHint">点赞</small></span>
+          </button>
+        </div>
+        <button class="saved-toggle" id="conferenceSavedToggle" type="button" aria-pressed="false"><span aria-hidden="true">☆</span> 收藏 <b id="conferenceSavedCount">0</b></button>
+        <a class="daily-link" href="./#latest">每日最新 →</a>
       </div>
     </header>
 
