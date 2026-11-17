@@ -73,7 +73,7 @@ jobs:
         if: ${{ github.event_name != 'push' || contains(github.event.head_commit.message, '[conference-enrich]') }}
         continue-on-error: true
         env:
-          ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
+          ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN || secrets.ANTHROPIC_API_KEY }}
           ANTHROPIC_BASE_URL: ${{ vars.ANTHROPIC_BASE_URL }}
           ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL }}
           CONFERENCE_ENRICH_LIMIT: ${{ github.event.inputs.enrich_limit || '12' }}
