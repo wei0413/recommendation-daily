@@ -1,9 +1,6 @@
 .conference-page { --conference-accent: #22c55e; }
 .conference-mark::after { border-radius: 4px; background: var(--conference-accent); }
 .conference-mark span { background: #38bdf8; transform: rotate(0); width: 20px; right: 0; }
-.site-switcher { display: grid; grid-template-columns: 1fr 1fr; gap: .35rem; margin: 0 0 1rem; padding: .3rem; border: 1px solid rgba(255,255,255,.11); border-radius: 10px; background: rgba(255,255,255,.04); }
-.site-switcher a { padding: .48rem .35rem; border-radius: 7px; color: #94a3b8; text-align: center; text-decoration: none; font-size: .72rem; font-weight: 700; }
-.site-switcher a.active { color: #0f172a; background: #f8fafc; }
 .filter-select { width: 100%; min-height: 40px; padding: .45rem .6rem; border: 1px solid rgba(255,255,255,.14); border-radius: 8px; color: white; color-scheme: dark; background: rgba(255,255,255,.07); }
 .rank-filters { display: grid; grid-template-columns: repeat(3, 1fr); gap: .35rem; }
 .rank-filters button { padding: .48rem .3rem; border: 1px solid rgba(255,255,255,.13); border-radius: 8px; color: #cbd5e1; background: rgba(255,255,255,.04); font-size: .68rem; }

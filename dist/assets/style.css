@@ -52,6 +52,10 @@ a { color: inherit; }
 .eyebrow { margin: 0 0 .1rem; color: #94a3b8; font-size: .68rem; letter-spacing: .2em; font-weight: 800; }
 .brand h1 { margin: 0; color: white; font-size: 1.18rem; letter-spacing: -.02em; }
 .intro { margin: 1.5rem 0 1.9rem; color: #aebacd; font-size: .88rem; line-height: 1.7; }
+.site-switcher { display: grid; grid-template-columns: 1fr 1fr; gap: .35rem; margin: 0 0 1rem; padding: .3rem; border: 1px solid rgba(255,255,255,.11); border-radius: 10px; background: rgba(255,255,255,.04); }
+.site-switcher a { padding: .48rem .35rem; border-radius: 7px; color: #94a3b8; text-align: center; text-decoration: none; font-size: .72rem; font-weight: 700; }
+.site-switcher a:hover { color: white; background: rgba(255,255,255,.08); }
+.site-switcher a.active { color: #0f172a; background: #f8fafc; }
 .control-section { padding: 1.1rem 0; border-top: 1px solid rgba(255,255,255,.1); }
 .control-heading { display: flex; align-items: center; justify-content: space-between; }
 .control-section h2 { margin: 0 0 .72rem; color: #cbd5e1; font-size: .74rem; letter-spacing: .1em; font-weight: 700; }
