@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-17T23:54:52.024190+08:00",
+  "generated_at": "2026-11-18T00:18:25.447027+08:00",
   "source": "Crossref formal proceedings metadata",
   "method": "Title-based high-precision recommendation-system screening",
   "start_year": 2024,
@@ -9,7 +9,7 @@
     2025,
     2024
   ],
-  "paper_count": 2412,
+  "paper_count": 2253,
   "conferences": [
     {
       "id": "SIGIR",
@@ -64,7 +64,6 @@
   "counts": {
     "2026": {
       "CIKM": 191,
-      "KDD": 100,
       "RecSys": 218,
       "SIGIR": 182,
       "WSDM": 53,
@@ -72,22 +71,32 @@
     },
     "2025": {
       "CIKM": 151,
-      "ICDM": 31,
+      "ICDM": 28,
       "KDD": 104,
       "RecSys": 186,
       "SIGIR": 148,
-      "WSDM": 43,
-      "WWW": 155
+      "WWW": 156
     },
     "2024": {
       "CIKM": 118,
       "ICDM": 27,
       "KDD": 78,
-      "RecSys": 185,
+      "RecSys": 177,
       "SIGIR": 123,
       "WSDM": 52,
-      "WWW": 139
+      "WWW": 133
     }
   },
-  "errors": []
+  "errors": [
+    {
+      "year": 2025,
+      "conference": "WSDM",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "year": 2026,
+      "conference": "KDD",
+      "error": "HTTP Error 429: Too Many Requests"
+    }
+  ]
 }
