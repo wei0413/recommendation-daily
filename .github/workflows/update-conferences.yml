@@ -1,0 +1,77 @@
+name: Update conference papers
+
+on:
+  schedule:
+    # Every Monday at 11:37 Asia/Shanghai. Scheduled workflows run only after this branch is merged.
+    - cron: "37 3 * * 1"
+  workflow_dispatch:
+    inputs:
+      start_year:
+        description: "First conference year to rebuild"
+        required: false
+        default: "2024"
+      end_year:
+        description: "Last conference year (blank means current year)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  update-conferences:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    concurrency:
+      group: recommendation-conference-update
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Fetch formal conference publications
+        env:
+          CONFERENCE_START_YEAR: ${{ github.event.inputs.start_year || '2024' }}
+          CONFERENCE_END_YEAR: ${{ github.event.inputs.end_year }}
+        run: |
+          if [ -z "$CONFERENCE_END_YEAR" ]; then
+            unset CONFERENCE_END_YEAR
+          fi
+          python scripts/update_conference_papers.py
+      - name: Save conference archive
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dist/data/conference-index.json dist/data/conferences
+          if git diff --cached --quiet; then
+            echo "No conference data changes."
+          else
+            git commit -m "data: refresh conference papers"
+            git push
+          fi
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    needs: update-conferences
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: pages
+      cancel-in-progress: true
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

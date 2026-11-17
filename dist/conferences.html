@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="按年份和会议浏览 SIGIR、KDD、WSDM、CIKM 等会议的推荐系统论文。">
+  <meta name="theme-color" content="#0f172a">
+  <title>会议推荐论文库 · RecSys Daily</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f172a'/%3E%3Cpath d='M14 18h36v32H14z' fill='none' stroke='%23fb7185' stroke-width='4'/%3E%3Cpath d='M21 12v12M43 12v12M20 32h24M20 40h16' stroke='%23f8fafc' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./assets/style.css">
+  <link rel="stylesheet" href="./assets/conferences.css">
+  <script src="./assets/conferences.js" defer></script>
+</head>
+<body class="conference-page">
+  <a class="skip-link" href="#conferenceResults">跳到会议论文列表</a>
+  <aside class="sidebar" aria-label="会议论文筛选">
+    <div class="brand">
+      <div class="brand-mark conference-mark" aria-hidden="true"><span></span></div>
+      <div><p class="eyebrow">RECSYS / VENUES</p><h1>会议推荐论文库</h1></div>
+    </div>
+    <p class="intro">按年份与会议，定位数据挖掘、信息检索和推荐系统的重要论文。</p>
+    <nav class="site-switcher" aria-label="站点频道">
+      <a href="./index.html">每日 arXiv</a>
+      <a class="active" href="./conferences.html" aria-current="page">会议论文库</a>
+    </nav>
+
+    <section class="control-section" aria-labelledby="yearLabel">
+      <div class="control-heading"><h2 id="yearLabel">年份</h2><button class="text-button" id="clearYear" type="button">全部</button></div>
+      <select id="yearSelect" class="filter-select" aria-label="选择年份"><option value="">全部年份</option></select>
+    </section>
+    <section class="control-section" aria-labelledby="rankLabel">
+      <div class="control-heading"><h2 id="rankLabel">会议等级</h2><button class="text-button" id="clearRank" type="button">全部</button></div>
+      <div id="rankFilters" class="rank-filters"></div>
+    </section>
+    <section class="control-section conference-filter-section" aria-labelledby="venueLabel">
+      <div class="control-heading"><h2 id="venueLabel">会议</h2><button class="text-button" id="clearConference" type="button">全部</button></div>
+      <div id="conferenceFilters" class="conference-filters"></div>
+    </section>
+    <section class="control-section" aria-labelledby="topicLabel">
+      <div class="control-heading"><h2 id="topicLabel">推荐主题</h2><button class="text-button" id="clearConferenceTopic" type="button">全部</button></div>
+      <div id="conferenceTopics" class="conference-topic-filters"></div>
+    </section>
+    <div class="sidebar-foot"><span class="live-dot" aria-hidden="true"></span><span>正式出版记录</span><a href="https://www.crossref.org/" target="_blank" rel="noopener">Crossref</a></div>
+  </aside>
+
+  <main>
+    <header class="topbar conference-topbar">
+      <div><p class="today-kicker">CCF A / B · RECSYS VENUES</p><h2>按会议，找推荐论文</h2></div>
+      <div class="topbar-actions">
+        <label class="search-box">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.4-4.4m2.4-5.1a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z"/></svg>
+          <span class="sr-only">搜索会议论文</span>
+          <input id="conferenceSearch" type="search" placeholder="搜索标题、作者或 DOI" autocomplete="off"><kbd>/</kbd>
+        </label>
+        <a class="daily-link" href="./index.html">返回每日论文 →</a>
+      </div>
+    </header>
+
+    <section class="conference-hero" aria-label="会议库概览">
+      <div><span id="conferencePaperCount">—</span><small>篇推荐论文</small></div>
+      <div><span id="conferenceVenueCount">—</span><small>个会议</small></div>
+      <div><span id="conferenceYearCount">—</span><small>个年份</small></div>
+      <p id="conferenceGenerated">正在读取会议数据…</p>
+    </section>
+
+    <section class="conference-notice">
+      <strong>收录口径</strong>
+      <p>只收录会议正式出版记录，并用高精度标题规则筛选推荐系统论文。CCF 等级依据中国计算机学会目录；RecSys 单独标记为“领域旗舰”。少量标题未直接出现推荐关键词的相关论文可能暂未收录。</p>
+    </section>
+
+    <div id="activeConferenceFilters" class="active-filters" aria-live="polite"></div>
+    <section id="conferenceResults" class="conference-results" aria-live="polite" aria-busy="true"></section>
+
+    <footer>
+      <p>书目元数据来自 Crossref，会议等级参考 CCF 官方目录。筛选结果仅作为研究导航。</p>
+      <a href="https://github.com/wei0413/recommendation-daily" target="_blank" rel="noopener">查看项目源码 ↗</a>
+    </footer>
+  </main>
+</body>
+</html>

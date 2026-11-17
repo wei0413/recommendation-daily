@@ -1,0 +1,93 @@
+{
+  "generated_at": "2026-11-17T23:54:52.024190+08:00",
+  "source": "Crossref formal proceedings metadata",
+  "method": "Title-based high-precision recommendation-system screening",
+  "start_year": 2024,
+  "end_year": 2026,
+  "years": [
+    2026,
+    2025,
+    2024
+  ],
+  "paper_count": 2412,
+  "conferences": [
+    {
+      "id": "SIGIR",
+      "name": "ACM SIGIR Conference on Research and Development in Information Retrieval",
+      "ccf_rank": "A",
+      "area": "数据库 / 数据挖掘 / 内容检索",
+      "dblp": "https://dblp.org/db/conf/sigir/"
+    },
+    {
+      "id": "KDD",
+      "name": "ACM SIGKDD Conference on Knowledge Discovery and Data Mining",
+      "ccf_rank": "A",
+      "area": "数据库 / 数据挖掘 / 内容检索",
+      "dblp": "https://dblp.org/db/conf/kdd/"
+    },
+    {
+      "id": "WWW",
+      "name": "The Web Conference",
+      "ccf_rank": "A",
+      "area": "交叉 / 综合 / 新兴",
+      "dblp": "https://dblp.org/db/conf/www/"
+    },
+    {
+      "id": "CIKM",
+      "name": "ACM International Conference on Information and Knowledge Management",
+      "ccf_rank": "B",
+      "area": "数据库 / 数据挖掘 / 内容检索",
+      "dblp": "https://dblp.org/db/conf/cikm/"
+    },
+    {
+      "id": "WSDM",
+      "name": "ACM International Conference on Web Search and Data Mining",
+      "ccf_rank": "B",
+      "area": "数据库 / 数据挖掘 / 内容检索",
+      "dblp": "https://dblp.org/db/conf/wsdm/"
+    },
+    {
+      "id": "ICDM",
+      "name": "IEEE International Conference on Data Mining",
+      "ccf_rank": "B",
+      "area": "数据库 / 数据挖掘 / 内容检索",
+      "dblp": "https://dblp.org/db/conf/icdm/"
+    },
+    {
+      "id": "RecSys",
+      "name": "ACM Conference on Recommender Systems",
+      "ccf_rank": "领域旗舰",
+      "area": "推荐系统",
+      "dblp": "https://dblp.org/db/conf/recsys/"
+    }
+  ],
+  "counts": {
+    "2026": {
+      "CIKM": 191,
+      "KDD": 100,
+      "RecSys": 218,
+      "SIGIR": 182,
+      "WSDM": 53,
+      "WWW": 128
+    },
+    "2025": {
+      "CIKM": 151,
+      "ICDM": 31,
+      "KDD": 104,
+      "RecSys": 186,
+      "SIGIR": 148,
+      "WSDM": 43,
+      "WWW": 155
+    },
+    "2024": {
+      "CIKM": 118,
+      "ICDM": 27,
+      "KDD": 78,
+      "RecSys": 185,
+      "SIGIR": 123,
+      "WSDM": 52,
+      "WWW": 139
+    }
+  },
+  "errors": []
+}
