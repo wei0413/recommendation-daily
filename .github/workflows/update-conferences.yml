@@ -7,6 +7,8 @@ on:
     paths:
       - ".github/workflows/update-conferences.yml"
       - "scripts/update_conference_papers.py"
+      - "scripts/sync_conference_notes.py"
+      - "scripts/enrich_conference_papers.py"
       - "dist/conferences.html"
       - "dist/index.html"
       - "dist/assets/conferences.css"
@@ -25,6 +27,10 @@ on:
         description: "Last conference year (blank means current year)"
         required: false
         default: ""
+      enrich_limit:
+        description: "Maximum new PDF full-text notes to attempt"
+        required: false
+        default: "12"
 
 permissions:
   contents: write
@@ -34,7 +40,7 @@ permissions:
 jobs:
   update-conferences:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 90
     concurrency:
       group: recommendation-conference-update
       cancel-in-progress: false
@@ -47,7 +53,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Fetch formal conference publications
-        if: ${{ github.event_name != 'push' }}
+        if: ${{ github.event_name != 'push' || contains(github.event.head_commit.message, '[conference-enrich]') }}
         env:
           CONFERENCE_START_YEAR: ${{ github.event.inputs.start_year || '2024' }}
           CONFERENCE_END_YEAR: ${{ github.event.inputs.end_year }}
@@ -57,13 +63,30 @@ jobs:
             unset CONFERENCE_END_YEAR
           fi
           python scripts/update_conference_papers.py
+      - name: Reuse matching arXiv full-text notes
+        if: ${{ github.event_name != 'push' || contains(github.event.head_commit.message, '[conference-enrich]') }}
+        run: python scripts/sync_conference_notes.py
+      - name: Install full-text PDF reader
+        if: ${{ github.event_name != 'push' || contains(github.event.head_commit.message, '[conference-enrich]') }}
+        run: python -m pip install --disable-pip-version-check --no-input pypdf==6.19.0
+      - name: Generate conference PDF full-text notes
+        if: ${{ github.event_name != 'push' || contains(github.event.head_commit.message, '[conference-enrich]') }}
+        continue-on-error: true
+        env:
+          ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
+          ANTHROPIC_BASE_URL: ${{ vars.ANTHROPIC_BASE_URL }}
+          ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL }}
+          CONFERENCE_ENRICH_LIMIT: ${{ github.event.inputs.enrich_limit || '12' }}
+          FULL_TEXT_DIRECT_LIMIT: "120000"
+          FULL_TEXT_CHUNK_CHARS: "45000"
+        run: python scripts/enrich_conference_papers.py
       - name: Save conference archive
-        if: ${{ github.event_name != 'push' }}
+        if: ${{ github.event_name != 'push' || contains(github.event.head_commit.message, '[conference-enrich]') }}
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add dist/data/conference-index.json dist/data/conferences
+          git add dist/data/conference-index.json dist/data/conferences dist/data/conference-notes
           if git diff --cached --quiet; then
             echo "No conference data changes."
           else

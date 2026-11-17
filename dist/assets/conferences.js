@@ -9,6 +9,7 @@ const conferenceState = {
   yearCache: new Map(),
   savedOnly: false,
   saved: new Set(JSON.parse(localStorage.getItem("recsys-conference-saved") || "[]")),
+  noteRequests: new Map(),
 };
 
 const cq = selector => document.querySelector(selector);
@@ -119,6 +120,16 @@ function bindConferenceEvents() {
     renderConferencePage();
   });
   cq("#conferenceResults").addEventListener("click", event => {
+    const noteButton = event.target.closest("[data-conference-note]");
+    if (noteButton) {
+      toggleConferenceNote(noteButton);
+      return;
+    }
+    const copyButton = event.target.closest("[data-copy-conference-note]");
+    if (copyButton) {
+      copyConferenceNote(copyButton.dataset.copyConferenceNote, copyButton);
+      return;
+    }
     const button = event.target.closest("[data-conference-save]");
     if (!button) return;
     const id = button.dataset.conferenceSave;
@@ -177,6 +188,18 @@ function renderConferenceControls() {
 function paperRow(paper) {
   const rank = paper.ccf_rank === "领域旗舰" ? paper.ccf_rank : `CCF ${paper.ccf_rank}`;
   const saved = conferenceState.saved.has(paper.id);
+  const institutions = paper.institutions || [];
+  const institutionHtml = institutions.length ? `<div class="conference-institutions"><span>机构</span>${institutions.slice(0, 4).map(name => `<b>${conferenceEscape(name)}</b>`).join("")}${paper.institution_type ? `<em>${conferenceEscape(paper.institution_type)}</em>` : ""}</div>` : "";
+  const summaryHtml = paper.has_full_text_note ? `<dl class="conference-editorial">
+    <div><dt>文章主题</dt><dd>${conferenceEscape(paper.article_theme || "等待补充")}</dd></div>
+    <div><dt>研究问题</dt><dd>${conferenceEscape(paper.research_question || "等待补充")}</dd></div>
+    <div><dt>主要贡献</dt><dd>${conferenceEscape(paper.main_contribution || "等待补充")}</dd></div>
+  </dl>` : "";
+  const noteActions = paper.note_id ? `<div class="conference-note-actions">
+    <button type="button" data-conference-note="${conferenceEscape(paper.note_id)}" aria-expanded="false">展开笔记 ▼</button>
+    ${paper.pdf_url ? `<a href="${conferenceEscape(paper.pdf_url)}" target="_blank" rel="noopener">PDF ↗</a>` : ""}
+    <span>全文解读 · ${conferenceEscape(paper.note_model || "AI")}</span>
+  </div><div class="conference-note-panel" id="conference-note-${conferenceEscape(paper.note_id)}" hidden></div>` : "";
   return `<article class="conference-paper">
     <div class="paper-venue-mark"><b>${conferenceEscape(paper.conference)}</b><small>${conferenceEscape(rank)}</small></div>
     <div class="conference-paper-body">
@@ -185,7 +208,96 @@ function paperRow(paper) {
       <div class="conference-paper-meta"><span>${conferenceEscape(paper.topic)}</span><span>${paper.year}</span>${paper.doi ? `<a href="https://doi.org/${conferenceEscape(paper.doi)}" target="_blank" rel="noopener">DOI ${conferenceEscape(paper.doi)} ↗</a>` : ""}</div>
     </div>
     <button class="conference-save ${saved ? "saved" : ""}" type="button" data-conference-save="${conferenceEscape(paper.id)}" aria-label="${saved ? "取消收藏" : "收藏"} ${conferenceEscape(paper.title)}" aria-pressed="${saved}">${saved ? "★" : "☆"}</button>
+    <div class="conference-paper-details">${institutionHtml}${summaryHtml}${noteActions}</div>
   </article>`;
+}
+
+function conferenceBullets(value) {
+  return String(value || "").split(/\n+/).map(line => line.trim().replace(/^(?:🔸|•|-)+\s*/, "")).filter(Boolean);
+}
+
+function conferenceNoteText(note) {
+  return [
+    "📝 论文笔记", "", `📖标题：${note.title || ""}`,
+    `🌐来源：${note.conference || ""} ${note.year || ""}${note.doi ? `, ${note.doi}` : ""}`,
+    "", `笔记标题：${note.article_theme || ""}`, "", "🛎️文章简介",
+    `🔸研究问题：${note.research_question || ""}`, `🔸主要贡献：${note.main_contribution || ""}`,
+    "", "📝重点思路", ...conferenceBullets(note.key_ideas).map(line => `🔸${line}`),
+    "", "🔎分析总结", ...conferenceBullets(note.analysis_summary).map(line => `🔸${line}`),
+    "", "💡个人观点", note.personal_view || "",
+  ].join("\n");
+}
+
+async function copyConferenceNote(noteId, button) {
+  const note = await loadConferenceNote(noteId);
+  const text = conferenceNoteText(note);
+  try { await navigator.clipboard.writeText(text); }
+  catch {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.style.position = "fixed";
+    textarea.style.opacity = "0";
+    document.body.append(textarea);
+    textarea.select();
+    document.execCommand("copy");
+    textarea.remove();
+  }
+  const original = button.textContent;
+  button.textContent = "已复制";
+  window.setTimeout(() => { button.textContent = original; }, 1400);
+}
+
+async function loadConferenceNote(noteId) {
+  if (!conferenceState.noteRequests.has(noteId)) {
+    conferenceState.noteRequests.set(noteId, fetch(`./data/conference-notes/${encodeURIComponent(noteId)}.json`, { cache: "no-store" }).then(response => {
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      return response.json();
+    }).catch(error => {
+      conferenceState.noteRequests.delete(noteId);
+      throw error;
+    }));
+  }
+  return conferenceState.noteRequests.get(noteId);
+}
+
+function renderConferenceNote(note) {
+  const ideas = conferenceBullets(note.key_ideas).map(line => `<p>🔸${conferenceEscape(line)}</p>`).join("");
+  const analysis = conferenceBullets(note.analysis_summary).map(line => `<p>🔸${conferenceEscape(line)}</p>`).join("");
+  return `<div class="conference-full-note">
+    <div class="conference-note-heading"><div><b>📝 论文笔记</b><span>${conferenceEscape(note.note_basis === "full_text_pdf" ? `PDF 全文 · ${note.full_text_pages || "?"} 页` : "AI 解读")}</span></div><button type="button" data-copy-conference-note="${conferenceEscape(note.note_id || note.id)}">复制笔记</button></div>
+    <h4>📝重点思路</h4><div class="conference-note-bullets">${ideas}</div>
+    <h4>🔎分析总结</h4><div class="conference-note-bullets">${analysis}</div>
+    <h4>💡个人观点</h4><p>${conferenceEscape(note.personal_view || "")}</p>
+    <small>模型：${conferenceEscape(note.note_model || "AI")} · 来源：${conferenceEscape(note.note_source || "开放全文")}</small>
+  </div>`;
+}
+
+async function toggleConferenceNote(button) {
+  const noteId = button.dataset.conferenceNote;
+  const panel = document.querySelector(`#conference-note-${CSS.escape(noteId)}`);
+  if (!panel) return;
+  if (!panel.hidden) {
+    panel.hidden = true;
+    button.setAttribute("aria-expanded", "false");
+    button.textContent = "展开笔记 ▼";
+    return;
+  }
+  panel.hidden = false;
+  button.disabled = true;
+  button.textContent = "正在读取全文笔记…";
+  panel.innerHTML = '<div class="detail-loading">正在加载笔记</div>';
+  try {
+    const note = await loadConferenceNote(noteId);
+    note.note_id = noteId;
+    panel.innerHTML = renderConferenceNote(note);
+    button.setAttribute("aria-expanded", "true");
+    button.textContent = "收起笔记 ▲";
+  } catch {
+    panel.innerHTML = '<div class="detail-error">笔记加载失败，请稍后重试。</div>';
+    button.textContent = "重试展开";
+  } finally {
+    button.disabled = false;
+  }
 }
 
 function renderConferenceResults(papers) {
@@ -231,6 +343,7 @@ function renderConferencePage() {
   cq("#conferencePaperCount").textContent = papers.length;
   cq("#conferenceVenueCount").textContent = new Set(papers.map(paper => paper.conference)).size;
   cq("#conferenceYearCount").textContent = new Set(papers.map(paper => paper.year)).size;
+  cq("#conferenceNoteCount").textContent = conferenceState.payload.note_count || 0;
   const date = conferenceState.payload.generated_at ? new Date(conferenceState.payload.generated_at).toLocaleDateString("zh-CN", { timeZone: "Asia/Shanghai" }) : "未知";
   cq("#conferenceGenerated").textContent = `数据更新：${date} · ${conferenceState.payload.source}`;
   cq("#conferenceSavedCount").textContent = conferenceState.saved.size;

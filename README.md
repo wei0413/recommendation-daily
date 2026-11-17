@@ -20,7 +20,9 @@ python -m http.server 8000 -d dist
 
 GitHub Actions 会在北京时间工作日上午 10:17 运行，并在 10:47、11:17 提供两次备用调度；备用任务会先检查北京时间当天是否已成功更新，已更新则直接跳过。更新数据后会部署到 GitHub Pages；也可以在 Actions 页面手动触发，手动触发始终执行。没有配置大模型密钥时，论文抓取、分类和发布仍会运行，只跳过中文笔记生成。
 
-`scripts/update_conference_papers.py` 从 Crossref 的 DOI/会议论文集记录中读取正式出版论文，再用高精度标题规则筛选推荐系统研究，生成轻量索引 `dist/data/conference-index.json` 和按年份拆分的数据文件。页面默认只读取最新年份，切换年份时再按需加载，避免一次下载全部历史论文。合并本分支后，`Update conference papers` 工作流每周一北京时间 11:37 更新一次；也可手动指定起止年份重建。会议库不调用大模型，也不会消耗论文解读 API。
+`scripts/update_conference_papers.py` 从 Crossref 的 DOI/会议论文集记录中读取正式出版论文，再用高精度标题规则筛选推荐系统研究，生成轻量索引 `dist/data/conference-index.json` 和按年份拆分的数据文件。页面默认只读取最新年份，切换年份时再按需加载，避免一次下载全部历史论文。合并本分支后，`Update conference papers` 工作流每周一北京时间 11:37 更新一次；也可手动指定起止年份和单次全文笔记处理上限。
+
+会议论文的机构信息优先来自 Crossref 作者 affiliation。`scripts/sync_conference_notes.py` 会先复用标题完全匹配的 arXiv PDF 全文笔记；`scripts/enrich_conference_papers.py` 再通过 Unpaywall 查找 DOI 对应的合法开放 PDF，读取全文后使用与每日论文相同的 Anthropic 兼容接口生成文章主题、研究问题、主要贡献、重点思路、分析总结和个人观点。没有开放 PDF 的论文不会退回为仅凭标题或摘要生成笔记。全文笔记按论文拆分保存在 `dist/data/conference-notes/`，仅在读者点击“展开笔记”时加载。
 
 每日页和会议页共用公开浏览量与点赞计数；计数服务自 2026-11-18 起重新累计。第三方计数暂时不可用时显示最近一次本机缓存，点赞会先保存在浏览器并在后续访问时自动重试同步。每日论文收藏与会议论文收藏分别保存在当前浏览器中。
 

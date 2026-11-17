@@ -122,6 +122,14 @@ RELEVANCE_PATTERNS = [
     (r"\bfeed ranking\b|\bnews ranking\b", 3),
 ]
 
+ENRICHMENT_KEYS = (
+    "institutions", "primary_institution", "institution_type", "organization_sector",
+    "focus_label", "article_theme", "research_question", "main_contribution",
+    "note_id", "note_model", "note_basis", "note_source", "note_source_url",
+    "pdf_url", "full_text_pages", "has_full_text_note", "openalex_id",
+    "conference_note_checked_at", "conference_note_error",
+)
+
 
 def clean_text(value: object) -> str:
     if isinstance(value, list):
@@ -197,6 +205,29 @@ def authors_for(item: dict) -> list[str]:
     return authors
 
 
+def institutions_for(item: dict) -> list[str]:
+    institutions: list[str] = []
+    for author in item.get("author", []):
+        for affiliation in author.get("affiliation", []):
+            name = clean_text(affiliation.get("name", ""))
+            if name and name not in institutions:
+                institutions.append(name)
+    return institutions
+
+
+def institution_labels(institutions: list[str]) -> tuple[str, str]:
+    text = " ".join(institutions).lower()
+    academic = any(word in text for word in ("university", "college", "academy", "institute of technology", "school"))
+    industry = any(word in text for word in ("google", "microsoft", "meta", "amazon", "alibaba", "tencent", "bytedance", "spotify", "netflix"))
+    if academic and industry:
+        return "产学合作", "学术界 × 工业界"
+    if academic:
+        return "高校/科研机构", "学术界"
+    if industry:
+        return "企业研究团队", "工业界"
+    return ("机构已识别", "其他机构") if institutions else ("机构未公开", "机构未公开")
+
+
 def item_year(item: dict) -> int | None:
     for key in ("published-print", "published-online", "published", "issued"):
         parts = item.get(key, {}).get("date-parts", [])
@@ -227,8 +258,9 @@ def fetch_conference_year(conference: dict, year: int) -> list[dict]:
         if published_year != year:
             continue
         doi = clean_text(item.get("DOI"))
-        results.append(
-            {
+        institutions = institutions_for(item)
+        institution_type, organization_sector = institution_labels(institutions)
+        paper = {
                 "id": doi.lower() or f"{conference['id'].lower()}-{year}-{re.sub(r'[^a-z0-9]+', '-', title.lower()).strip('-')[:80]}",
                 "title": title,
                 "authors": authors_for(item),
@@ -242,8 +274,15 @@ def fetch_conference_year(conference: dict, year: int) -> list[dict]:
                 "url": f"https://doi.org/{doi}" if doi else clean_text(item.get("URL")),
                 "source": "Crossref",
                 "relevance_score": score,
-            }
-        )
+        }
+        if institutions:
+            paper.update({
+                "institutions": institutions,
+                "primary_institution": institutions[0],
+                "institution_type": institution_type,
+                "organization_sector": organization_sector,
+            })
+        results.append(paper)
     return results
 
 
@@ -278,6 +317,12 @@ def main() -> None:
             year, conference = futures[future]
             try:
                 found = future.result()
+                previous_by_id = {paper.get("id"): paper for paper in existing_by_job.get((year, conference["id"]), [])}
+                for paper in found:
+                    previous = previous_by_id.get(paper.get("id"), {})
+                    for key in ENRICHMENT_KEYS:
+                        if key in previous:
+                            paper[key] = previous[key]
                 papers.extend(found)
                 print(f"{year} {conference['id']}: {len(found)} recommendation papers", flush=True)
             except Exception as exc:  # Keep a partial archive usable when one venue fails.

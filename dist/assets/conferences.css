@@ -57,6 +57,29 @@
 .conference-paper-meta a { color: #1d4ed8; background: #eff6ff; }
 .conference-save { width: 36px; height: 36px; display: grid; place-items: center; border: 1px solid #dbe2ea; border-radius: 9px; color: #64748b; background: white; font-size: 1.15rem; }
 .conference-save:hover, .conference-save.saved { color: #be123c; border-color: #fecdd3; background: #fff0f2; }
+.conference-paper-details { grid-column: 2 / -1; display: grid; gap: .65rem; }
+.conference-institutions { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem; }
+.conference-institutions > span { color: #94a3b8; font-size: .63rem; font-weight: 700; }
+.conference-institutions b, .conference-institutions em { padding: .18rem .48rem; border: 1px solid #dbeafe; border-radius: 6px; color: #1d4ed8; background: #eff6ff; font-size: .64rem; font-style: normal; font-weight: 650; }
+.conference-institutions em { color: #475569; border-color: #e2e8f0; background: #f8fafc; }
+.conference-editorial { margin: 0; border: 1px solid #e5eaf0; border-radius: 9px; background: #fbfcfd; overflow: hidden; }
+.conference-editorial > div { display: grid; grid-template-columns: 86px 1fr; gap: .7rem; padding: .58rem .72rem; border-top: 1px solid #e9eef3; }
+.conference-editorial > div:first-child { border-top: 0; }
+.conference-editorial dt { color: #172033; font-size: .7rem; font-weight: 800; }
+.conference-editorial dd { margin: 0; color: #475569; font-size: .73rem; line-height: 1.65; }
+.conference-note-actions { display: flex; align-items: center; gap: .55rem; }
+.conference-note-actions button { padding: .36rem .65rem; border: 0; border-radius: 7px; color: white; background: #0f172a; font-size: .68rem; font-weight: 750; }
+.conference-note-actions a { color: #334155; text-decoration: none; font-size: .68rem; font-weight: 700; }
+.conference-note-actions span { color: #16a34a; font-size: .63rem; }
+.conference-note-panel[hidden] { display: none; }
+.conference-full-note { padding: .9rem; border: 1px solid #dbe3ec; border-radius: 10px; color: #334155; background: linear-gradient(180deg,#fff,#f8fafc); font-size: .75rem; }
+.conference-note-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: .65rem; }
+.conference-note-heading > div { display: grid; }
+.conference-note-heading span, .conference-full-note small { color: #64748b; font-size: .62rem; }
+.conference-note-heading button { padding: .3rem .55rem; border: 1px solid #cbd5e1; border-radius: 7px; color: #334155; background: white; font-size: .65rem; }
+.conference-full-note h4 { margin: .75rem 0 .3rem; color: #172033; font-size: .75rem; }
+.conference-full-note p { margin: .25rem 0; }
+.conference-note-bullets { display: grid; gap: .2rem; }
 
 @media (max-width: 960px) {
   .conference-hero { flex-wrap: wrap; gap: .7rem 0; }
@@ -73,4 +96,5 @@
   .conference-paper { grid-template-columns: 1fr auto; }
   .paper-venue-mark { min-height: 0; width: fit-content; padding: .35rem .6rem; display: flex; gap: .4rem; }
   .conference-paper-body { grid-column: 1 / -1; }
+  .conference-paper-details { grid-column: 1 / -1; }
 }
