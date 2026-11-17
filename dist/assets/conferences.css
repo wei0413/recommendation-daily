@@ -1,0 +1,79 @@
+.conference-page { --conference-accent: #22c55e; }
+.conference-mark::after { border-radius: 4px; background: var(--conference-accent); }
+.conference-mark span { background: #38bdf8; transform: rotate(0); width: 20px; right: 0; }
+.site-switcher { display: grid; grid-template-columns: 1fr 1fr; gap: .35rem; margin: 0 0 1rem; padding: .3rem; border: 1px solid rgba(255,255,255,.11); border-radius: 10px; background: rgba(255,255,255,.04); }
+.site-switcher a { padding: .48rem .35rem; border-radius: 7px; color: #94a3b8; text-align: center; text-decoration: none; font-size: .72rem; font-weight: 700; }
+.site-switcher a.active { color: #0f172a; background: #f8fafc; }
+.filter-select { width: 100%; min-height: 40px; padding: .45rem .6rem; border: 1px solid rgba(255,255,255,.14); border-radius: 8px; color: white; color-scheme: dark; background: rgba(255,255,255,.07); }
+.rank-filters { display: grid; grid-template-columns: repeat(3, 1fr); gap: .35rem; }
+.rank-filters button { padding: .48rem .3rem; border: 1px solid rgba(255,255,255,.13); border-radius: 8px; color: #cbd5e1; background: rgba(255,255,255,.04); font-size: .68rem; }
+.rank-filters button.active { color: #07111f; border-color: #86efac; background: #86efac; font-weight: 800; }
+.conference-filter-section { min-height: 0; }
+.conference-filters, .conference-topic-filters { display: grid; gap: .32rem; max-height: 250px; overflow-y: auto; padding-right: .25rem; }
+.conference-filters button, .conference-topic-filters button { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: .46rem .55rem; border: 1px solid rgba(255,255,255,.11); border-radius: 8px; color: #cbd5e1; background: rgba(255,255,255,.035); text-align: left; }
+.conference-filters button span { display: flex; align-items: baseline; gap: .45rem; }
+.conference-filters button b { color: white; font-size: .72rem; }
+.conference-filters button small { color: #64748b; font-size: .58rem; }
+.conference-filters button em, .conference-topic-filters button em { color: #64748b; font-size: .65rem; font-style: normal; }
+.conference-topic-filters button span { font-size: .68rem; }
+.conference-filters button.active, .conference-topic-filters button.active { border-color: #86efac; color: #dcfce7; background: rgba(34,197,94,.14); }
+.daily-link { display: inline-grid; place-items: center; min-height: 42px; padding: 0 .9rem; border: 1px solid #cbd5e1; border-radius: 10px; color: #334155; background: white; text-decoration: none; font-size: .75rem; font-weight: 750; }
+.conference-hero { display: flex; align-items: center; gap: 0; margin-bottom: 1rem; padding: 1rem 1.2rem; border-radius: 14px; color: white; background: linear-gradient(120deg, #0f172a, #153c35); box-shadow: var(--shadow); }
+.conference-hero > div { min-width: 130px; padding: 0 1.2rem; border-right: 1px solid rgba(255,255,255,.13); }
+.conference-hero > div:first-child { padding-left: .2rem; }
+.conference-hero span { display: block; font-size: 1.25rem; font-weight: 800; line-height: 1.2; }
+.conference-hero small { color: #94a3b8; font-size: .68rem; }
+.conference-hero p { margin: 0 0 0 auto; color: #94a3b8; font-size: .72rem; }
+.conference-notice { display: grid; grid-template-columns: auto 1fr; gap: .8rem; margin-bottom: 1rem; padding: .75rem .9rem; border: 1px solid #dbe3ec; border-radius: 10px; background: #f8fafc; }
+.conference-notice strong { color: #166534; font-size: .76rem; }
+.conference-notice p { margin: 0; color: #64748b; font-size: .75rem; }
+.active-filters { display: flex; align-items: center; flex-wrap: wrap; gap: .38rem; margin: 0 0 .8rem; }
+.active-filters span { color: #64748b; font-size: .7rem; }
+.active-filters b { padding: .22rem .55rem; border: 1px solid #bbf7d0; border-radius: 999px; color: #166534; background: #f0fdf4; font-size: .68rem; }
+.conference-results { display: grid; gap: 1.4rem; }
+.conference-year-heading { display: flex; align-items: baseline; gap: .65rem; margin-bottom: .7rem; }
+.conference-year-heading h3 { margin: 0; color: #0f172a; font-family: Georgia, "Noto Serif SC", serif; font-size: 2rem; line-height: 1; }
+.conference-year-heading span { color: #64748b; font-size: .72rem; }
+.conference-year-block { display: grid; gap: .8rem; }
+.venue-group { border: 1px solid #dbe2ea; border-radius: 14px; background: white; overflow: hidden; box-shadow: 0 3px 12px rgba(15,23,42,.025); }
+.venue-group > header { display: grid; grid-template-columns: 150px 1fr auto; align-items: center; gap: 1rem; padding: .9rem 1.1rem; border-bottom: 1px solid #e5eaf0; background: #f8fafc; }
+.venue-group > header > div { display: flex; align-items: center; gap: .55rem; }
+.venue-group > header h3 { margin: 0; font-size: 1rem; }
+.venue-group > header p { margin: 0; color: #64748b; font-size: .72rem; }
+.venue-group > header > b { color: #475569; font-size: .7rem; }
+.venue-rank { padding: .18rem .42rem; border-radius: 5px; color: white; background: #2563eb; font-size: .58rem; font-weight: 800; }
+.venue-rank.rank-B { background: #7c3aed; }
+.venue-rank.rank-领域旗舰 { background: #059669; }
+.venue-papers { display: grid; }
+.conference-paper { display: grid; grid-template-columns: 82px 1fr auto; gap: 1rem; padding: 1rem 1.1rem; border-top: 1px solid #edf1f5; }
+.conference-paper:first-child { border-top: 0; }
+.conference-paper:hover { background: #fbfcfd; }
+.paper-venue-mark { min-height: 54px; display: grid; place-content: center; align-self: start; border: 1px solid #dbeafe; border-radius: 9px; color: #1d4ed8; background: #eff6ff; text-align: center; }
+.paper-venue-mark b { font-size: .72rem; }
+.paper-venue-mark small { color: #64748b; font-size: .55rem; }
+.conference-paper h4 { margin: 0 0 .28rem; font-family: Georgia, "Times New Roman", "Noto Serif SC", serif; font-size: 1rem; line-height: 1.45; }
+.conference-paper h4 a { text-decoration: none; }
+.conference-paper h4 a:hover { color: #2563eb; text-decoration: underline; }
+.conference-authors { margin: 0; color: #64748b; font-size: .72rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.conference-paper-meta { display: flex; flex-wrap: wrap; gap: .38rem; margin-top: .5rem; }
+.conference-paper-meta span, .conference-paper-meta a { padding: .16rem .42rem; border-radius: 5px; color: #475569; background: #f1f5f9; text-decoration: none; font-size: .62rem; }
+.conference-paper-meta a { color: #1d4ed8; background: #eff6ff; }
+.conference-save { width: 36px; height: 36px; display: grid; place-items: center; border: 1px solid #dbe2ea; border-radius: 9px; color: #64748b; background: white; font-size: 1.15rem; }
+.conference-save:hover, .conference-save.saved { color: #be123c; border-color: #fecdd3; background: #fff0f2; }
+
+@media (max-width: 960px) {
+  .conference-hero { flex-wrap: wrap; gap: .7rem 0; }
+  .conference-hero p { width: 100%; margin: .4rem 0 0; }
+  .venue-group > header { grid-template-columns: 120px 1fr auto; }
+}
+@media (max-width: 720px) {
+  .conference-page .sidebar { position: static; width: auto; max-height: none; }
+  .conference-page main { margin-left: 0; padding: 1.2rem; }
+  .conference-page .topbar-actions { width: 100%; }
+  .conference-hero > div { min-width: 33.333%; padding: 0 .65rem; }
+  .venue-group > header { grid-template-columns: 1fr auto; }
+  .venue-group > header p { grid-column: 1 / -1; }
+  .conference-paper { grid-template-columns: 1fr auto; }
+  .paper-venue-mark { min-height: 0; width: fit-content; padding: .35rem .6rem; display: flex; gap: .4rem; }
+  .conference-paper-body { grid-column: 1 / -1; }
+}
