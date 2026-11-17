@@ -50,6 +50,7 @@ jobs:
         env:
           CONFERENCE_START_YEAR: ${{ github.event.inputs.start_year || '2024' }}
           CONFERENCE_END_YEAR: ${{ github.event.inputs.end_year }}
+          CROSSREF_WORKERS: "2"
         run: |
           if [ -z "$CONFERENCE_END_YEAR" ]; then
             unset CONFERENCE_END_YEAR

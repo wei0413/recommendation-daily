@@ -163,16 +163,23 @@ def request_json(params: dict[str, str]) -> dict:
     if os.getenv("CONFERENCE_ALLOW_INSECURE_SSL") == "1":
         context = ssl._create_unverified_context()  # Local debugging only; CI uses verified TLS.
     for attempt in range(4):
+        delay = 2 ** attempt
         try:
             with urlopen(request, timeout=75, context=context) as response:
                 return json.load(response)
         except HTTPError as exc:
             if exc.code not in {429, 500, 502, 503, 504} or attempt == 3:
                 raise
+            if exc.code == 429:
+                retry_after = exc.headers.get("Retry-After", "")
+                try:
+                    delay = max(delay, int(retry_after))
+                except (TypeError, ValueError):
+                    delay = max(delay, 15 * (attempt + 1))
         except URLError:
             if attempt == 3:
                 raise
-        time.sleep(2 ** attempt)
+        time.sleep(delay)
     raise RuntimeError("Crossref request failed")
 
 
@@ -247,6 +254,20 @@ def main() -> None:
     selected = {value.strip() for value in os.getenv("CONFERENCE_IDS", "").split(",") if value.strip()}
     conferences = [conf for conf in CONFERENCES if not selected or conf["id"] in selected]
 
+    existing_by_job: dict[tuple[int, str], list[dict]] = {}
+    for year in range(start_year, end_year + 1):
+        year_file = PAPER_DIR / f"{year}.json"
+        if not year_file.exists():
+            continue
+        try:
+            existing = json.loads(year_file.read_text(encoding="utf-8")).get("papers", [])
+        except (OSError, json.JSONDecodeError):
+            continue
+        for paper in existing:
+            conference_id = str(paper.get("conference", ""))
+            if conference_id:
+                existing_by_job.setdefault((year, conference_id), []).append(paper)
+
     papers: list[dict] = []
     errors: list[dict] = []
     jobs = [(year, conference) for year in range(start_year, end_year + 1) for conference in conferences]
@@ -260,8 +281,15 @@ def main() -> None:
                 papers.extend(found)
                 print(f"{year} {conference['id']}: {len(found)} recommendation papers", flush=True)
             except Exception as exc:  # Keep a partial archive usable when one venue fails.
-                errors.append({"year": year, "conference": conference["id"], "error": str(exc)[:240]})
-                print(f"WARNING {year} {conference['id']}: {exc}", flush=True)
+                preserved = existing_by_job.get((year, conference["id"]), [])
+                papers.extend(preserved)
+                errors.append({
+                    "year": year,
+                    "conference": conference["id"],
+                    "error": str(exc)[:240],
+                    "preserved_previous_records": len(preserved),
+                })
+                print(f"WARNING {year} {conference['id']}: {exc}; preserved {len(preserved)} previous records", flush=True)
 
     deduplicated = {}
     for paper in papers:
