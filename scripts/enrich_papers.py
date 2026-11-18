@@ -12,10 +12,18 @@ import os
 import re
 import shutil
 import subprocess
+import sys
+import time
 import urllib.request
 from io import BytesIO
 from pathlib import Path
 from urllib.error import HTTPError, URLError
+
+try:
+    import truststore
+    truststore.inject_into_ssl()
+except ImportError:
+    pass
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -28,6 +36,8 @@ MIN_PUBLISHED = os.environ.get("ENRICH_START_DATE", "2026-09-10").strip() or "20
 DIRECT_TEXT_LIMIT = max(40000, int(os.environ.get("FULL_TEXT_DIRECT_LIMIT", "120000")))
 CHUNK_CHARS = max(20000, int(os.environ.get("FULL_TEXT_CHUNK_CHARS", "45000")))
 MAX_PDF_BYTES = max(5_000_000, int(os.environ.get("MAX_PDF_BYTES", "30000000")))
+MAX_PDF_PAGES = max(20, int(os.environ.get("MAX_PDF_PAGES", "80")))
+PDF_EXTRACTION_TIMEOUT = max(30, int(os.environ.get("PDF_EXTRACTION_TIMEOUT", "180")))
 NOTE_KEYS = (
     "focus_label", "article_theme", "research_question", "main_contribution",
     "key_ideas", "analysis_summary", "personal_view", "reading_note",
@@ -46,7 +56,16 @@ def extract_json(text: str) -> list[dict]:
     end = cleaned.rfind("]")
     if start < 0 or end < start:
         raise ValueError("model response did not contain a JSON array")
-    value = json.loads(cleaned[start:end + 1])
+    candidate = cleaned[start:end + 1]
+    try:
+        value = json.loads(candidate)
+    except json.JSONDecodeError:
+        # Models occasionally emit LaTeX-style backslashes or literal line
+        # breaks inside JSON strings. Repair only those invalid JSON forms;
+        # valid escapes and Unicode sequences remain untouched.
+        repaired = re.sub(r'\\(?!["\\/bfnrtu])', r'\\\\', candidate)
+        repaired = re.sub(r'[\x00-\x1f]', ' ', repaired)
+        value = json.loads(repaired)
     if not isinstance(value, list):
         raise ValueError("model response JSON was not an array")
     return value
@@ -75,38 +94,38 @@ def call_model(prompt: str, max_tokens: int = 8192) -> str:
         },
         method="POST",
     )
-    with urllib.request.urlopen(request, timeout=300) as response:
-        body = json.loads(response.read().decode("utf-8"))
+    last_error: Exception | None = None
+    for attempt in range(4):
+        try:
+            with urllib.request.urlopen(request, timeout=300) as response:
+                body = json.loads(response.read().decode("utf-8"))
+            break
+        except HTTPError as exc:
+            last_error = exc
+            if exc.code not in {408, 409, 429, 500, 502, 503, 504} or attempt == 3:
+                raise
+        except (URLError, TimeoutError, OSError) as exc:
+            last_error = exc
+            if attempt == 3:
+                raise
+        time.sleep(3 * (2 ** attempt))
+    else:
+        raise RuntimeError(f"model request failed: {last_error}")
     return "".join(block.get("text", "") for block in body.get("content", []) if block.get("type") == "text")
 
 
 def download_pdf(url: str) -> bytes:
     url = url.replace("http://", "https://", 1)
-    request = urllib.request.Request(
-        url,
-        headers={"User-Agent": USER_AGENT, "Accept": "application/pdf,*/*;q=0.8"},
-    )
-    urllib_error = "unknown error"
-    try:
-        with urllib.request.urlopen(request, timeout=120) as response:
-            data = response.read(MAX_PDF_BYTES + 1)
-        if len(data) > MAX_PDF_BYTES:
-            raise RuntimeError(f"PDF exceeds {MAX_PDF_BYTES} bytes")
-        if data.startswith(b"%PDF"):
-            return data
-        urllib_error = "response was not a PDF"
-    except HTTPError as exc:
-        urllib_error = f"HTTP {exc.code} {exc.reason}"
-    except (URLError, TimeoutError, OSError, RuntimeError) as exc:
-        urllib_error = str(exc)
-
     curl = shutil.which("curl")
-    if curl:
+
+    def curl_download() -> tuple[bytes | None, str]:
+        if not curl:
+            return None, "curl is not installed"
         result = subprocess.run(
             [
                 curl, "--fail", "--silent", "--show-error", "--location",
-                "--retry", "3", "--retry-all-errors", "--retry-delay", "3",
-                "--connect-timeout", "20", "--max-time", "180",
+                "--retry", "2", "--retry-all-errors", "--retry-delay", "2",
+                "--connect-timeout", "15", "--max-time", "60",
                 "--max-filesize", str(MAX_PDF_BYTES),
                 "--user-agent", USER_AGENT,
                 "--header", "Accept: application/pdf,*/*;q=0.8",
@@ -116,30 +135,67 @@ def download_pdf(url: str) -> bytes:
             check=False,
         )
         if result.returncode == 0 and result.stdout.startswith(b"%PDF"):
-            return result.stdout
-        curl_error = re.sub(r"\s+", " ", result.stderr.decode("utf-8", errors="replace")).strip()
-    else:
-        curl_error = "curl is not installed"
+            return result.stdout, ""
+        error = re.sub(r"\s+", " ", result.stderr.decode("utf-8", errors="replace")).strip()
+        return None, error or "invalid PDF"
+
+    # On Windows, urllib can occasionally stall on arXiv PDF bodies even when
+    # the same URL downloads immediately through curl.
+    curl_error = ""
+    if "arxiv.org/" in url.lower():
+        data, curl_error = curl_download()
+        if data is not None:
+            return data
+
+    request = urllib.request.Request(
+        url,
+        headers={"User-Agent": USER_AGENT, "Accept": "application/pdf,*/*;q=0.8"},
+    )
+    urllib_error = "unknown error"
+    try:
+        with urllib.request.urlopen(request, timeout=40) as response:
+            data = response.read(MAX_PDF_BYTES + 1)
+        if len(data) > MAX_PDF_BYTES:
+            raise RuntimeError(f"PDF exceeds {MAX_PDF_BYTES} bytes")
+        if data.startswith(b"%PDF"):
+            return data
+        urllib_error = "response was not a PDF"
+    except HTTPError as exc:
+        urllib_error = f"HTTP {exc.code} {exc.reason}"
+        if "dl.acm.org/" in url.lower() and exc.code in {401, 403, 404}:
+            raise RuntimeError(f"PDF download failed; urllib: {urllib_error}; ACM download is access-restricted") from exc
+    except (URLError, TimeoutError, OSError, RuntimeError) as exc:
+        urllib_error = str(exc)
+
+    data, fallback_error = curl_download()
+    if data is not None:
+        return data
+    curl_error = fallback_error or curl_error
     raise RuntimeError(f"PDF download failed; urllib: {urllib_error}; curl: {curl_error or 'invalid PDF'}")
 
 
 def extract_pdf_pages(pdf_data: bytes) -> list[str]:
+    helper = ROOT / "scripts" / "extract_pdf_text.py"
     try:
-        from pypdf import PdfReader
-    except ImportError as exc:
-        raise RuntimeError("pypdf is not installed") from exc
-    reader = PdfReader(BytesIO(pdf_data), strict=False)
-    pages = []
-    for page_number, page in enumerate(reader.pages, start=1):
-        text = page.extract_text() or ""
-        text = utf8_safe(text)
-        text = re.sub(r"[ \t]+", " ", text)
-        text = re.sub(r"\n{3,}", "\n\n", text).strip()
-        if text:
-            pages.append(f"--- 第 {page_number} 页 ---\n{text}")
-    if not pages:
+        result = subprocess.run(
+            [sys.executable, "-B", str(helper), str(MAX_PDF_PAGES)],
+            input=pdf_data,
+            capture_output=True,
+            check=False,
+            timeout=PDF_EXTRACTION_TIMEOUT,
+        )
+    except subprocess.TimeoutExpired as exc:
+        raise RuntimeError(f"PDF text extraction exceeded {PDF_EXTRACTION_TIMEOUT} seconds") from exc
+    if result.returncode != 0:
+        error = re.sub(r"\s+", " ", result.stderr.decode("utf-8", errors="replace")).strip()
+        raise RuntimeError(error or f"PDF text extraction failed with exit code {result.returncode}")
+    try:
+        pages = json.loads(result.stdout.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise RuntimeError("PDF text extractor returned invalid JSON") from exc
+    if not isinstance(pages, list) or not pages:
         raise RuntimeError("no extractable text found in PDF")
-    return pages
+    return [utf8_safe(str(page)) for page in pages]
 
 
 def chunk_pages(pages: list[str], limit: int) -> list[str]:

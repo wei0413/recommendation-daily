@@ -3,4 +3,5 @@
 .sites-runtime/
 __pycache__/
 *.pyc
+.local-secrets/
 

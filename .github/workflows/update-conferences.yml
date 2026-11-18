@@ -9,6 +9,7 @@ on:
       - "scripts/update_conference_papers.py"
       - "scripts/sync_conference_notes.py"
       - "scripts/enrich_conference_papers.py"
+      - "scripts/discover_conference_pdfs.py"
       - "dist/conferences.html"
       - "dist/index.html"
       - "dist/assets/conferences.css"
@@ -63,6 +64,12 @@ jobs:
             unset CONFERENCE_END_YEAR
           fi
           python scripts/update_conference_papers.py
+      - name: Discover open conference PDFs
+        if: ${{ github.event_name != 'push' || contains(github.event.head_commit.message, '[conference-enrich]') }}
+        env:
+          CONFERENCE_DISCOVERY_LIMIT: "5000"
+          UNPAYWALL_WORKERS: "4"
+        run: python scripts/discover_conference_pdfs.py
       - name: Reuse matching arXiv full-text notes
         if: ${{ github.event_name != 'push' || contains(github.event.head_commit.message, '[conference-enrich]') }}
         run: python scripts/sync_conference_notes.py

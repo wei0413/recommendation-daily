@@ -71,6 +71,7 @@
 .conference-note-actions button { padding: .36rem .65rem; border: 0; border-radius: 7px; color: white; background: #0f172a; font-size: .68rem; font-weight: 750; }
 .conference-note-actions a { color: #334155; text-decoration: none; font-size: .68rem; font-weight: 700; }
 .conference-note-actions span { color: #16a34a; font-size: .63rem; }
+.conference-pdf-unavailable { width: fit-content; padding: .32rem .55rem; border: 1px solid #e2e8f0; border-radius: 7px; color: #64748b; background: #f8fafc; font-size: .64rem; }
 .conference-note-panel[hidden] { display: none; }
 .conference-full-note { padding: .9rem; border: 1px solid #dbe3ec; border-radius: 10px; color: #334155; background: linear-gradient(180deg,#fff,#f8fafc); font-size: .75rem; }
 .conference-note-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: .65rem; }

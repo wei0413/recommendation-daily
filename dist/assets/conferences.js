@@ -195,11 +195,15 @@ function paperRow(paper) {
     <div><dt>研究问题</dt><dd>${conferenceEscape(paper.research_question || "等待补充")}</dd></div>
     <div><dt>主要贡献</dt><dd>${conferenceEscape(paper.main_contribution || "等待补充")}</dd></div>
   </dl>` : "";
+  const noteUnavailable = paper.conference_pdf_status === "unavailable" || String(paper.conference_note_error || "").startsWith("no downloadable open PDF");
+  const noteStatusHtml = noteUnavailable
+    ? '<div class="conference-pdf-unavailable">暂无可合法获取的开放 PDF，暂不生成全文笔记</div>'
+    : (paper.conference_note_error ? '<div class="conference-pdf-unavailable">全文已获取，AI 笔记生成失败，等待下次重试</div>' : "");
   const noteActions = paper.note_id ? `<div class="conference-note-actions">
     <button type="button" data-conference-note="${conferenceEscape(paper.note_id)}" aria-expanded="false">展开笔记 ▼</button>
     ${paper.pdf_url ? `<a href="${conferenceEscape(paper.pdf_url)}" target="_blank" rel="noopener">PDF ↗</a>` : ""}
     <span>全文解读 · ${conferenceEscape(paper.note_model || "AI")}</span>
-  </div><div class="conference-note-panel" id="conference-note-${conferenceEscape(paper.note_id)}" hidden></div>` : "";
+  </div><div class="conference-note-panel" id="conference-note-${conferenceEscape(paper.note_id)}" hidden></div>` : noteStatusHtml;
   return `<article class="conference-paper">
     <div class="paper-venue-mark"><b>${conferenceEscape(paper.conference)}</b><small>${conferenceEscape(rank)}</small></div>
     <div class="conference-paper-body">

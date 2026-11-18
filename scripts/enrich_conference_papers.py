@@ -11,9 +11,11 @@ import hashlib
 import json
 import os
 import re
+import sys
 import time
 import urllib.parse
 import urllib.request
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -34,11 +36,17 @@ INDEX_FILE = DATA_DIR / "conference-index.json"
 CONFERENCE_DIR = DATA_DIR / "conferences"
 NOTE_DIR = DATA_DIR / "conference-notes"
 LIMIT = max(1, int(os.environ.get("CONFERENCE_ENRICH_LIMIT", "12")))
+WORKERS = max(1, min(12, int(os.environ.get("CONFERENCE_ENRICH_WORKERS", "2"))))
 RETRY_DAYS = max(1, int(os.environ.get("CONFERENCE_RETRY_DAYS", "30")))
 UNPAYWALL_EMAIL = os.environ.get("UNPAYWALL_EMAIL", "wei0413@users.noreply.github.com")
 USER_AGENT = "recommendation-daily/1.3 (+https://github.com/wei0413/recommendation-daily)"
 SUMMARY_KEYS = ("focus_label", "article_theme", "research_question", "main_contribution")
 DETAIL_KEYS = ("key_ideas", "analysis_summary", "personal_view")
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 
 def note_id_for(paper_id: str) -> str:
@@ -85,7 +93,76 @@ def retry_due(paper: dict, now: datetime) -> bool:
 
 
 def save_year(year_file: Path, payload: dict) -> None:
-    year_file.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+    content = json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + "\n"
+    temp_file = year_file.with_name(f"{year_file.name}.tmp")
+    last_error: OSError | None = None
+    for attempt in range(5):
+        try:
+            temp_file.write_text(content, encoding="utf-8")
+            os.replace(temp_file, year_file)
+            return
+        except OSError as exc:
+            last_error = exc
+            time.sleep(0.5 * (attempt + 1))
+    raise RuntimeError(f"could not save {year_file.name} after retries: {last_error}")
+
+
+def generate_note(paper: dict) -> tuple[dict, dict, str, int]:
+    paper_id = paper.get("id", "")
+    stored_candidates = paper.get("conference_pdf_candidates")
+    if stored_candidates is None:
+        work = request_unpaywall(paper.get("doi", paper_id))
+        pdf_candidates = unpaywall_pdf_candidates(work)
+    else:
+        work = {"doi_url": paper.get("url", "")}
+        pdf_candidates = list(stored_candidates)
+
+    pdf_data = None
+    pdf_url = ""
+    pdf_errors = []
+    for candidate in pdf_candidates:
+        try:
+            pdf_data = download_pdf(candidate)
+            pdf_url = candidate
+            break
+        except Exception as exc:
+            pdf_errors.append(f"{candidate}: {exc}")
+    if pdf_data is None:
+        raise RuntimeError("no downloadable open PDF; " + " | ".join(pdf_errors[:3]))
+
+    pages = extract_pdf_pages(pdf_data)
+    full_text = condense_full_text(paper, pages)
+    note = request_note(paper, full_text)
+    if str(note.get("id", "")) != paper_id:
+        raise ValueError("model returned a mismatched paper id")
+
+    note_id = note_id_for(paper_id)
+    updates = {
+        "conference_pdf_candidates": pdf_candidates,
+        "conference_pdf_status": "available" if pdf_candidates else "unavailable",
+        "note_id": note_id,
+        "has_full_text_note": True,
+        "note_model": MODEL,
+        "note_basis": "full_text_pdf",
+        "note_source": "Unpaywall open-access location",
+        "note_source_url": work.get("doi_url", paper.get("url", "")),
+        "pdf_url": pdf_url,
+        "full_text_pages": len(pages),
+    }
+    for key in SUMMARY_KEYS:
+        value = str(note.get(key, "")).strip()
+        if value:
+            updates[key] = value
+
+    detail = {key: updates.get(key, paper.get(key)) for key in (
+        "id", "title", "conference", "year", "doi", "authors", "institutions",
+        "primary_institution", "institution_type", "organization_sector", "pdf_url",
+        "note_model", "note_basis", "note_source", "note_source_url", "full_text_pages",
+        *SUMMARY_KEYS,
+    )}
+    for key in DETAIL_KEYS:
+        detail[key] = str(note.get(key, "")).strip()
+    return updates, detail, note_id, len(pages)
 
 
 def main() -> None:
@@ -102,7 +179,11 @@ def main() -> None:
         payload = json.loads(year_file.read_text(encoding="utf-8"))
         year_payloads[int(year)] = (year_file, payload)
         for paper in payload.get("papers", []):
-            if not paper.get("has_full_text_note") and retry_due(paper, now):
+            if (
+                not paper.get("has_full_text_note")
+                and paper.get("conference_pdf_status") != "unavailable"
+                and retry_due(paper, now)
+            ):
                 pending.append((int(year), paper))
 
     pending.sort(key=lambda item: (-item[0], -int(item[1].get("relevance_score", 0)), item[1].get("conference", ""), item[1].get("title", "")))
@@ -110,69 +191,27 @@ def main() -> None:
     NOTE_DIR.mkdir(parents=True, exist_ok=True)
     completed = 0
 
-    for position, (year, paper) in enumerate(pending, start=1):
-        paper_id = paper.get("id", "")
-        paper["conference_note_checked_at"] = now.isoformat()
-        try:
-            work = request_unpaywall(paper.get("doi", paper_id))
-            pdf_candidates = unpaywall_pdf_candidates(work)
-            institutions = paper.get("institutions", [])
-
-            pdf_data = None
-            pdf_url = ""
-            pdf_errors = []
-            for candidate in pdf_candidates:
-                try:
-                    pdf_data = download_pdf(candidate)
-                    pdf_url = candidate
-                    break
-                except Exception as exc:
-                    pdf_errors.append(f"{candidate}: {exc}")
-            if pdf_data is None:
-                raise RuntimeError("no downloadable open PDF; " + " | ".join(pdf_errors[:3]))
-
-            pages = extract_pdf_pages(pdf_data)
-            paper_for_model = {**paper, "institutions": institutions}
-            full_text = condense_full_text(paper_for_model, pages)
-            note = request_note(paper_for_model, full_text)
-            if str(note.get("id", "")) != paper_id:
-                raise ValueError("model returned a mismatched paper id")
-
-            note_id = note_id_for(paper_id)
-            for key in SUMMARY_KEYS:
-                value = str(note.get(key, "")).strip()
-                if value:
-                    paper[key] = value
-            paper.update({
-                "note_id": note_id,
-                "has_full_text_note": True,
-                "note_model": MODEL,
-                "note_basis": "full_text_pdf",
-                "note_source": "Unpaywall open-access location",
-                "note_source_url": work.get("doi_url", paper.get("url", "")),
-                "pdf_url": pdf_url,
-                "full_text_pages": len(pages),
-            })
-            paper.pop("conference_note_error", None)
-            detail = {key: paper.get(key) for key in (
-                "id", "title", "conference", "year", "doi", "authors", "institutions",
-                "primary_institution", "institution_type", "organization_sector", "pdf_url",
-                "note_model", "note_basis", "note_source", "note_source_url", "full_text_pages",
-                *SUMMARY_KEYS,
-            )}
-            for key in DETAIL_KEYS:
-                detail[key] = str(note.get(key, "")).strip()
-            (NOTE_DIR / f"{note_id}.json").write_text(
-                json.dumps(detail, ensure_ascii=False, separators=(",", ":")) + "\n",
-                encoding="utf-8",
-            )
-            completed += 1
-            print(f"Generated conference note for {paper_id} from {len(pages)} pages ({position}/{len(pending)}).")
-        except Exception as exc:
-            paper["conference_note_error"] = re.sub(r"\s+", " ", str(exc)).strip()[:500]
-            print(f"Conference note failed for {paper_id} ({position}/{len(pending)}): {paper['conference_note_error']}")
-        save_year(*year_payloads[year])
-        time.sleep(0.5)
+    with ThreadPoolExecutor(max_workers=WORKERS) as executor:
+        futures = {executor.submit(generate_note, paper): (year, paper) for year, paper in pending}
+        for position, future in enumerate(as_completed(futures), start=1):
+            year, paper = futures[future]
+            paper_id = paper.get("id", "")
+            paper["conference_note_checked_at"] = now.isoformat()
+            try:
+                updates, detail, note_id, page_count = future.result()
+                paper.update(updates)
+                paper.pop("conference_note_error", None)
+                (NOTE_DIR / f"{note_id}.json").write_text(
+                    json.dumps(detail, ensure_ascii=False, separators=(",", ":")) + "\n",
+                    encoding="utf-8",
+                )
+                completed += 1
+                print(f"Generated conference note for {paper_id} from {page_count} pages ({position}/{len(pending)}).", flush=True)
+            except Exception as exc:
+                paper["conference_note_error"] = re.sub(r"\s+", " ", str(exc)).strip()[:500]
+                print(f"Conference note failed for {paper_id} ({position}/{len(pending)}): {paper['conference_note_error']}", flush=True)
+            save_year(*year_payloads[year])
+            time.sleep(0.2)
 
     note_count = 0
     for _, payload in year_payloads.values():

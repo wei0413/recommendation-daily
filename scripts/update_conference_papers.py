@@ -128,6 +128,7 @@ ENRICHMENT_KEYS = (
     "note_id", "note_model", "note_basis", "note_source", "note_source_url",
     "pdf_url", "full_text_pages", "has_full_text_note", "openalex_id",
     "conference_note_checked_at", "conference_note_error",
+    "conference_pdf_candidates", "conference_pdf_status", "conference_pdf_checked_at",
 )
 
 
