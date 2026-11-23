@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-18T01:05:23.005362+08:00",
+  "generated_at": "2026-11-23T21:34:10.976311+08:00",
   "source": "Crossref formal proceedings metadata",
   "method": "Title-based high-precision recommendation-system screening",
   "start_year": 2024,
@@ -9,7 +9,7 @@
     2025,
     2024
   ],
-  "paper_count": 2401,
+  "paper_count": 2408,
   "conferences": [
     {
       "id": "SIGIR",
@@ -63,8 +63,8 @@
   ],
   "counts": {
     "2026": {
-      "CIKM": 191,
-      "KDD": 89,
+      "CIKM": 193,
+      "KDD": 94,
       "RecSys": 218,
       "SIGIR": 182,
       "WSDM": 53,
@@ -90,12 +90,12 @@
     }
   },
   "errors": [],
-  "note_count": 1205,
   "pdf_discovery": {
-    "available": 1536,
-    "unavailable": 865,
+    "available": 1539,
+    "unavailable": 869,
     "error": 0,
     "pending": 0
   },
-  "pdf_discovery_checked_at": "2026-11-18T10:53:00.407860+08:00"
+  "pdf_discovery_checked_at": "2026-11-23T21:34:58.163714+08:00",
+  "note_count": 1198
 }
